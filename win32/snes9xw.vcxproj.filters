@@ -4,9 +4,6 @@
     <Filter Include="Emu">
       <UniqueIdentifier>{b5cc2f0d-48b1-4098-aa80-012bf2fde91c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="UnZip">
-      <UniqueIdentifier>{0b1ceca6-986b-428d-8ee4-d8d3be362583}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GUI">
       <UniqueIdentifier>{4a13e328-4b79-48a2-a44d-27a1a4f90fbd}</UniqueIdentifier>
     </Filter>
@@ -47,24 +44,6 @@
     </ClInclude>
     <ClInclude Include="..\statemanager.h">
       <Filter>Emu</Filter>
-    </ClInclude>
-    <ClInclude Include="..\unzip\crypt.h">
-      <Filter>UnZip</Filter>
-    </ClInclude>
-    <ClInclude Include="..\unzip\ioapi.h">
-      <Filter>UnZip</Filter>
-    </ClInclude>
-    <ClInclude Include="..\unzip\iowin32.h">
-      <Filter>UnZip</Filter>
-    </ClInclude>
-    <ClInclude Include="..\unzip\mztools.h">
-      <Filter>UnZip</Filter>
-    </ClInclude>
-    <ClInclude Include="..\unzip\unzip.h">
-      <Filter>UnZip</Filter>
-    </ClInclude>
-    <ClInclude Include="..\unzip\zip.h">
-      <Filter>UnZip</Filter>
     </ClInclude>
     <ClInclude Include="_tfwopen.h">
       <Filter>GUI</Filter>
@@ -394,21 +373,6 @@
     </ClCompile>
     <ClCompile Include="..\tile.cpp">
       <Filter>Emu</Filter>
-    </ClCompile>
-    <ClCompile Include="..\unzip\ioapi.c">
-      <Filter>UnZip</Filter>
-    </ClCompile>
-    <ClCompile Include="..\unzip\iowin32.c">
-      <Filter>UnZip</Filter>
-    </ClCompile>
-    <ClCompile Include="..\unzip\mztools.c">
-      <Filter>UnZip</Filter>
-    </ClCompile>
-    <ClCompile Include="..\unzip\unzip.c">
-      <Filter>UnZip</Filter>
-    </ClCompile>
-    <ClCompile Include="..\unzip\zip.c">
-      <Filter>UnZip</Filter>
     </ClCompile>
     <ClCompile Include="_tfwopen.cpp">
       <Filter>GUI</Filter>

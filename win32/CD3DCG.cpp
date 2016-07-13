@@ -178,7 +178,9 @@
 #include "wsnes9x.h"
 #include "win32_display.h"
 #include <Dxerr.h>
+#ifdef HAVE_LIBPNG
 #include <png.h>
+#endif
 #include "CDirect3D.h"
 
 #ifndef max

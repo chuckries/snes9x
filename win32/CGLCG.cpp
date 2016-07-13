@@ -177,7 +177,9 @@
 #include "CGLCG.h"
 #include "wsnes9x.h"
 #include "win32_display.h"
+#ifdef HAVE_LIBPNG
 #include <png.h>
+#endif
 
 #ifndef max
 #define max(a, b) (((a) > (b)) ? (a) : (b))
