@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libsnes9x", "libsnes9x\libsnes9x.vcxproj", "{A8A7F1EA-5C8A-4EAB-A7D8-93B8C1278B3D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "snes9x-uwp", "snes9x-uwp\snes9x-uwp.vcxproj", "{C5A46038-E864-48D4-ADCA-F8761BB06D09}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ARM = Debug|ARM
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|ARM = Release|ARM
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A8A7F1EA-5C8A-4EAB-A7D8-93B8C1278B3D}.Debug|ARM.ActiveCfg = Debug|ARM
+		{A8A7F1EA-5C8A-4EAB-A7D8-93B8C1278B3D}.Debug|ARM.Build.0 = Debug|ARM
+		{A8A7F1EA-5C8A-4EAB-A7D8-93B8C1278B3D}.Debug|x64.ActiveCfg = Debug|x64
+		{A8A7F1EA-5C8A-4EAB-A7D8-93B8C1278B3D}.Debug|x64.Build.0 = Debug|x64
+		{A8A7F1EA-5C8A-4EAB-A7D8-93B8C1278B3D}.Debug|x86.ActiveCfg = Debug|Win32
+		{A8A7F1EA-5C8A-4EAB-A7D8-93B8C1278B3D}.Debug|x86.Build.0 = Debug|Win32
+		{A8A7F1EA-5C8A-4EAB-A7D8-93B8C1278B3D}.Release|ARM.ActiveCfg = Release|ARM
+		{A8A7F1EA-5C8A-4EAB-A7D8-93B8C1278B3D}.Release|ARM.Build.0 = Release|ARM
+		{A8A7F1EA-5C8A-4EAB-A7D8-93B8C1278B3D}.Release|x64.ActiveCfg = Release|x64
+		{A8A7F1EA-5C8A-4EAB-A7D8-93B8C1278B3D}.Release|x64.Build.0 = Release|x64
+		{A8A7F1EA-5C8A-4EAB-A7D8-93B8C1278B3D}.Release|x86.ActiveCfg = Release|Win32
+		{A8A7F1EA-5C8A-4EAB-A7D8-93B8C1278B3D}.Release|x86.Build.0 = Release|Win32
+		{C5A46038-E864-48D4-ADCA-F8761BB06D09}.Debug|ARM.ActiveCfg = Debug|ARM
+		{C5A46038-E864-48D4-ADCA-F8761BB06D09}.Debug|ARM.Build.0 = Debug|ARM
+		{C5A46038-E864-48D4-ADCA-F8761BB06D09}.Debug|ARM.Deploy.0 = Debug|ARM
+		{C5A46038-E864-48D4-ADCA-F8761BB06D09}.Debug|x64.ActiveCfg = Debug|x64
+		{C5A46038-E864-48D4-ADCA-F8761BB06D09}.Debug|x64.Build.0 = Debug|x64
+		{C5A46038-E864-48D4-ADCA-F8761BB06D09}.Debug|x64.Deploy.0 = Debug|x64
+		{C5A46038-E864-48D4-ADCA-F8761BB06D09}.Debug|x86.ActiveCfg = Debug|Win32
+		{C5A46038-E864-48D4-ADCA-F8761BB06D09}.Debug|x86.Build.0 = Debug|Win32
+		{C5A46038-E864-48D4-ADCA-F8761BB06D09}.Debug|x86.Deploy.0 = Debug|Win32
+		{C5A46038-E864-48D4-ADCA-F8761BB06D09}.Release|ARM.ActiveCfg = Release|ARM
+		{C5A46038-E864-48D4-ADCA-F8761BB06D09}.Release|ARM.Build.0 = Release|ARM
+		{C5A46038-E864-48D4-ADCA-F8761BB06D09}.Release|ARM.Deploy.0 = Release|ARM
+		{C5A46038-E864-48D4-ADCA-F8761BB06D09}.Release|x64.ActiveCfg = Release|x64
+		{C5A46038-E864-48D4-ADCA-F8761BB06D09}.Release|x64.Build.0 = Release|x64
+		{C5A46038-E864-48D4-ADCA-F8761BB06D09}.Release|x64.Deploy.0 = Release|x64
+		{C5A46038-E864-48D4-ADCA-F8761BB06D09}.Release|x86.ActiveCfg = Release|Win32
+		{C5A46038-E864-48D4-ADCA-F8761BB06D09}.Release|x86.Build.0 = Release|Win32
+		{C5A46038-E864-48D4-ADCA-F8761BB06D09}.Release|x86.Deploy.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

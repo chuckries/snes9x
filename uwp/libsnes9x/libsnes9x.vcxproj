@@ -1,0 +1,321 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|ARM">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM">
+      <Configuration>Release</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\65c816.h" />
+    <ClInclude Include="..\..\apu\apu.h" />
+    <ClInclude Include="..\..\apu\bapu\dsp\blargg_common.h" />
+    <ClInclude Include="..\..\apu\bapu\dsp\blargg_config.h" />
+    <ClInclude Include="..\..\apu\bapu\dsp\blargg_endian.h" />
+    <ClInclude Include="..\..\apu\bapu\dsp\blargg_source.h" />
+    <ClInclude Include="..\..\apu\bapu\dsp\sdsp.hpp" />
+    <ClInclude Include="..\..\apu\bapu\dsp\SPC_DSP.h" />
+    <ClInclude Include="..\..\apu\hermite_resampler.h" />
+    <ClInclude Include="..\..\apu\resampler.h" />
+    <ClInclude Include="..\..\apu\ring_buffer.h" />
+    <ClInclude Include="..\..\bsx.h" />
+    <ClInclude Include="..\..\c4.h" />
+    <ClInclude Include="..\..\cheats.h" />
+    <ClInclude Include="..\..\conffile.h" />
+    <ClInclude Include="..\..\controls.h" />
+    <ClInclude Include="..\..\cpuaddr.h" />
+    <ClInclude Include="..\..\cpuexec.h" />
+    <ClInclude Include="..\..\cpumacro.h" />
+    <ClInclude Include="..\..\cpuops.h" />
+    <ClInclude Include="..\..\crosshairs.h" />
+    <ClInclude Include="..\..\debug.h" />
+    <ClInclude Include="..\..\display.h" />
+    <ClInclude Include="..\..\dma.h" />
+    <ClInclude Include="..\..\dsp.h" />
+    <ClInclude Include="..\..\font.h" />
+    <ClInclude Include="..\..\fxemu.h" />
+    <ClInclude Include="..\..\fxinst.h" />
+    <ClInclude Include="..\..\getset.h" />
+    <ClInclude Include="..\..\gfx.h" />
+    <ClInclude Include="..\..\language.h" />
+    <ClInclude Include="..\..\logger.h" />
+    <ClInclude Include="..\..\memmap.h" />
+    <ClInclude Include="..\..\messages.h" />
+    <ClInclude Include="..\..\missing.h" />
+    <ClInclude Include="..\..\movie.h" />
+    <ClInclude Include="..\..\netplay.h" />
+    <ClInclude Include="..\..\obc1.h" />
+    <ClInclude Include="..\..\pixform.h" />
+    <ClInclude Include="..\..\port.h" />
+    <ClInclude Include="..\..\ppu.h" />
+    <ClInclude Include="..\..\sa1.h" />
+    <ClInclude Include="..\..\sar.h" />
+    <ClInclude Include="..\..\screenshot.h" />
+    <ClInclude Include="..\..\sdd1.h" />
+    <ClInclude Include="..\..\sdd1emu.h" />
+    <ClInclude Include="..\..\seta.h" />
+    <ClInclude Include="..\..\snapshot.h" />
+    <ClInclude Include="..\..\snes9x.h" />
+    <ClInclude Include="..\..\spc7110.h" />
+    <ClInclude Include="..\..\srtc.h" />
+    <ClInclude Include="..\..\statemanager.h" />
+    <ClInclude Include="..\..\stream.h" />
+    <ClInclude Include="..\..\tile.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\apu\apu.cpp" />
+    <ClCompile Include="..\..\apu\bapu\dsp\sdsp.cpp" />
+    <ClCompile Include="..\..\apu\bapu\dsp\SPC_DSP.cpp" />
+    <ClCompile Include="..\..\apu\bapu\smp\smp.cpp" />
+    <ClCompile Include="..\..\apu\bapu\smp\smp_state.cpp" />
+    <ClCompile Include="..\..\bsx.cpp" />
+    <ClCompile Include="..\..\c4.cpp" />
+    <ClCompile Include="..\..\c4emu.cpp" />
+    <ClCompile Include="..\..\cheats.cpp" />
+    <ClCompile Include="..\..\cheats2.cpp" />
+    <ClCompile Include="..\..\clip.cpp" />
+    <ClCompile Include="..\..\conffile.cpp" />
+    <ClCompile Include="..\..\controls.cpp" />
+    <ClCompile Include="..\..\cpu.cpp" />
+    <ClCompile Include="..\..\cpuexec.cpp" />
+    <ClCompile Include="..\..\cpuops.cpp" />
+    <ClCompile Include="..\..\crosshairs.cpp" />
+    <ClCompile Include="..\..\debug.cpp" />
+    <ClCompile Include="..\..\dma.cpp" />
+    <ClCompile Include="..\..\dsp.cpp" />
+    <ClCompile Include="..\..\dsp1.cpp" />
+    <ClCompile Include="..\..\dsp2.cpp" />
+    <ClCompile Include="..\..\dsp3.cpp" />
+    <ClCompile Include="..\..\dsp4.cpp" />
+    <ClCompile Include="..\..\fxemu.cpp" />
+    <ClCompile Include="..\..\fxinst.cpp" />
+    <ClCompile Include="..\..\gfx.cpp" />
+    <ClCompile Include="..\..\globals.cpp" />
+    <ClCompile Include="..\..\loadzip.cpp" />
+    <ClCompile Include="..\..\logger.cpp" />
+    <ClCompile Include="..\..\memmap.cpp" />
+    <ClCompile Include="..\..\movie.cpp" />
+    <ClCompile Include="..\..\netplay.cpp" />
+    <ClCompile Include="..\..\obc1.cpp" />
+    <ClCompile Include="..\..\ppu.cpp" />
+    <ClCompile Include="..\..\sa1.cpp" />
+    <ClCompile Include="..\..\sa1cpu.cpp" />
+    <ClCompile Include="..\..\screenshot.cpp" />
+    <ClCompile Include="..\..\sdd1.cpp" />
+    <ClCompile Include="..\..\sdd1emu.cpp" />
+    <ClCompile Include="..\..\server.cpp" />
+    <ClCompile Include="..\..\seta.cpp" />
+    <ClCompile Include="..\..\seta010.cpp" />
+    <ClCompile Include="..\..\seta011.cpp" />
+    <ClCompile Include="..\..\seta018.cpp" />
+    <ClCompile Include="..\..\snapshot.cpp" />
+    <ClCompile Include="..\..\snes9x.cpp" />
+    <ClCompile Include="..\..\spc7110.cpp" />
+    <ClCompile Include="..\..\srtc.cpp" />
+    <ClCompile Include="..\..\statemanager.cpp" />
+    <ClCompile Include="..\..\stream.cpp" />
+    <ClCompile Include="..\..\tile.cpp" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{a8a7f1ea-5c8a-4eab-a7d8-93b8c1278b3d}</ProjectGuid>
+    <Keyword>StaticLibrary</Keyword>
+    <RootNamespace>libsnes9x</RootNamespace>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+    <AppContainerApplication>true</AppContainerApplication>
+    <ApplicationType>Windows Store</ApplicationType>
+    <WindowsTargetPlatformVersion>10.0.10586.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformMinVersion>10.0.10240.0</WindowsTargetPlatformMinVersion>
+    <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <GenerateManifest>false</GenerateManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <GenerateManifest>false</GenerateManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <GenerateManifest>false</GenerateManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <GenerateManifest>false</GenerateManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <GenerateManifest>false</GenerateManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <GenerateManifest>false</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <CompileAsWinRT>false</CompileAsWinRT>
+      <SDLCheck>false</SDLCheck>
+      <PreprocessorDefinitions>__WIN32__;__WIN32_LIBSNES__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WarningLevel>Level2</WarningLevel>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\;$(ProjectDir)..\..\apu\bapu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <CompileAsWinRT>false</CompileAsWinRT>
+      <SDLCheck>false</SDLCheck>
+      <PreprocessorDefinitions>__WIN32__;__WIN32_LIBSNES__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WarningLevel>Level2</WarningLevel>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\;$(ProjectDir)..\..\apu\bapu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|arm'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <CompileAsWinRT>false</CompileAsWinRT>
+      <SDLCheck>false</SDLCheck>
+      <PreprocessorDefinitions>__WIN32__;__WIN32_LIBSNES__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WarningLevel>Level2</WarningLevel>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\;$(ProjectDir)..\..\apu\bapu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|arm'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <CompileAsWinRT>false</CompileAsWinRT>
+      <SDLCheck>false</SDLCheck>
+      <PreprocessorDefinitions>__WIN32__;__WIN32_LIBSNES__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WarningLevel>Level2</WarningLevel>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\;$(ProjectDir)..\..\apu\bapu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <CompileAsWinRT>false</CompileAsWinRT>
+      <SDLCheck>false</SDLCheck>
+      <PreprocessorDefinitions>__WIN32__;__WIN32_LIBSNES__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WarningLevel>Level2</WarningLevel>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\;$(ProjectDir)..\..\apu\bapu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <CompileAsWinRT>false</CompileAsWinRT>
+      <SDLCheck>false</SDLCheck>
+      <PreprocessorDefinitions>__WIN32__;__WIN32_LIBSNES__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WarningLevel>Level2</WarningLevel>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\;$(ProjectDir)..\..\apu\bapu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
