@@ -16,7 +16,6 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <ToggleSwitch Header="Show FPS" IsOn="True" Toggled="ToggleSwitch_Toggled"/>
             <Button x:Name="ScreenshotButton" Click="ScreenshotButton_Click" Background="Transparent">
                 <SymbolIcon Symbol="Camera" />
             </Button>

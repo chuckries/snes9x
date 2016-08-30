@@ -3,6 +3,7 @@ using Microsoft.Graphics.Canvas.UI;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Snes9xWRC;
 using System;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -50,8 +51,6 @@ namespace Snes9x
         private void canvas_Update(ICanvasAnimatedControl sender, CanvasAnimatedUpdateEventArgs args)
         {
             Emulator.MainLoop();
-
-            //_random.NextBytes(_bitmapBytes);
         }
 
         private void canvas_Draw(ICanvasAnimatedControl sender, CanvasAnimatedDrawEventArgs args)
@@ -67,12 +66,6 @@ namespace Snes9x
             }
 
             args.DrawingSession.DrawImage(_bitmap, new Rect(new Point(0.0f, 0.0f), sender.Size), _bitmap.Bounds, 1.0f, CanvasImageInterpolation.Linear);
-
-            //Emulator.Draw(sender, args);
-            //_bitmap.SetPixelBytes(_bitmapBytes);
-            //Rect srcRect = _bitmap.Bounds;
-            //Rect dstRect = new Rect(new Point(0, 0), sender.Size);
-            //args.DrawingSession.DrawImage(_bitmap, dstRect, srcRect, 1, CanvasImageInterpolation.NearestNeighbor);
         }
 
         private void Page_Unloaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
@@ -100,25 +93,20 @@ namespace Snes9x
             }
         }
 
-        private async void ToggleSwitch_Toggled(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private async void ScreenshotButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            var toggle = sender as ToggleSwitch;
-            if (toggle != null)
-            {
-                if (canvas != null)
+            string fileName = $"{Emulator.Rom.Name}-{DateTime.Now.ToString("yyyy-MM-ddHHmmss")}.png";
+
+            await canvas.RunOnGameLoopThreadAsync(() => {
+                Task.Run(async () =>
                 {
-                    bool isOn = toggle.IsOn;
-
-                    await canvas.RunOnGameLoopThreadAsync(() =>
+                    var file = await Windows.Storage.KnownFolders.PicturesLibrary.CreateFileAsync(fileName, Windows.Storage.CreationCollisionOption.ReplaceExisting);
+                    using (var fileStream = await file.OpenAsync(Windows.Storage.FileAccessMode.ReadWrite))
                     {
-                        Emulator.Settings.DisplayFrameRate = isOn;
-                    });
-                }
-            }
-        }
-
-        private void ScreenshotButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-        {
+                        await _bitmap.SaveAsync(fileStream, CanvasBitmapFileFormat.Png, 1.0f);
+                    }
+                }).Wait();
+            });
         }
     }
 }

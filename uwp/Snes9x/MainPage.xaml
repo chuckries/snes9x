@@ -14,9 +14,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Button Click="Button_Click"
-                Content="Load ROM"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center" />
+                Content="Load ROM"/>
         <ListView ItemsSource="{x:Bind RecentFiles}"
                   IsItemClickEnabled="True"
                   SelectionMode="None"

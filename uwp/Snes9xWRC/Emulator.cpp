@@ -40,7 +40,12 @@ namespace Snes9xWRC
             return create_task(rom->GetBytesAsync()).then([=](Object^ obj)
             {
                 Array<byte>^ bytes = safe_cast<IBoxArray<byte>^>(obj)->Value;
-                return bytes != nullptr && Core::LoadRomMem(bytes->begin(), bytes->Length);
+                if (bytes != nullptr && Core::LoadRomMem(bytes->begin(), bytes->Length))
+                {
+                    _rom = rom;
+                    return true;
+                }
+                return false;
             });
         });
     }
