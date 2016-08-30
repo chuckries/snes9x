@@ -1,0 +1,35 @@
+﻿<Page
+    x:Class="Snes9x.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Snes9x"
+    xmlns:snes9xWRC="using:Snes9xWRC"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Button Click="Button_Click"
+                Content="Load ROM"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center" />
+        <ListView ItemsSource="{x:Bind RecentFiles}"
+                  IsItemClickEnabled="True"
+                  SelectionMode="None"
+                  ItemClick="ListView_ItemClick"
+                  Grid.Row="1">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="snes9xWRC:IRom">
+                    <StackPanel>
+                        <TextBlock Text="{x:Bind Name}" FontWeight="Bold"/>
+                        <TextBlock Text="{x:Bind Path}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</Page>
