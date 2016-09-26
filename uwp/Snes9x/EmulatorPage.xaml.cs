@@ -1,7 +1,8 @@
 ﻿using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.UI;
 using Microsoft.Graphics.Canvas.UI.Xaml;
-using Snes9xWRC;
+using Snes9x.Common;
+using Snes9xCore;
 using System;
 using System.Threading.Tasks;
 using Windows.Foundation;
@@ -17,30 +18,25 @@ namespace Snes9x
     /// </summary>
     public sealed partial class EmulatorPage : Page
     {
-        private Emulator Emulator;
-
         private CanvasBitmap _bitmap;
 
         public EmulatorPage()
         {
             this.InitializeComponent();
-            Emulator = App.Emulator;
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            base.OnNavigatedTo(e);
+
             canvas.Paused = true;
 
-            IRom rom = e.Parameter as IRom;
+            IRomFile rom = e.Parameter as IRomFile;
             if (rom != null)
             {
-                if (await Emulator.LoadRomAsync(rom))
-                {
-                    canvas.Paused = false;
-                }
+                await Emulator.Instance.LoadRomAsync(rom);
+                canvas.Paused = false;
             }
-
-            base.OnNavigatedTo(e);
         }
 
         private void canvas_CreateResources(CanvasAnimatedControl sender, CanvasCreateResourcesEventArgs args)
@@ -50,12 +46,12 @@ namespace Snes9x
 
         private void canvas_Update(ICanvasAnimatedControl sender, CanvasAnimatedUpdateEventArgs args)
         {
-            Emulator.MainLoop();
+            Emulator.Instance.Update();
         }
 
         private void canvas_Draw(ICanvasAnimatedControl sender, CanvasAnimatedDrawEventArgs args)
         {
-            Surface surface = Emulator.Renderer.GetRenderedSurface();
+            Surface surface = Emulator.Instance.Screen;
             if (_bitmap.SizeInPixels.Width != surface.Width || _bitmap.SizeInPixels.Height != surface.Height)
             {
                 _bitmap = CanvasBitmap.CreateFromBytes(sender, surface.Bytes, surface.Width, surface.Height, _bitmap.Format);
@@ -95,18 +91,41 @@ namespace Snes9x
 
         private async void ScreenshotButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            string fileName = $"{Emulator.Rom.Name}-{DateTime.Now.ToString("yyyy-MM-ddHHmmss")}.png";
+            string fileName = $"{Emulator.Instance.Rom.Name}-{DateTime.Now.ToString("yyyy-MM-ddHHmmss")}.png";
 
             await canvas.RunOnGameLoopThreadAsync(() => {
                 Task.Run(async () =>
                 {
-                    var file = await Windows.Storage.KnownFolders.PicturesLibrary.CreateFileAsync(fileName, Windows.Storage.CreationCollisionOption.ReplaceExisting);
+                    var file = await Emulator.Instance.Directories.ScreenshotsFolder.CreateFileAsync(fileName, Windows.Storage.CreationCollisionOption.ReplaceExisting);
                     using (var fileStream = await file.OpenAsync(Windows.Storage.FileAccessMode.ReadWrite))
                     {
                         await _bitmap.SaveAsync(fileStream, CanvasBitmapFileFormat.Png, 1.0f);
                     }
                 }).Wait();
             });
+        }
+
+        private async void SaveButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            Button button = sender as Button;
+            button.IsEnabled = false;
+
+            await canvas.RunOnGameLoopThreadAsync(() =>
+            {
+                Emulator.Instance.SaveState();
+            });
+            button.IsEnabled = true;
+        }
+
+        private async void LoadButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            Button button = sender as Button;
+            button.IsEnabled = false;
+            await canvas.RunOnGameLoopThreadAsync(() =>
+            {
+                Emulator.Instance.LoadState();
+            });
+            button.IsEnabled = true;
         }
     }
 }

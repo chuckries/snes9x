@@ -19,6 +19,8 @@
             <Button x:Name="ScreenshotButton" Click="ScreenshotButton_Click" Background="Transparent">
                 <SymbolIcon Symbol="Camera" />
             </Button>
+            <Button x:Name="SaveButton" Content="Save" Click="SaveButton_Click" />
+            <Button x:Name="LoadButton" Content="Load" Click="LoadButton_Click" />
         </StackPanel>
         <ContentPresenter Grid.Row="1"
                           Background="Black"
@@ -27,7 +29,7 @@
                                       CreateResources="canvas_CreateResources"
                                       Update="canvas_Update"
                                       Draw="canvas_Draw"
-                                      ClearColor="Blue"/>
+                                      ClearColor="Black" />
         </ContentPresenter>
     </Grid>
 </Page>

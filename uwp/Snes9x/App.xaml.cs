@@ -14,7 +14,8 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using Snes9xWRC;
+using Snes9xCore;
+using Snes9x.Common;
 
 namespace Snes9x
 {
@@ -23,8 +24,6 @@ namespace Snes9x
     /// </summary>
     sealed partial class App : Application
     {
-        public static readonly Emulator Emulator = Emulator.Instance;
-
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -33,7 +32,6 @@ namespace Snes9x
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
-            Emulator.Init();
         }
 
         /// <summary>
@@ -41,8 +39,10 @@ namespace Snes9x
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
+            await Emulator.Instance.Init();
+
             Frame rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,

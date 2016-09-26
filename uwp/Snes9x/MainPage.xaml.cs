@@ -1,5 +1,5 @@
 ﻿using Snes9x.Common;
-using Snes9xWRC;
+using Snes9xCore;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -22,12 +22,12 @@ namespace Snes9x
     {
         private Windows.Storage.AccessCache.StorageItemMostRecentlyUsedList _mruList = Windows.Storage.AccessCache.StorageApplicationPermissions.MostRecentlyUsedList;
 
-        public ObservableCollection<IRom> RecentFiles { get; private set; }
+        internal ObservableCollection<IRomFile> RecentFiles { get; private set; }
 
         public MainPage()
         {
             this.InitializeComponent();
-            RecentFiles = new ObservableCollection<IRom>();
+            RecentFiles = new ObservableCollection<IRomFile>();
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -61,7 +61,7 @@ namespace Snes9x
             }
         }
 
-        private bool LoadRom(IRom rom)
+        private bool LoadRom(IRomFile rom)
         {
             //if (await App.Emulator.LoadRomAsync(rom))
             //{
@@ -77,7 +77,7 @@ namespace Snes9x
 
         private void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            IRom rom = e.ClickedItem as IRom;
+            IRomFile rom = e.ClickedItem as IRomFile;
             if (rom != null)
             {
                 LoadRom(rom);

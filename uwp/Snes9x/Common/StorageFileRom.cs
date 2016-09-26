@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Snes9xWRC;
 using Windows.Storage;
 using Windows.Foundation;
 using Windows.Storage.Streams;
@@ -12,7 +11,7 @@ using System.IO;
 
 namespace Snes9x.Common
 {
-    class StorageFileRom : IRom
+    class StorageFileRom : IRomFile
     {
         private StorageFile _file;
 
@@ -22,9 +21,10 @@ namespace Snes9x.Common
         }
 
         public string Name { get { return _file.DisplayName; } }
+        public string FileName { get { return _file.Name; } }
         public string Path { get { return _file.Path; } }
 
-        public IAsyncOperation<object> GetBytesAsync()
+        public Task<byte[]> GetBytesAsync()
         {
             return Task.Run(async () =>
             {
@@ -47,9 +47,9 @@ namespace Snes9x.Common
                     DataReader reader = DataReader.FromBuffer(buffer);
                     byte[] bytes = new byte[buffer.Length];
                     reader.ReadBytes(bytes);
-                    return (object)bytes;
+                    return bytes;
                 }
-            }).AsAsyncOperation();
+            });
         }
     }
 }

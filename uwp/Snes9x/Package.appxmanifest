@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="6da175b8-2cd0-434f-b71d-2275811681c7" Publisher="CN=chuckr" Version="1.0.0.0" />
+  <Identity Name="com.riesco.Snes9x" Publisher="CN=chuckr" Version="1.0.0.0" />
   <mp:PhoneIdentity PhoneProductId="6da175b8-2cd0-434f-b71d-2275811681c7" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>Snes9x</DisplayName>

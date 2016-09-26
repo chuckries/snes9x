@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Snes9xWRC
+namespace Snes9xCore
 {
 
     public ref class CoreSettings sealed

@@ -14,52 +14,11 @@
     <Filter Include="APU\SMP">
       <UniqueIdentifier>{a73805aa-0b7a-4bb5-bbaf-044bca76d9e1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{fd235105-ce9e-4d60-bc7e-8f2f443cdf59}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\65c816.h" />
-    <ClInclude Include="..\..\bsx.h" />
-    <ClInclude Include="..\..\c4.h" />
-    <ClInclude Include="..\..\cheats.h" />
-    <ClInclude Include="..\..\conffile.h" />
-    <ClInclude Include="..\..\controls.h" />
-    <ClInclude Include="..\..\cpuaddr.h" />
-    <ClInclude Include="..\..\cpuexec.h" />
-    <ClInclude Include="..\..\cpumacro.h" />
-    <ClInclude Include="..\..\cpuops.h" />
-    <ClInclude Include="..\..\crosshairs.h" />
-    <ClInclude Include="..\..\debug.h" />
-    <ClInclude Include="..\..\display.h" />
-    <ClInclude Include="..\..\dma.h" />
-    <ClInclude Include="..\..\dsp.h" />
-    <ClInclude Include="..\..\font.h" />
-    <ClInclude Include="..\..\fxemu.h" />
-    <ClInclude Include="..\..\fxinst.h" />
-    <ClInclude Include="..\..\getset.h" />
-    <ClInclude Include="..\..\gfx.h" />
-    <ClInclude Include="..\..\language.h" />
-    <ClInclude Include="..\..\logger.h" />
-    <ClInclude Include="..\..\memmap.h" />
-    <ClInclude Include="..\..\messages.h" />
-    <ClInclude Include="..\..\missing.h" />
-    <ClInclude Include="..\..\movie.h" />
-    <ClInclude Include="..\..\netplay.h" />
-    <ClInclude Include="..\..\obc1.h" />
-    <ClInclude Include="..\..\pixform.h" />
-    <ClInclude Include="..\..\port.h" />
-    <ClInclude Include="..\..\ppu.h" />
-    <ClInclude Include="..\..\sa1.h" />
-    <ClInclude Include="..\..\sar.h" />
-    <ClInclude Include="..\..\screenshot.h" />
-    <ClInclude Include="..\..\sdd1.h" />
-    <ClInclude Include="..\..\sdd1emu.h" />
-    <ClInclude Include="..\..\seta.h" />
-    <ClInclude Include="..\..\snapshot.h" />
-    <ClInclude Include="..\..\snes9x.h" />
-    <ClInclude Include="..\..\spc7110.h" />
-    <ClInclude Include="..\..\srtc.h" />
-    <ClInclude Include="..\..\statemanager.h" />
-    <ClInclude Include="..\..\stream.h" />
-    <ClInclude Include="..\..\tile.h" />
     <ClInclude Include="..\..\apu\apu.h">
       <Filter>APU</Filter>
     </ClInclude>
@@ -90,55 +49,140 @@
     <ClInclude Include="..\..\apu\bapu\dsp\SPC_DSP.h">
       <Filter>APU\DSP</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\65c816.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\bsx.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\c4.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\cheats.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\conffile.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\controls.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\cpuaddr.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\cpuexec.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\cpumacro.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\cpuops.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\crosshairs.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\debug.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\display.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\dma.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\dsp.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\font.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fxemu.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fxinst.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\getset.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gfx.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\language.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\logger.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\memmap.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\messages.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\missing.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\movie.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\netplay.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\obc1.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\pixform.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\port.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ppu.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sa1.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sar.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\screenshot.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdd1.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdd1emu.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\seta.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\snapshot.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\snes9x.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\spc7110.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\srtc.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\statemanager.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\stream.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tile.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\bsx.cpp" />
-    <ClCompile Include="..\..\c4.cpp" />
-    <ClCompile Include="..\..\c4emu.cpp" />
-    <ClCompile Include="..\..\cheats.cpp" />
-    <ClCompile Include="..\..\cheats2.cpp" />
-    <ClCompile Include="..\..\clip.cpp" />
-    <ClCompile Include="..\..\conffile.cpp" />
-    <ClCompile Include="..\..\controls.cpp" />
-    <ClCompile Include="..\..\cpu.cpp" />
-    <ClCompile Include="..\..\cpuexec.cpp" />
-    <ClCompile Include="..\..\cpuops.cpp" />
-    <ClCompile Include="..\..\crosshairs.cpp" />
-    <ClCompile Include="..\..\debug.cpp" />
-    <ClCompile Include="..\..\dma.cpp" />
-    <ClCompile Include="..\..\dsp.cpp" />
-    <ClCompile Include="..\..\dsp1.cpp" />
-    <ClCompile Include="..\..\dsp2.cpp" />
-    <ClCompile Include="..\..\dsp3.cpp" />
-    <ClCompile Include="..\..\dsp4.cpp" />
-    <ClCompile Include="..\..\fxemu.cpp" />
-    <ClCompile Include="..\..\fxinst.cpp" />
-    <ClCompile Include="..\..\gfx.cpp" />
-    <ClCompile Include="..\..\globals.cpp" />
-    <ClCompile Include="..\..\loadzip.cpp" />
-    <ClCompile Include="..\..\logger.cpp" />
-    <ClCompile Include="..\..\memmap.cpp" />
-    <ClCompile Include="..\..\movie.cpp" />
-    <ClCompile Include="..\..\netplay.cpp" />
-    <ClCompile Include="..\..\obc1.cpp" />
-    <ClCompile Include="..\..\ppu.cpp" />
-    <ClCompile Include="..\..\sa1.cpp" />
-    <ClCompile Include="..\..\sa1cpu.cpp" />
-    <ClCompile Include="..\..\screenshot.cpp" />
-    <ClCompile Include="..\..\sdd1.cpp" />
-    <ClCompile Include="..\..\sdd1emu.cpp" />
-    <ClCompile Include="..\..\server.cpp" />
-    <ClCompile Include="..\..\seta.cpp" />
-    <ClCompile Include="..\..\seta010.cpp" />
-    <ClCompile Include="..\..\seta011.cpp" />
-    <ClCompile Include="..\..\seta018.cpp" />
-    <ClCompile Include="..\..\snapshot.cpp" />
-    <ClCompile Include="..\..\snes9x.cpp" />
-    <ClCompile Include="..\..\spc7110.cpp" />
-    <ClCompile Include="..\..\srtc.cpp" />
-    <ClCompile Include="..\..\statemanager.cpp" />
-    <ClCompile Include="..\..\stream.cpp" />
-    <ClCompile Include="..\..\tile.cpp" />
     <ClCompile Include="..\..\apu\apu.cpp">
       <Filter>APU</Filter>
     </ClCompile>
@@ -153,6 +197,147 @@
     </ClCompile>
     <ClCompile Include="..\..\apu\bapu\smp\smp_state.cpp">
       <Filter>APU\SMP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\bsx.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\c4.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\c4emu.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\cheats.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\cheats2.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\clip.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\conffile.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\controls.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\cpu.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\cpuexec.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\cpuops.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\crosshairs.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\debug.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dma.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dsp.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dsp1.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dsp2.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dsp3.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dsp4.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fxemu.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\fxinst.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfx.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\globals.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\loadzip.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\logger.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\memmap.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\movie.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\netplay.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\obc1.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ppu.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sa1.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sa1cpu.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\screenshot.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdd1.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdd1emu.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\server.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\seta.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\seta010.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\seta011.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\seta018.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\snapshot.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\snes9x.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\spc7110.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\srtc.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\statemanager.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\stream.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tile.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

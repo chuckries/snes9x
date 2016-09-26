@@ -3,7 +3,7 @@
 
 #include "LibSnes9x.h"
 
-namespace Snes9xWRC
+namespace Snes9xCore
 {
     CoreSettings::CoreSettings()
     {

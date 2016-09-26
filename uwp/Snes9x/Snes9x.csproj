@@ -95,6 +95,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\EmulatorDirectories.cs" />
+    <Compile Include="Common\Emulator.cs" />
+    <Compile Include="Common\IRomFile.cs" />
     <Compile Include="Common\StorageFileRom.cs" />
     <Compile Include="EmulatorPage.xaml.cs">
       <DependentUpon>EmulatorPage.xaml</DependentUpon>
@@ -135,9 +138,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Snes9xWRC\Snes9xWRC.vcxproj">
+    <ProjectReference Include="..\Snes9xCore\Snes9xCore.vcxproj">
       <Project>{d5dc6547-4053-452e-830d-6105bc935a51}</Project>
-      <Name>Snes9xWRC</Name>
+      <Name>Snes9xCore</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

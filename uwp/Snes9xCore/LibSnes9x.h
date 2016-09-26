@@ -6,3 +6,4 @@
 #include "controls.h"
 #include "apu\apu.h"
 #include "gfx.h"
+#include "snapshot.h"

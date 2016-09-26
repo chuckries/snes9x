@@ -9,19 +9,19 @@
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="Emulator.cpp" />
-    <ClCompile Include="Snes9x.cpp" />
-    <ClCompile Include="Snes9xCore.cpp" />
     <ClCompile Include="Settings.cpp" />
-    <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="CXAudio2.cpp" />
+    <ClCompile Include="Snes9xImpl.cpp" />
+    <ClCompile Include="Snes9xWrapper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="Emulator.h" />
-    <ClInclude Include="Rom.h" />
-    <ClInclude Include="Snes9xCore.h" />
     <ClInclude Include="LibSnes9x.h" />
     <ClInclude Include="Settings.h" />
-    <ClInclude Include="Renderer.h" />
+    <ClInclude Include="CXAudio2.h" />
+    <ClInclude Include="StringUtil.h" />
+    <ClInclude Include="Snes9xWrapper.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Emulator.h"
-#include "Renderer.h"
 #include "LibSnes9x.h"
+#include "CXAudio2.h"
 
 // Implementations of snes9x's required functions
 
@@ -13,7 +13,25 @@ void S9xMessage(int, int, const char *) { }
 void S9xAutoSaveSRAM(void) { }
 
 // apu.h
-bool8 S9xOpenSoundDevice() { return true; }
+bool8 S9xOpenSoundDevice()
+{
+    if (!CXAudio2::s_Audio.InitSoundOutput())
+    {
+        return false;
+    }
+
+    if (!CXAudio2::s_Audio.SetupSound())
+    {
+        return false;
+    }
+
+    S9xSetSamplesAvailableCallback([](void*)
+    {
+        CXAudio2::s_Audio.ProcessSound();
+    }, nullptr);
+
+    return true;
+}
 
 // port.h
 void SetInfoDlgColor(unsigned char, unsigned char, unsigned char) { }
@@ -26,8 +44,29 @@ void S9xTextMode(void) { }
 void S9xGraphicsMode(void) { }
 void S9xSetPalette(void) { }
 void S9xToggleSoundChannel(int) { }
-bool8 S9xOpenSnapshotFile(const char *, bool8, STREAM *) { return 0; }
-void S9xCloseSnapshotFile(STREAM) { }
+
+bool8 S9xOpenSnapshotFile(const char * filePath, bool8 readOnly, STREAM * pStream)
+{
+    char openMode[] = "wb";
+    if (readOnly)
+    {
+        openMode[0] = 'r';
+    }
+
+    *pStream = OPEN_STREAM(filePath, openMode);
+    if (*pStream != nullptr)
+    {
+        return true;
+    }
+
+    return false;
+}
+
+void S9xCloseSnapshotFile(STREAM stream)
+{
+    CLOSE_STREAM(stream);
+}
+
 const char * S9xStringInput(const char *) { return ""; }
 const char * S9xGetDirectory(enum s9x_getdirtype) { return ""; }
 const char * S9xGetFilename(const char *, enum s9x_getdirtype) { return ""; }
@@ -54,7 +93,7 @@ bool8 S9xInitUpdate(void) { return true; }
 
 bool8 S9xDeinitUpdate(int width, int height)
 {
-    Snes9xWRC::Emulator::Instance->Renderer->SetResolution(width, height);
+    Snes9xCore::CoreEmulator::Instance->SetResolution(width, height);
     return true;
 }
 

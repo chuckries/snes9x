@@ -29,7 +29,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{d5dc6547-4053-452e-830d-6105bc935a51}</ProjectGuid>
     <Keyword>WindowsRuntimeComponent</Keyword>
-    <RootNamespace>Snes9xWRC</RootNamespace>
+    <RootNamespace>Snes9xCore</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
     <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <AppContainerApplication>true</AppContainerApplication>
@@ -37,7 +37,7 @@
     <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformMinVersion>10.0.10240.0</WindowsTargetPlatformMinVersion>
     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
-    <ProjectName>Snes9xWRC</ProjectName>
+    <ProjectName>Snes9xCore</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -213,16 +213,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Renderer.h" />
+    <ClInclude Include="CXAudio2.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="LibSnes9x.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Emulator.h" />
-    <ClInclude Include="Rom.h" />
-    <ClInclude Include="Snes9xCore.h" />
+    <ClInclude Include="Snes9xWrapper.h" />
+    <ClInclude Include="StringUtil.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="CXAudio2.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -233,8 +233,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Emulator.cpp" />
-    <ClCompile Include="Snes9x.cpp" />
-    <ClCompile Include="Snes9xCore.cpp" />
+    <ClCompile Include="Snes9xImpl.cpp" />
+    <ClCompile Include="Snes9xWrapper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\libsnes9x\libsnes9x.vcxproj">
