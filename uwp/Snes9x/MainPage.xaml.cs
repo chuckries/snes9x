@@ -42,7 +42,7 @@ namespace Snes9x
             }
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private async void LoadRomButton_Click(object sender, RoutedEventArgs e)
         {
             var picker = new FileOpenPicker();
             picker.FileTypeFilter.Add(".sfc");
@@ -54,34 +54,40 @@ namespace Snes9x
             StorageFile file = await picker.PickSingleFileAsync();
             if (file != null)
             {
-                if (LoadRom(new StorageFileRom(file)))
+                if (await LoadRom(new StorageFileRom(file)))
                 {
                     _mruList.Add(file, "romfile");
                 }
             }
         }
 
-        private bool LoadRom(IRomFile rom)
+        private async Task<bool> LoadRom(IRomFile rom)
         {
-            //if (await App.Emulator.LoadRomAsync(rom))
-            //{
-            //    Frame.Navigate(typeof(EmulatorPage));
-            //    return true;
-            //}
-
-            //return false;
-
-            Frame.Navigate(typeof(EmulatorPage), rom);
-            return true;
+            //Frame.Navigate(typeof(EmulatorPage), rom);
+            return await emulator.LoadRomAsync(rom);
         }
 
-        private void ListView_ItemClick(object sender, ItemClickEventArgs e)
+        private async void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             IRomFile rom = e.ClickedItem as IRomFile;
             if (rom != null)
             {
-                LoadRom(rom);
+                await LoadRom(rom);
             }
+        }
+
+        private void SaveStateButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private async void LoadStateButton_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private async void ScreenshotButton_Click(object sender, RoutedEventArgs e)
+        {
+            await emulator.Screenshot();
         }
     }
 }

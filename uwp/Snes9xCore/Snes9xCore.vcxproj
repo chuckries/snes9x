@@ -214,6 +214,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CXAudio2.h" />
+    <ClInclude Include="Joypad.h" />
+    <ClInclude Include="JoypadIds.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="LibSnes9x.h" />
     <ClInclude Include="pch.h" />
@@ -223,6 +225,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CXAudio2.cpp" />
+    <ClCompile Include="Joypad.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

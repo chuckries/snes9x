@@ -13,6 +13,7 @@
     <ClCompile Include="CXAudio2.cpp" />
     <ClCompile Include="Snes9xImpl.cpp" />
     <ClCompile Include="Snes9xWrapper.cpp" />
+    <ClCompile Include="Joypad.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -22,6 +23,8 @@
     <ClInclude Include="CXAudio2.h" />
     <ClInclude Include="StringUtil.h" />
     <ClInclude Include="Snes9xWrapper.h" />
+    <ClInclude Include="Joypad.h" />
+    <ClInclude Include="JoypadIds.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Snes9xCore;
 using Windows.Storage;
+using System.IO;
 
 namespace Snes9x.Common
 {
@@ -12,16 +13,12 @@ namespace Snes9x.Common
     {
         private static readonly CoreEmulator _coreEmulator = CoreEmulator.Instance;
         public static readonly Emulator Instance = new Emulator();
-
         public readonly EmulatorDirectories Directories = new EmulatorDirectories();
 
+        private List<IJoypad> _joypads = new List<IJoypad>();
+
         public IRomFile Rom { get; private set; }
-        public Surface Screen {
-            get
-            {
-                return _coreEmulator.GetRenderedSurface();
-            }
-        }
+        public Surface Surface { get; private set; }
 
         private Emulator()
         {
@@ -31,36 +28,56 @@ namespace Snes9x.Common
         public async Task Init()
         {
             _coreEmulator.Init();
+            _joypads.Add(new KeyboardJoypad(1));
             await Directories.Init();
         }
 
-        public async Task LoadRomAsync(IRomFile file)
+        public async Task<bool> LoadRomAsync(IRomFile file)
         {
+            if (Rom != null)
+            {
+                SaveSRAM();
+            }
+
             byte[] bytes = await file.GetBytesAsync();
             if (_coreEmulator.LoadRomMem(bytes))
             {
                 Rom = file;
+                LoadSRAM();
+                return true;
             }
+            return false;
         }
 
         public void Update()
         {
-            _coreEmulator.MainLoop();
+            _joypads.ForEach(j => j.ReportButtons());
+            Surface = _coreEmulator.Update();
         }
 
         public bool SaveState()
         {
-            return _coreEmulator.SaveState(GetSavePath());
+            return _coreEmulator.SaveState(GetSavePath(".sav"));
         }
 
         public bool LoadState()
         {
-            return _coreEmulator.LoadState(GetSavePath());
+            return _coreEmulator.LoadState(GetSavePath(".sav"));
         }
 
-        private string GetSavePath()
+        private bool SaveSRAM()
         {
-            return System.IO.Path.Combine(Directories.SavesFolder.Path, Rom.Name + ".sav");
+            return _coreEmulator.SaveSRAM(GetSavePath(".srm"));
+        }
+
+        private bool LoadSRAM()
+        {
+            return _coreEmulator.LoadSRAM(GetSavePath(".srm"));
+        }
+
+        private string GetSavePath(string extension)
+        {
+            return Path.Combine(Directories.SavesFolder.Path, Rom.Name + extension);
         }
     }
 }

@@ -97,8 +97,15 @@
     </Compile>
     <Compile Include="Common\EmulatorDirectories.cs" />
     <Compile Include="Common\Emulator.cs" />
+    <Compile Include="Common\GameLoopSynchronizationContext.cs" />
+    <Compile Include="Common\IJoypad.cs" />
     <Compile Include="Common\IRomFile.cs" />
+    <Compile Include="Common\KeyboardJoypad.cs" />
+    <Compile Include="Common\Renderer.cs" />
     <Compile Include="Common\StorageFileRom.cs" />
+    <Compile Include="EmulatorControl.xaml.cs">
+      <DependentUpon>EmulatorControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="EmulatorPage.xaml.cs">
       <DependentUpon>EmulatorPage.xaml</DependentUpon>
     </Compile>
@@ -128,6 +135,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="EmulatorControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="EmulatorPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -51,7 +51,7 @@ namespace Snes9x
 
         private void canvas_Draw(ICanvasAnimatedControl sender, CanvasAnimatedDrawEventArgs args)
         {
-            Surface surface = Emulator.Instance.Screen;
+            Surface surface = Emulator.Instance.Surface;
             if (_bitmap.SizeInPixels.Width != surface.Width || _bitmap.SizeInPixels.Height != surface.Height)
             {
                 _bitmap = CanvasBitmap.CreateFromBytes(sender, surface.Bytes, surface.Width, surface.Height, _bitmap.Format);

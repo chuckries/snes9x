@@ -6,12 +6,8 @@ using System.Threading.Tasks;
 
 namespace Snes9x.Common
 {
-    public interface IRomFile
+    interface IJoypad
     {
-        string Name { get; }
-        string FileName { get; }
-        string Path { get; }
-
-        Task<byte[]> GetBytesAsync();
+        void ReportButtons();
     }
 }

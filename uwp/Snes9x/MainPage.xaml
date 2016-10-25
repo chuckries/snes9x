@@ -12,8 +12,16 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Button Click="Button_Click"
-                Content="Load ROM"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <StackPanel>
+            <Button Click="LoadRomButton_Click" Content="Load ROM"/>
+            <Button Click="SaveStateButton_Click" Content="Save State"/>
+            <Button Click="LoadStateButton_Click" Content="Load State" />
+            <Button Click="ScreenshotButton_Click" Content="Screenshot" />
+        </StackPanel>
         <ListView ItemsSource="{x:Bind RecentFiles}"
                   IsItemClickEnabled="True"
                   SelectionMode="None"
@@ -28,5 +36,6 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        <local:EmulatorControl x:Name="emulator" Grid.Column="1" Grid.RowSpan="2"/>
     </Grid>
 </Page>

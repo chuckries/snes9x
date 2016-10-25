@@ -40,6 +40,8 @@ namespace Snes9xCore
 
         bOk = bOk && S9xWrapper::InitSound(128, 0);
 
+        S9xWrapper::InitControllers();
+
         return bOk;
     }
 
@@ -48,9 +50,21 @@ namespace Snes9xCore
         return S9xWrapper::LoadRomMem(romBytes->begin(), romBytes->Length);
     }
 
-    void CoreEmulator::MainLoop()
+    Surface^ CoreEmulator::Update()
     {
         S9xWrapper::MainLoop();
+
+        if (_renderedScreen->Width != _snesScreen->Width || _renderedScreen->Height != _snesScreen->Height)
+        {
+            _renderedScreen->Width = _snesScreen->Width;
+            _renderedScreen->Height = _snesScreen->Height;
+            _renderedScreen->Pitch = _snesScreen->Width * 4;
+            _renderedScreen->Bytes = ref new Array<byte>(_renderedScreen->Height * _renderedScreen->Pitch);
+        }
+
+        ConvertDepth16to32(_snesScreen, _renderedScreen);
+
+        return _renderedScreen;
     }
 
     bool CoreEmulator::SaveState(String^ path)
@@ -63,25 +77,20 @@ namespace Snes9xCore
         return S9xWrapper::LoadState(WideToUtf8(path->Data()));
     }
 
+    bool CoreEmulator::SaveSRAM(String^ path)
+    {
+        return S9xWrapper::SaveSRAM(WideToUtf8(path->Data()));
+    }
+
+    bool CoreEmulator::LoadSRAM(String^ path)
+    {
+        return S9xWrapper::LoadSRAM(WideToUtf8(path->Data()));
+    }
+
     void CoreEmulator::SetResolution(int width, int height)
     {
         _snesScreen->Width = width;
         _snesScreen->Height = height;
-    }
-
-    Surface^ CoreEmulator::GetRenderedSurface()
-    {
-        if (_renderedScreen->Width != _snesScreen->Width || _renderedScreen->Height != _snesScreen->Height)
-        {
-            _renderedScreen->Width = _snesScreen->Width;
-            _renderedScreen->Height = _snesScreen->Height;
-            _renderedScreen->Pitch = _snesScreen->Width * 4;
-            _renderedScreen->Bytes = ref new Array<byte>(_renderedScreen->Height * _renderedScreen->Pitch);
-        }
-
-        ConvertDepth16to32(_snesScreen, _renderedScreen);
-
-        return _renderedScreen;
     }
 
     void CoreEmulator::ConvertDepth16to32(Surface^ source, Surface^ destination)

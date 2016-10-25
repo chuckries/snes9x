@@ -45,13 +45,13 @@ namespace Snes9xCore
         bool Init();
         bool LoadRomMem(const Array<byte>^ romBytes);
 
-        void MainLoop();
+        Surface^ Update();
 
-        // Run synchronously, do not call on UI thread
         bool SaveState(String^ path);
         bool LoadState(String^ path);
 
-        Surface^ GetRenderedSurface();
+        bool SaveSRAM(String^ path);
+        bool LoadSRAM(String^ path);
 
     internal:
         void SetResolution(int width, int height);

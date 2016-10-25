@@ -24,32 +24,29 @@ namespace Snes9x.Common
         public string FileName { get { return _file.Name; } }
         public string Path { get { return _file.Path; } }
 
-        public Task<byte[]> GetBytesAsync()
+        public async Task<byte[]> GetBytesAsync()
         {
-            return Task.Run(async () =>
+            if (_file.FileType == ".zip")
             {
-                if (_file.FileType == ".zip")
+                using (ZipArchive archive = new ZipArchive(await _file.OpenStreamForReadAsync()))
                 {
-                    using (ZipArchive archive = new ZipArchive(await _file.OpenStreamForReadAsync()))
+                    ZipArchiveEntry entry = archive.Entries.FirstOrDefault(e => System.IO.Path.GetFileNameWithoutExtension(e.Name) == System.IO.Path.GetFileNameWithoutExtension(_file.Name));
+                    using (Stream entryStream = entry.Open())
                     {
-                        ZipArchiveEntry entry = archive.Entries.FirstOrDefault(e => System.IO.Path.GetFileNameWithoutExtension(e.Name) == System.IO.Path.GetFileNameWithoutExtension(_file.Name));
-                        using (Stream entryStream = entry.Open())
-                        {
-                            MemoryStream memoryStream = new MemoryStream();
-                            await entryStream.CopyToAsync(memoryStream);
-                            return memoryStream.ToArray();
-                        }
+                        MemoryStream memoryStream = new MemoryStream();
+                        await entryStream.CopyToAsync(memoryStream);
+                        return memoryStream.ToArray();
                     }
                 }
-                else
-                {
-                    IBuffer buffer = await FileIO.ReadBufferAsync(_file);
-                    DataReader reader = DataReader.FromBuffer(buffer);
-                    byte[] bytes = new byte[buffer.Length];
-                    reader.ReadBytes(bytes);
-                    return bytes;
-                }
-            });
+            }
+            else
+            {
+                IBuffer buffer = await FileIO.ReadBufferAsync(_file);
+                DataReader reader = DataReader.FromBuffer(buffer);
+                byte[] bytes = new byte[buffer.Length];
+                reader.ReadBytes(bytes);
+                return bytes;
+            }
         }
     }
 }
