@@ -16,7 +16,7 @@ namespace snes9x_uwp
 	ref class App sealed
 	{
     public:
-        property EmuCore^ Core;
+        static property EmuCore^ Core;
 
 	protected:
 		virtual void OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEventArgs^ e) override;

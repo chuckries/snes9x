@@ -175,13 +175,9 @@
   Nintendo Co., Limited and its subsidiary companies.
  ***********************************************************************************/
 
-
+#include "pch.h"
 #include "CXAudio2.h"
-#include "../snes9x.h"
-#include "../apu/apu.h"
-#include "wsnes9x.h"
 #include <process.h>
-#include <Dxerr.h>
 
 /* CXAudio2
 	Implements audio output through XAudio2.
@@ -222,13 +218,6 @@ bool CXAudio2::InitXAudio2(void)
 
 	HRESULT hr;
 	if ( FAILED(hr = XAudio2Create( &pXAudio2, 0 , XAUDIO2_DEFAULT_PROCESSOR ) ) ) {
-		DXTRACE_ERR_MSGBOX(TEXT("Unable to create XAudio2 object."),hr);
-		MessageBox (GUI.hWnd, TEXT("\
-Unable to initialize XAudio2. You will not be able to hear any\n\
-sound effects or music while playing.\n\n\
-This is usually caused by not having a recent DirectX release installed."),
-			TEXT("Snes9X - Unable to Initialize XAudio2"),
-            MB_OK | MB_ICONWARNING);
 		return false;
 	}
 	initDone = true;
@@ -245,7 +234,6 @@ bool CXAudio2::InitVoices(void)
 	HRESULT hr;
 	if ( FAILED(hr = pXAudio2->CreateMasteringVoice( &pMasterVoice, (Settings.Stereo?2:1),
 		Settings.SoundPlaybackRate, 0, 0 , NULL ) ) ) {
-			DXTRACE_ERR_MSGBOX(TEXT("Unable to create mastering voice."),hr);
 			return false;
 	}
 
@@ -260,7 +248,6 @@ bool CXAudio2::InitVoices(void)
 
 	if( FAILED(hr = pXAudio2->CreateSourceVoice(&pSourceVoice, (WAVEFORMATEX*)&wfx,
 		XAUDIO2_VOICE_NOSRC , XAUDIO2_DEFAULT_FREQ_RATIO, this, NULL, NULL ) ) ) {
-			DXTRACE_ERR_MSGBOX(TEXT("Unable to create source voice."),hr);
 			return false;
 	}
 
@@ -273,7 +260,7 @@ deinitializes all objects
 void CXAudio2::DeInitXAudio2(void)
 {
 	initDone = false;
-	DeInitVoices();	
+	DeInitVoices();
 	if(pXAudio2) {
 		pXAudio2->Release();
 		pXAudio2 = NULL;
@@ -308,7 +295,7 @@ pBufferContext		-	unused
 void CXAudio2::OnBufferEnd(void *pBufferContext)
 {
 	InterlockedDecrement(&bufferCount);
-    SetEvent(GUI.SoundSyncEvent);
+    //SetEvent(GUI.SoundSyncEvent);
 }
 
 /*  CXAudio2::PushBuffer
@@ -341,7 +328,7 @@ bool CXAudio2::SetupSound()
 	DeInitVoices();
 
 	blockCount = 8;
-	UINT32 blockTime = GUI.SoundBufferSize / blockCount;
+    UINT32 blockTime = 100 / blockCount; // GUI.SoundBufferSize / blockCount;
 
 	singleBufferSamples = (Settings.SoundPlaybackRate * blockTime * (Settings.Stereo ? 2 : 1)) / 1000;
 	singleBufferBytes = singleBufferSamples * (Settings.SixteenBitSound ? 2 : 1);

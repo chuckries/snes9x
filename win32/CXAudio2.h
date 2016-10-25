@@ -175,15 +175,13 @@
   Nintendo Co., Limited and its subsidiary companies.
  ***********************************************************************************/
 
+#pragma once
 
-#ifndef CXHAUDIO2_H
-#define CXAUDIO2_H
 #include "XAudio2.h"
-#include "../snes9x.h"
+#include "snes9x.h"
 #include <windows.h>
-#include "IS9xSoundOutput.h"
 
-class CXAudio2 : public IXAudio2VoiceCallback, public IS9xSoundOutput
+class CXAudio2 : public IXAudio2VoiceCallback
 {
 private:
 	IXAudio2SourceVoice *pSourceVoice;
@@ -206,17 +204,21 @@ private:
 	bool InitVoices(void);
 	void DeInitVoices(void);
 
-	void PushBuffer(UINT32 AudioBytes,BYTE *pAudioData,void *pContext);	
+	void PushBuffer(UINT32 AudioBytes,BYTE *pAudioData,void *pContext);
 	void BeginPlayback(void);
 	void StopPlayback(void);
+
+public:
 	void ProcessSound(void);
+
+private:
 	bool InitXAudio2(void);
 	void DeInitXAudio2(void);
 
 public:
 	CXAudio2(void);
 	~CXAudio2(void);
-		
+
 	// inherited from IXAudio2VoiceCallback - we only use OnBufferEnd
 	STDMETHODIMP_(void) OnBufferEnd(void *pBufferContext);
 	STDMETHODIMP_(void) OnBufferStart(void *pBufferContext){}
@@ -232,5 +234,3 @@ public:
 	void DeInitSoundOutput(void) { DeInitXAudio2(); }
 	bool SetupSound(void);
 };
-
-#endif

@@ -248,6 +248,9 @@
       <PreprocessorDefinitions>__WIN32__;__WIN32_LIBSNES__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level2</WarningLevel>
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\;$(ProjectDir)..\..\apu\bapu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -260,7 +263,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>false</CompileAsWinRT>
       <SDLCheck>false</SDLCheck>
-      <PreprocessorDefinitions>__WIN32__;__WIN32_LIBSNES__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__WIN32__;__WIN32_LIBSNES__;UNICODE;_UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level2</WarningLevel>
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\;$(ProjectDir)..\..\apu\bapu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -275,9 +278,12 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <CompileAsWinRT>false</CompileAsWinRT>
       <SDLCheck>false</SDLCheck>
-      <PreprocessorDefinitions>__WIN32__;__WIN32_LIBSNES__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__WIN32__;__WIN32_LIBSNES__;UNICODE;_UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level2</WarningLevel>
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\;$(ProjectDir)..\..\apu\bapu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -308,6 +314,9 @@
       <PreprocessorDefinitions>__WIN32__;__WIN32_LIBSNES__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level2</WarningLevel>
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\;$(ProjectDir)..\..\apu\bapu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

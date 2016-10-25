@@ -18,12 +18,14 @@
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="EmuCore.cpp" />
     <ClCompile Include="snes9x.cpp" />
+    <ClCompile Include="..\..\win32\CXAudio2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="App.xaml.h" />
     <ClInclude Include="MainPage.xaml.h" />
     <ClInclude Include="EmuCore.h" />
+    <ClInclude Include="..\..\win32\CXAudio2.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\LockScreenLogo.scale-200.png">
@@ -53,7 +55,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="snes9x-uwp_TemporaryKey.pfx" />
+    <None Include="..\..\..\..\..\Downloads\kart.sfc" />
+    <None Include="..\..\..\..\..\Downloads\sm.sfc" />
+    <None Include="..\..\..\..\..\Downloads\zelda.sfc" />
+    <None Include="..\..\..\..\..\Documents\Visual Studio 2015\Projects\ShaderTest\Shaders\hq4x.data" />
+    <None Include="..\..\..\..\..\Documents\Visual Studio 2015\Projects\ShaderTest\Shaders\Shader.bin" />
     <None Include="packages.config" />
+    <None Include="..\..\..\..\..\Desktop\smw.sfc" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="MainPage.xaml" />

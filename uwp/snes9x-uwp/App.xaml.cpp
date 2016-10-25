@@ -30,6 +30,12 @@ App::App()
 {
     InitializeComponent();
     Suspending += ref new SuspendingEventHandler(this, &App::OnSuspending);
+
+
+    if (Windows::Foundation::Metadata::ApiInformation::IsPropertyPresent("Windows.UI.Xaml.Application", "RequiresPointerMode"))
+    {
+        RequiresPointerMode = Windows::UI::Xaml::ApplicationRequiresPointerMode::WhenRequested;
+    }
 }
 
 /// <summary>
@@ -39,17 +45,8 @@ App::App()
 /// <param name="e">Details about the launch request and process.</param>
 void App::OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEventArgs^ e)
 {
-#if _DEBUG
-    // Show graphics profiling information while debugging.
-    if (IsDebuggerPresent())
-    {
-        // Display the current frame rate counters
-         DebugSettings->EnableFrameRateCounter = true;
-    }
-#endif
-
-    Core = ref new EmuCore();
-    Core->Init();
+    Windows::UI::ViewManagement::ApplicationView::GetForCurrentView()->SetDesiredBoundsMode(Windows::UI::ViewManagement::ApplicationViewBoundsMode::UseCoreWindow);
+    //Windows::UI::ViewManagement::ApplicationViewScaling::TrySetDisableLayoutScaling(true);
 
     auto rootFrame = dynamic_cast<Frame^>(Window::Current->Content);
 

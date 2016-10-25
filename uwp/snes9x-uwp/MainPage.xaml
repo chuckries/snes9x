@@ -8,7 +8,37 @@
     xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <canvas:CanvasAnimatedControl Name="canvas" Draw="canvas_Draw" Update="canvas_Update" CreateResources="canvas_CreateResources" />
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Visibility="Collapsed" >
+            <Button x:Name="MenuButton" FontFamily="Segoe MDL2 Assets" Content="&#xE700;" FontSize="20" VerticalAlignment="Stretch" Width="50" Click="MenuButton_Click"/>
+            <Button x:Name="ScreenshotButton" Background="Transparent" Click="ScreenshotButton_Click" VerticalAlignment="Stretch" Width="50">
+                <SymbolIcon Symbol="Camera" />
+            </Button>
+            <Button x:Name="SaveStateButton" Background="Transparent" Click="SaveStateButton_Click" VerticalAlignment="Stretch" Width="50">
+                <SymbolIcon Symbol="Save" />
+            </Button>
+            <Button x:Name="LoadStateButton" Background="Transparent" Click="LoadStateButton_Click" VerticalAlignment="Stretch" Width="50">
+                <SymbolIcon Symbol="OpenFile" />
+            </Button>
+            <ToggleSwitch Header="Filter" IsOn="{x:Bind IsFiltered, Mode=TwoWay}" VerticalAlignment="Stretch" />
+        </StackPanel>
+        <Border Grid.Row="1" Background="Black" SizeChanged="OnSizeChanged">
+            <canvas:CanvasAnimatedControl
+                Name="canvas"
+                Draw="canvas_Draw"
+                Update="canvas_Update"
+                CreateResources="canvas_CreateResources"
+                Loaded="canvas_Loaded"
+                ClearColor="Black"/>
+        </Border>
+        <Border x:Name="PauseMenu" Grid.Row="1" Background="White" Margin="40" Visibility="Collapsed" Opacity="0.6">
+            <Grid>
+                <Button Content="Click Me!" Click="Button_Click" HorizontalAlignment="Center"/>
+            </Grid>
+        </Border>
     </Grid>
 </Page>

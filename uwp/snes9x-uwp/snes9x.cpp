@@ -1,23 +1,33 @@
 #include "pch.h"
-#include "snes9x.h"
-#include "memmap.h"
-#include "apu\apu.h"
-#include "display.h"
-#include "controls.h"
-#include "movie.h"
+
+#include "App.xaml.h"
+#include "EmuCore.h"
+#include <fstream>
 
 // Implementations of snes9x's required functions
 
 // snes9x.h
 void S9xExit(void) { }
-void S9xMessage(int, int, const char *) { }
+void S9xMessage(int type, int number, const char * message) { S9xSetInfoString(message); }
 
 // memmap.h
-uint32  MemLoader(uint8 *, const char*, uint32) { return 0; }
 void S9xAutoSaveSRAM(void) { }
 
+void S9xSoundCallback(void *data)
+{
+    ((snes9x_uwp::App^)Application::Current)->Core->S9XAudio2.ProcessSound();
+}
+
 // apu.h
-bool8 S9xOpenSoundDevice() { return false; }
+bool8 S9xOpenSoundDevice()
+{
+    auto app = Application::Current;
+    auto emu = ((snes9x_uwp::App^)Application::Current)->Core;
+    emu->S9XAudio2.InitSoundOutput();
+    emu->S9XAudio2.SetupSound();
+    S9xSetSamplesAvailableCallback(S9xSoundCallback, nullptr);
+    return true;
+}
 
 // port.h
 void SetInfoDlgColor(unsigned char, unsigned char, unsigned char) { }
@@ -30,7 +40,29 @@ void S9xTextMode(void) { }
 void S9xGraphicsMode(void) { }
 void S9xSetPalette(void) { }
 void S9xToggleSoundChannel(int) { }
-bool8 S9xOpenSnapshotFile(const char *, bool8, STREAM *) { return 0; }
+
+bool8 S9xOpenSnapshotFile(const char* name, bool8 readonly, STREAM* stream)
+{
+    return create_task(ApplicationData::Current->LocalFolder->CreateFileAsync("test.smc", Windows::Storage::CreationCollisionOption::ReplaceExisting)).then([=](task<StorageFile^> t)
+    {
+        try
+        {
+            auto storageFile = t.get();
+
+            FILE* file;
+            errno_t err = _wfopen_s(&file, storageFile->Path->Data(), L"w+b");
+
+            *stream = new fStream(file);
+
+            return true;
+        }
+        catch (COMException^ e)
+        {
+            return false;
+        }
+    }).wait();
+}
+
 void S9xCloseSnapshotFile(STREAM) { }
 const char * S9xStringInput(const char *) { return ""; }
 const char * S9xGetDirectory(enum s9x_getdirtype) { return ""; }
@@ -54,7 +86,12 @@ bool8 S9xMapInput(const char *name, s9xcommand_t *cmd) { return false; }
 const char * S9xChooseMovieFilename(bool8) { return ""; }
 
 // gfx.h
-bool8 S9xInitUpdate(void) { return 0; }
-bool8 S9xDeinitUpdate(int, int) { return 0; }
-bool8 S9xContinueUpdate(int, int) { return 0; }
+bool8 S9xInitUpdate(void) { return TRUE; }
+bool8 S9xDeinitUpdate(int width, int height) {
+    auto core = ((snes9x_uwp::App^)Application::Current)->Core;
+    core->Size = Size(width, height);
+    core->Width = width;
+    core->Height = height;
+    return TRUE; }
+bool8 S9xContinueUpdate(int, int) { return TRUE; }
 void S9xSyncSpeed(void) { }
