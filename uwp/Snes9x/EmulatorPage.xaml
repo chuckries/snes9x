@@ -19,6 +19,7 @@
             <Button x:Name="ScreenshotButton" Click="ScreenshotButton_Click" Background="Transparent">
                 <SymbolIcon Symbol="Camera" />
             </Button>
+            <ToggleSwitch Name="FilterToggleSwitch" IsOn="{x:Bind UseFilter, Mode=TwoWay}" />
         </StackPanel>
         <ContentPresenter Grid.Row="1"
                           Background="Black"
