@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Snes9xCore;
 using Windows.Storage;
 using System.IO;
+using Windows.Foundation;
 
 namespace Snes9x.Common
 {
@@ -44,6 +45,7 @@ namespace Snes9x.Common
             {
                 Rom = file;
                 LoadSRAM();
+                OnRomLoaded(Rom);
                 return true;
             }
             return false;
@@ -78,6 +80,13 @@ namespace Snes9x.Common
         private string GetSavePath(string extension)
         {
             return Path.Combine(Directories.SavesFolder.Path, Rom.Name + extension);
+        }
+
+        public event EventHandler<IRomFile> RomLoaded;
+
+        protected void OnRomLoaded(IRomFile romFile)
+        {
+            RomLoaded?.Invoke(this, romFile);
         }
     }
 }

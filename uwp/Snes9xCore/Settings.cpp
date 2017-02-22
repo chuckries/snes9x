@@ -24,7 +24,7 @@ namespace Snes9xCore
         Settings.InitialInfoStringTimeout = 120;
         Settings.HDMATimingHack = 100;
         Settings.BlockInvalidVRAMAccessMaster = true;
-        Settings.DisplayFrameRate = true;
+        Settings.DisplayFrameRate = false;
     }
 
     bool CoreSettings::DisplayFrameRate::get()

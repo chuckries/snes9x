@@ -33,7 +33,7 @@ namespace Snes9x
         public EmulatorControl()
         {
             this.InitializeComponent();
-            _renderer = new Renderer(_emulator);
+            _renderer = new Renderer();
         }
 
         #region Canvas Events
@@ -50,7 +50,7 @@ namespace Snes9x
 
         private async Task canvas_CreateResourcesAsync(CanvasAnimatedControl sender, CanvasCreateResourcesEventArgs args)
         {
-            await (_renderer.CreateResources(sender, args.Reason));
+            //await (_renderer.CreateResources(sender, args.Reason));
             canvas.Paused = true;
         }
 

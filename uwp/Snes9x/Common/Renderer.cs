@@ -14,8 +14,6 @@ namespace Snes9x.Common
 {
     class Renderer
     {
-        Emulator _emulator;
-
         CanvasBitmap _emulatorTexture;
 
         // Effects
@@ -23,12 +21,11 @@ namespace Snes9x.Common
         DpiCompensationEffect _dpiEffect; // no op dpi effect, emulator texture is always in pixels, stop the automatically inserted dpi effect because it does linear interopolation
         Transform2DEffect _scaleEffect; // scales the output to the final size
 
-        public Renderer(Emulator emulator)
+        public Renderer()
         {
-            _emulator = emulator;
         }
 
-        public async Task CreateResources(ICanvasResourceCreatorWithDpi resourceCreator, CanvasCreateResourcesReason reason)
+        public void CreateResources(ICanvasResourceCreatorWithDpi resourceCreator, CanvasCreateResourcesReason reason)
         {
             int width = 512;
             int height = 438;
@@ -54,14 +51,16 @@ namespace Snes9x.Common
 
         public void Draw(CanvasDrawingSession ds, Size targetSize)
         {
-            Surface surface = _emulator.Surface;
-            _emulatorTexture.SetPixelBytes(surface.Bytes, 0, 0, surface.Width, surface.Height);
+            Surface surface = Emulator.Instance.Surface;
+            if (surface != null)
+            {
+                _emulatorTexture.SetPixelBytes(surface.Bytes, 0, 0, surface.Width, surface.Height);
+                Size size = new Size(ds.ConvertPixelsToDips(surface.Width), ds.ConvertPixelsToDips(surface.Height));
+                _cropEffect.SourceRectangle = new Rect(new Point(0, 0), size);
+                _scaleEffect.TransformMatrix = GetDisplayTransform(size.ToVector2(), targetSize.ToVector2());
 
-            Size size = new Size(ds.ConvertPixelsToDips(surface.Width), ds.ConvertPixelsToDips(surface.Height));
-            _cropEffect.SourceRectangle = new Rect(new Point(0, 0), size);
-            _scaleEffect.TransformMatrix = GetDisplayTransform(size.ToVector2(), targetSize.ToVector2());
-
-            ds.DrawImage(_scaleEffect);
+                ds.DrawImage(_scaleEffect);
+            }
         }
 
         private Matrix3x2 GetDisplayTransform(Vector2 sourceSize, Vector2 destSize)

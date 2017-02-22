@@ -8,34 +8,72 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <StackPanel>
-            <Button Click="LoadRomButton_Click" Content="Load ROM"/>
-            <Button Click="SaveStateButton_Click" Content="Save State"/>
-            <Button Click="LoadStateButton_Click" Content="Load State" />
-            <Button Click="ScreenshotButton_Click" Content="Screenshot" />
-        </StackPanel>
-        <ListView ItemsSource="{x:Bind RecentFiles}"
-                  IsItemClickEnabled="True"
-                  SelectionMode="None"
-                  ItemClick="ListView_ItemClick"
-                  Grid.Row="1">
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="local:Common.IRomFile">
-                    <StackPanel>
-                        <TextBlock Text="{x:Bind Name}" FontWeight="Bold"/>
-                        <TextBlock Text="{x:Bind Path}" />
-                    </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-        <local:EmulatorControl x:Name="emulator" Grid.Column="1" Grid.RowSpan="2"/>
+        <!--<VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="MenuStates">
+                <VisualState x:Name="MenuActiveState"/>
+                <VisualState x:Name="MenuNotActiveState">
+                    <Storyboard>
+                        <FadeOutThemeAnimation TargetName="NavMenuButton"/>
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>-->
+
+        <!--<Button x:Name="NavMenuButton"
+                Canvas.ZIndex="100"
+                Background="#7000"
+                Foreground="White"
+                Width="48"
+                Height="48"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                Content="&#xE700;"
+                Click="NavMenuButton_Click">
+        </Button>-->
+
+        <SplitView x:Name="RootSplitView"
+                   x:FieldModifier="public"
+                   DisplayMode="Overlay"
+                   IsPaneOpen="True">
+
+            <SplitView.Pane>
+                <StackPanel>
+                    <ListViewItem Tapped="ListViewItem_Tapped">
+                        <StackPanel Orientation="Horizontal">
+                            <SymbolIcon Symbol="OpenFile"/>
+                            <TextBlock Text="Load ROM" Margin="8,0,0,0"/>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListView ItemsSource="{x:Bind RecentFiles}"
+                              IsItemClickEnabled="True"
+                              SelectionMode="None"
+                              ItemClick="ListView_ItemClick"
+                              Grid.Row="1"
+                              RightTapped="ListView_RightTapped">
+                        <ListView.Resources>
+                            <MenuFlyout x:Name="RecentFilesFlyoutMenu">
+                                <MenuFlyout.Items>
+                                    <MenuFlyoutItem Text="Remove"/>
+                                </MenuFlyout.Items>
+                            </MenuFlyout>
+                        </ListView.Resources>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding Path}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
+            </SplitView.Pane>
+
+            <SplitView.Content>
+                <!--<local:EmulatorControl x:Name="emulator"/>-->
+                <Frame x:Name="RootFrame"/>
+            </SplitView.Content>
+        </SplitView>
     </Grid>
 </Page>
