@@ -29,7 +29,7 @@ namespace Snes9x.Data
 
         }
 
-        public async Task<List<IRomFile>> GetRecentRoms()
+        public async Task<List<IRomFile>> GetRecentRomsAsync()
         {
             var mruList = StorageApplicationPermissions.MostRecentlyUsedList;
 
@@ -47,10 +47,26 @@ namespace Snes9x.Data
             return recentRoms;
         }
 
+        public async Task<IEnumerable<IGrouping<string, IRomFile>>> GetGroupedRomsAsync()
+        {
+            var recentRoms = await GetRecentRomsAsync();
+            return new[] { new ListGrouping<string, IRomFile>("Recent ROMs", recentRoms) };
+        }
+
         public void AddRecentRom(StorageFile file)
         {
             var mruList = StorageApplicationPermissions.MostRecentlyUsedList;
             mruList.Add(file, "romfile");
+        }
+
+        public class ListGrouping<TKey, TElement> : List<TElement>, IGrouping<TKey, TElement>
+        {
+            public ListGrouping(TKey key, IEnumerable<TElement> elements) : base(elements)
+            {
+                Key = key;
+            }
+            
+            public TKey Key { get; protected set; }
         }
     }
 }

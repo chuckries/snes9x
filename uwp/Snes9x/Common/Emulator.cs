@@ -67,7 +67,7 @@ namespace Snes9x.Common
             return _coreEmulator.LoadState(GetSavePath(".sav"));
         }
 
-        private bool SaveSRAM()
+        public bool SaveSRAM()
         {
             return _coreEmulator.SaveSRAM(GetSavePath(".srm"));
         }

@@ -115,6 +115,9 @@
     <Compile Include="Views\EmulatorPage.xaml.cs">
       <DependentUpon>EmulatorPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\RomExplorerPage.xaml.cs">
+      <DependentUpon>RomExplorerPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -146,6 +149,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\EmulatorPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RomExplorerPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -20,9 +20,6 @@ using System.Linq;
 
 namespace Snes9x
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class MainPage : Page
     {
         internal ObservableCollection<IRomFile> RecentFiles { get; private set; }
@@ -37,17 +34,27 @@ namespace Snes9x
             RecentFiles = new ObservableCollection<IRomFile>();
 
             Loaded += MainPage_Loaded;
+
+            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+            SystemNavigationManager.GetForCurrentView().BackRequested += (s, e) =>
+            {
+                if (RootFrame.CanGoBack)
+                {
+                    RootFrame.GoBack();
+                    e.Handled = true;
+                }
+            };
         }
 
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-            RootFrame.Navigate(typeof(EmulatorPage));
+            RootFrame.Navigate(typeof(RomExplorerPage));
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            var recentFiles = await RomProvider.Instance.GetRecentRoms();
+            var recentFiles = await RomProvider.Instance.GetRecentRomsAsync();
             foreach (var file in recentFiles)
             {
                 RecentFiles.Add(file);
@@ -79,47 +86,6 @@ namespace Snes9x
         {
 
         }
-
-        //private async void LoadStateButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //}
-
-        //private async void ScreenshotButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    await emulator.Screenshot();
-        //}
-
-        //private void NavMenuButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    RootSplitView.IsPaneOpen = !RootSplitView.IsPaneOpen;
-        //}
-
-        //private void OnActivity()
-        //{
-        //    _uiIsActive = true;
-        //    UpdateVisualState(true);
-        //    _idleTimer.Start();
-        //}
-
-        //private void UpdateVisualState(bool useTransitions)
-        //{
-        //    if (_uiIsActive)
-        //    {
-        //        VisualStateManager.GoToState(this, "MenuActiveState", useTransitions);
-        //        SetPointerVisibility(true);
-        //    }
-        //    else
-        //    {
-        //        VisualStateManager.GoToState(this, "MenuNotActiveState", useTransitions);
-        //        SetPointerVisibility(false);
-        //    }
-        //}
-
-        //private void SetPointerVisibility(bool isPointerVisible)
-        //{
-        //    CoreCursor cursor = isPointerVisible ? new CoreCursor(CoreCursorType.Arrow, 0) : null;
-        //    Window.Current.CoreWindow.PointerCursor = cursor;
-        //}
 
         private async void ListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
         {

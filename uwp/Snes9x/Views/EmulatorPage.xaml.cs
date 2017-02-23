@@ -1,6 +1,7 @@
 ﻿using Microsoft.Graphics.Canvas.UI;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Snes9x.Common;
+using Snes9x.Data;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -43,14 +44,14 @@ namespace Snes9x
         private Renderer _renderer = new Renderer();
         private DispatcherTimer _idleTimer = new DispatcherTimer();
 
-        private bool _menuIsActive;
+        private bool _isMenuActive;
 
-        public bool MenuIsActive
+        public bool IsMenuActive
         {
-            get { return _menuIsActive; }
+            get { return _isMenuActive; }
             set
             {
-                _menuIsActive = value;
+                _isMenuActive = value;
                 UpdateVisualState(true);
             }
         }
@@ -58,7 +59,7 @@ namespace Snes9x
         public EmulatorPage()
         {
             InitializeComponent();
-            MenuIsActive = true;
+            IsMenuActive = true;
             EmulatorIsPaused = true;
             Emulator.Instance.RomLoaded += Emulator_RomLoaded;
             _idleTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1.5) };
@@ -72,9 +73,9 @@ namespace Snes9x
             };
             Tapped += (s, e) =>
             {
-                if (MenuIsActive)
+                if (IsMenuActive)
                 {
-                    MenuIsActive = false;
+                    IsMenuActive = false;
                 }
                 else
                 {
@@ -97,17 +98,44 @@ namespace Snes9x
                     Emulator.Instance.LoadState();
                 });
             };
+
+            Unloaded += (s, e) =>
+            {
+                Canvas.RemoveFromVisualTree();
+                Canvas = null;
+            };
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             OnActivity();
+
+            Canvas.Paused = false;
+            IRomFile romFile = e.Parameter as IRomFile;
+            if (romFile != null)
+            {
+                bool success = await Emulator.Instance.LoadRomAsync(romFile);
+            }
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+
+            _idleTimer.Stop();
+            IsMenuActive = false;
+            SetPointerVisibility(true);
+            var task = Canvas.RunOnGameLoopThreadAsync(() =>
+            {
+                Emulator.Instance.SaveSRAM();
+            });
         }
 
         private void Emulator_RomLoaded(object sender, IRomFile e)
         {
             EmulatorIsPaused = false;
+            
         }
 
         private void Canvas_CreateResources(CanvasAnimatedControl sender, CanvasCreateResourcesEventArgs args)
@@ -127,19 +155,19 @@ namespace Snes9x
 
         private void OnActivity()
         {
-            MenuIsActive = true;
+            IsMenuActive = true;
             _idleTimer.Start();
         }
 
         private void _idleTimer_Tick(object sender, object e)
         {
             _idleTimer.Stop();
-            MenuIsActive = false;
+            IsMenuActive = false;
         }
 
         private void UpdateVisualState(bool useTransitions)
         {
-            if (MenuIsActive)
+            if (IsMenuActive)
             {
                 VisualStateManager.GoToState(this, "Active", useTransitions);
                 SetPointerVisibility(true);

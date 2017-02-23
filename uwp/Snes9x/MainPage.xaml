@@ -48,7 +48,17 @@
 
             <SplitView.Content>
                 <!--<local:EmulatorControl x:Name="emulator"/>-->
-                <Frame x:Name="RootFrame"/>
+                <Frame x:Name="RootFrame">
+                    <Frame.ContentTransitions>
+                        <TransitionCollection>
+                            <NavigationThemeTransition>
+                                <NavigationThemeTransition.DefaultNavigationTransitionInfo>
+                                    <EntranceNavigationTransitionInfo/>
+                                </NavigationThemeTransition.DefaultNavigationTransitionInfo>
+                            </NavigationThemeTransition>
+                        </TransitionCollection>
+                    </Frame.ContentTransitions>
+                </Frame>
             </SplitView.Content>
         </SplitView>
     </Grid>
