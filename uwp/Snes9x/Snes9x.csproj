@@ -104,7 +104,7 @@
     <Compile Include="Common\ValueToNullableConverter.cs" />
     <Compile Include="Common\Renderer.cs" />
     <Compile Include="Common\StorageFileRom.cs" />
-    <Compile Include="Common\ToggleButtonTemplateSelector.cs" />
+    <Compile Include="Data\RomProvider.cs" />
     <Compile Include="EmulatorControl.xaml.cs">
       <DependentUpon>EmulatorControl.xaml</DependentUpon>
     </Compile>

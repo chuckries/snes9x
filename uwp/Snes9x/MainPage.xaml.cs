@@ -1,4 +1,5 @@
 ﻿using Snes9x.Common;
+using Snes9x.Data;
 using Snes9xCore;
 using System;
 using System.Collections.ObjectModel;
@@ -13,6 +14,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
+using System.Linq;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -23,8 +25,6 @@ namespace Snes9x
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private Windows.Storage.AccessCache.StorageItemMostRecentlyUsedList _mruList = Windows.Storage.AccessCache.StorageApplicationPermissions.MostRecentlyUsedList;
-
         internal ObservableCollection<IRomFile> RecentFiles { get; private set; }
 
         public static MainPage Current;
@@ -47,12 +47,10 @@ namespace Snes9x
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            foreach (var entry in _mruList.Entries)
+            var recentFiles = await RomProvider.Instance.GetRecentRoms();
+            foreach (var file in recentFiles)
             {
-                if (entry.Metadata == "romfile")
-                {
-                    RecentFiles.Insert(0, new StorageFileRom(await _mruList.GetFileAsync(entry.Token)));
-                }
+                RecentFiles.Add(file);
             }
         }
 
@@ -137,7 +135,7 @@ namespace Snes9x
             {
                 if (await LoadRom(new StorageFileRom(file)))
                 {
-                    _mruList.Add(file, "romfile");
+                    RomProvider.Instance.AddRecentRom(file);
                 }
             }
         }

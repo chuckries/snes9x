@@ -8,30 +8,6 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <!--<VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="MenuStates">
-                <VisualState x:Name="MenuActiveState"/>
-                <VisualState x:Name="MenuNotActiveState">
-                    <Storyboard>
-                        <FadeOutThemeAnimation TargetName="NavMenuButton"/>
-                    </Storyboard>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>-->
-
-        <!--<Button x:Name="NavMenuButton"
-                Canvas.ZIndex="100"
-                Background="#7000"
-                Foreground="White"
-                Width="48"
-                Height="48"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                Content="&#xE700;"
-                Click="NavMenuButton_Click">
-        </Button>-->
-
         <SplitView x:Name="RootSplitView"
                    x:FieldModifier="public"
                    DisplayMode="Overlay"
