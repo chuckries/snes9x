@@ -20,10 +20,9 @@
                        VerticalAlignment="Stretch"/>
                 <Grid Height="Auto"
                       VerticalAlignment="Bottom">
-                    <Rectangle Fill="{ThemeResource SystemAccentColorLight3}"
-                               Opacity="0.7"/>
+                    <Rectangle Fill="{ThemeResource SystemAccentColorDark3}"/>
                     <TextBlock Text="{x:Bind Name}"
-                               Foreground="{ThemeResource SystemAccentColorDark3}"/>
+                               Foreground="{ThemeResource SystemAccentColorLight3}"/>
                 </Grid>
             </Grid>
         </DataTemplate>

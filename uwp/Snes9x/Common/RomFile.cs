@@ -11,7 +11,13 @@ namespace Snes9x.Common
         public string Name { get; protected set; }
         public string FileName { get; protected set; }
         public string Path { get; protected set; }
-        public string ScreenshotPath { get; protected set; } = "ms-appdata:///roaming/screenshots/zelda.bmp";
+        public string ScreenshotPath
+        {
+            get
+            {
+                return $"ms-appdata:///roaming/Screenshots/{Name}.bmp";
+            }
+        }
 
         public abstract Task<byte[]> GetBytesAsync();
     }

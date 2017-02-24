@@ -149,9 +149,9 @@ namespace Snes9x
             base.OnNavigatedTo(e);
             OnActivity();
 
-            Canvas.Paused = true;
+            EmulatorIsPaused = Emulator.Instance.Rom == null;
             RomFile romFile = e.Parameter as RomFile;
-            if (romFile != null)
+            if (romFile != null && Emulator.Instance.Rom?.Name.CompareTo(romFile.Name) != 0)
             {
                 bool success = await Emulator.Instance.LoadRomAsync(romFile);
             }
@@ -167,6 +167,7 @@ namespace Snes9x
             var task = Canvas.RunOnGameLoopThreadAsync(() =>
             {
                 Emulator.Instance.SaveSRAM();
+                var screenshotTask = _renderer.SaveScreenshotAsync(Emulator.Instance.GetScreenshotPath());
             });
         }
 
