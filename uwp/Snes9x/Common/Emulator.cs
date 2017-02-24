@@ -14,11 +14,10 @@ namespace Snes9x.Common
     {
         private static readonly CoreEmulator _coreEmulator = CoreEmulator.Instance;
         public static readonly Emulator Instance = new Emulator();
-        public readonly EmulatorDirectories Directories = new EmulatorDirectories();
 
         private List<IJoypad> _joypads = new List<IJoypad>();
 
-        public IRomFile Rom { get; private set; }
+        public RomFile Rom { get; private set; }
         public Surface Surface { get; private set; }
 
         private Emulator()
@@ -26,14 +25,13 @@ namespace Snes9x.Common
 
         }
 
-        public async Task Init()
+        public void Init()
         {
             _coreEmulator.Init();
             _joypads.Add(new KeyboardJoypad(1));
-            await Directories.Init();
         }
 
-        public async Task<bool> LoadRomAsync(IRomFile file)
+        public async Task<bool> LoadRomAsync(RomFile file)
         {
             if (Rom != null)
             {
@@ -79,12 +77,17 @@ namespace Snes9x.Common
 
         private string GetSavePath(string extension)
         {
-            return Path.Combine(Directories.SavesFolder.Path, Rom.Name + extension);
+            return Path.Combine(Directories.SavesPath, Rom.Name + extension);
+        }
+        
+        public string GetScreenshotPath()
+        {
+            return Path.Combine(Directories.ScreenshotsPath, Rom.Name + ".bmp");
         }
 
-        public event EventHandler<IRomFile> RomLoaded;
+        public event EventHandler<RomFile> RomLoaded;
 
-        protected void OnRomLoaded(IRomFile romFile)
+        protected void OnRomLoaded(RomFile romFile)
         {
             RomLoaded?.Invoke(this, romFile);
         }

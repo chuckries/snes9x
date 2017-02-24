@@ -29,11 +29,11 @@ namespace Snes9x.Data
 
         }
 
-        public async Task<List<IRomFile>> GetRecentRomsAsync()
+        public async Task<List<RomFile>> GetRecentRomsAsync()
         {
             var mruList = StorageApplicationPermissions.MostRecentlyUsedList;
 
-            List<IRomFile> recentRoms = new List<IRomFile>(mruList.Entries.Count);
+            List<RomFile> recentRoms = new List<RomFile>(mruList.Entries.Count);
 
             foreach (var entry in mruList.Entries)
             {
@@ -47,10 +47,10 @@ namespace Snes9x.Data
             return recentRoms;
         }
 
-        public async Task<IEnumerable<IGrouping<string, IRomFile>>> GetGroupedRomsAsync()
+        public async Task<IEnumerable<IGrouping<string, RomFile>>> GetGroupedRomsAsync()
         {
             var recentRoms = await GetRecentRomsAsync();
-            return new[] { new ListGrouping<string, IRomFile>("Recent ROMs", recentRoms) };
+            return new[] { new ListGrouping<string, RomFile>("Recent ROMs", recentRoms) };
         }
 
         public void AddRecentRom(StorageFile file)

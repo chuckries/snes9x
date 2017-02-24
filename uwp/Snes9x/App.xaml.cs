@@ -39,9 +39,9 @@ namespace Snes9x
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override async void OnLaunched(LaunchActivatedEventArgs e)
+        protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-            await Emulator.Instance.Init();
+            Emulator.Instance.Init();
 
             Frame rootFrame = Window.Current.Content as Frame;
 

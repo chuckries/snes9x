@@ -22,7 +22,7 @@ namespace Snes9x
 {
     public sealed partial class MainPage : Page
     {
-        internal ObservableCollection<IRomFile> RecentFiles { get; private set; }
+        internal ObservableCollection<RomFile> RecentFiles { get; private set; }
 
         public static MainPage Current;
 
@@ -31,7 +31,7 @@ namespace Snes9x
             Current = this;
 
             this.InitializeComponent();
-            RecentFiles = new ObservableCollection<IRomFile>();
+            RecentFiles = new ObservableCollection<RomFile>();
 
             Loaded += MainPage_Loaded;
 
@@ -61,7 +61,7 @@ namespace Snes9x
             }
         }
 
-        private async Task<bool> LoadRom(IRomFile rom)
+        private async Task<bool> LoadRom(RomFile rom)
         {
             //Frame.Navigate(typeof(EmulatorPage), rom);
             //return await emulator.LoadRomAsync(rom);
@@ -75,7 +75,7 @@ namespace Snes9x
 
         private async void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            IRomFile rom = e.ClickedItem as IRomFile;
+            RomFile rom = e.ClickedItem as RomFile;
             if (rom != null)
             {
                 await LoadRom(rom);

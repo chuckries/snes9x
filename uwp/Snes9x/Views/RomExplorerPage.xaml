@@ -12,14 +12,18 @@
         <CollectionViewSource x:Name="RecentRomsCollectionViewSource"
                               IsSourceGrouped="True"/>
 
-        <DataTemplate x:Key="RomFileDataTemplate" x:DataType="common:IRomFile">
+        <DataTemplate x:Key="RomFileDataTemplate" x:DataType="common:RomFile">
             <Grid Width="200" Height="175"
                   Background="{ThemeResource SystemAccentColorLight1}">
+                <Image Source="{x:Bind ScreenshotPath}"
+                       HorizontalAlignment="Stretch"
+                       VerticalAlignment="Stretch"/>
                 <Grid Height="Auto"
-                      Background="{ThemeResource SystemAccentColor}"
                       VerticalAlignment="Bottom">
-
-                    <TextBlock Text="{x:Bind Name}"/>
+                    <Rectangle Fill="{ThemeResource SystemAccentColorLight3}"
+                               Opacity="0.7"/>
+                    <TextBlock Text="{x:Bind Name}"
+                               Foreground="{ThemeResource SystemAccentColorDark3}"/>
                 </Grid>
             </Grid>
         </DataTemplate>
@@ -32,10 +36,11 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <StackPanel>
             <GridView Padding="20"
-                  ItemTemplate="{StaticResource RomFileDataTemplate}"
-                  ItemsSource="{Binding Source={StaticResource RecentRomsCollectionViewSource}}"
-                  IsItemClickEnabled="True"
-                  ItemClick="GridView_ItemClick">
+                      ItemTemplate="{StaticResource RomFileDataTemplate}"
+                      ItemsSource="{Binding Source={StaticResource RecentRomsCollectionViewSource}}"
+                      IsItemClickEnabled="True"
+                      SelectionMode="None"
+                      ItemClick="GridView_ItemClick">
                 <GridView.GroupStyle>
                     <GroupStyle>
                         <GroupStyle.HeaderTemplate>

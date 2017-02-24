@@ -11,20 +11,20 @@ using System.IO;
 
 namespace Snes9x.Common
 {
-    class StorageFileRom : IRomFile
+    class StorageFileRom : RomFile
     {
         private StorageFile _file;
 
         public StorageFileRom(StorageFile file)
         {
             _file = file;
+
+            Name = _file.DisplayName;
+            FileName = _file.Name;
+            Path = _file.Path;
         }
 
-        public string Name { get { return _file.DisplayName; } }
-        public string FileName { get { return _file.Name; } }
-        public string Path { get { return _file.Path; } }
-
-        public async Task<byte[]> GetBytesAsync()
+        public override async Task<byte[]> GetBytesAsync()
         {
             if (_file.FileType == ".zip")
             {

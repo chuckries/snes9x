@@ -139,6 +139,9 @@
                 <Button x:Name="LoadButton">
                     <SymbolIcon Symbol="Upload"/>
                 </Button>
+                <Button x:Name="ScreenshotButton">
+                    <SymbolIcon Symbol="Pictures"/>
+                </Button>
             </StackPanel>
         </Grid>
     </Grid>

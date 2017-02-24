@@ -116,6 +116,14 @@ namespace Snes9x
                 Window.Current.CoreWindow.KeyDown += CoreWindow_KeyDown;
                 Window.Current.CoreWindow.KeyUp += CoreWindow_KeyUp;
             };
+
+            ScreenshotButton.Click += (s, e) =>
+            {
+                var task = Canvas.RunOnGameLoopThreadAsync(() =>
+                {
+                    var screenshotTask = _renderer.SaveScreenshotAsync(Emulator.Instance.GetScreenshotPath());
+                });
+            };
         }
 
         private void CoreWindow_KeyUp(CoreWindow sender, KeyEventArgs args)
@@ -142,7 +150,7 @@ namespace Snes9x
             OnActivity();
 
             Canvas.Paused = true;
-            IRomFile romFile = e.Parameter as IRomFile;
+            RomFile romFile = e.Parameter as RomFile;
             if (romFile != null)
             {
                 bool success = await Emulator.Instance.LoadRomAsync(romFile);
@@ -162,7 +170,7 @@ namespace Snes9x
             });
         }
 
-        private void Emulator_RomLoaded(object sender, IRomFile e)
+        private void Emulator_RomLoaded(object sender, RomFile e)
         {
             EmulatorIsPaused = false;
             

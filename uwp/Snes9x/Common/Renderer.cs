@@ -9,11 +9,14 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Foundation;
+using Windows.Storage;
+using Windows.Storage.Streams;
 
 namespace Snes9x.Common
 {
     class Renderer
     {
+        Surface _surface = null;
         CanvasBitmap _emulatorTexture;
 
         // Effects
@@ -29,7 +32,7 @@ namespace Snes9x.Common
         {
             int width = 512;
             int height = 438;
-            _emulatorTexture = CanvasBitmap.CreateFromBytes(resourceCreator, new byte[width * height * 4], width, height, Windows.Graphics.DirectX.DirectXPixelFormat.B8G8R8X8UIntNormalized, 96, CanvasAlphaMode.Ignore);
+            _emulatorTexture = CanvasBitmap.CreateFromBytes(resourceCreator, new byte[width * height * 4], width, height, Windows.Graphics.DirectX.DirectXPixelFormat.B8G8R8A8UIntNormalized, 96, CanvasAlphaMode.Ignore);
 
             _dpiEffect = new DpiCompensationEffect()
             {
@@ -51,11 +54,11 @@ namespace Snes9x.Common
 
         public void Draw(CanvasDrawingSession ds, Size targetSize)
         {
-            Surface surface = Emulator.Instance.Surface;
-            if (surface != null)
+            _surface = Emulator.Instance.Surface;
+            if (_surface != null)
             {
-                _emulatorTexture.SetPixelBytes(surface.Bytes, 0, 0, surface.Width, surface.Height);
-                Size size = new Size(ds.ConvertPixelsToDips(surface.Width), ds.ConvertPixelsToDips(surface.Height));
+                _emulatorTexture.SetPixelBytes(_surface.Bytes, 0, 0, _surface.Width, _surface.Height);
+                Size size = new Size(ds.ConvertPixelsToDips(_surface.Width), ds.ConvertPixelsToDips(_surface.Height));
                 _cropEffect.SourceRectangle = new Rect(new Point(0, 0), size);
                 _scaleEffect.TransformMatrix = GetDisplayTransform(size.ToVector2(), targetSize.ToVector2());
 
@@ -80,6 +83,32 @@ namespace Snes9x.Common
             }
 
             return Matrix3x2.CreateScale(scale) * Matrix3x2.CreateTranslation(offset);
+        }
+
+        public async Task SaveScreenshotAsync(string fileName)
+        {
+            using (CanvasRenderTarget renderTarget = new CanvasRenderTarget(
+                _emulatorTexture,
+                800,
+                700,
+                _emulatorTexture.Dpi,
+                _emulatorTexture.Format,
+                _emulatorTexture.AlphaMode
+                ))
+            {
+                using (var ds = renderTarget.CreateDrawingSession())
+                {
+                    ds.DrawImage(
+                        _emulatorTexture,
+                        new Rect(new Point(0, 0), renderTarget.Size),
+                        new Rect(new Point(0, 0), new Size((float)_surface.Width, (float)_surface.Height)),
+                        1,
+                        CanvasImageInterpolation.NearestNeighbor
+                        );
+                }
+
+                await renderTarget.SaveAsync(fileName, CanvasBitmapFileFormat.Bmp, 1.0f);
+            }
         }
     }
 }

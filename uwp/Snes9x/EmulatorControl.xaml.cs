@@ -122,7 +122,7 @@ namespace Snes9x
             }
         }
 
-        public async Task<bool> LoadRomAsync(IRomFile romFile)
+        public async Task<bool> LoadRomAsync(RomFile romFile)
         {
             bool success = false;
 
@@ -142,7 +142,8 @@ namespace Snes9x
         public async Task Screenshot()
         {
             string fileName = $"{Emulator.Instance.Rom.Name}-{DateTime.Now.ToString("yyyy-MM-ddHHmmss")}.png";
-            StorageFile file = await _emulator.Directories.ScreenshotsFolder.CreateFileAsync(fileName, Windows.Storage.CreationCollisionOption.ReplaceExisting);
+            StorageFolder screenshotsFolder = await Directories.GetScreenshotsFolderAync();
+            StorageFile file = await screenshotsFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
             await ScreenshotInternal(file);
         }
 
