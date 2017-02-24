@@ -12,6 +12,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -30,6 +31,9 @@ namespace Snes9x
     /// </summary>
     public sealed partial class EmulatorPage : Page, INotifyPropertyChanged
     {
+        bool _isFastForward = false;
+        int _fastForwardFrames = 5;
+
         public bool _emulatorIsPaused;
         public bool EmulatorIsPaused
         {
@@ -103,7 +107,33 @@ namespace Snes9x
             {
                 Canvas.RemoveFromVisualTree();
                 Canvas = null;
+                Window.Current.CoreWindow.KeyDown -= CoreWindow_KeyDown;
+                Window.Current.CoreWindow.KeyUp -= CoreWindow_KeyUp;
             };
+
+            Loaded += (s, e) =>
+            {
+                Window.Current.CoreWindow.KeyDown += CoreWindow_KeyDown;
+                Window.Current.CoreWindow.KeyUp += CoreWindow_KeyUp;
+            };
+        }
+
+        private void CoreWindow_KeyUp(CoreWindow sender, KeyEventArgs args)
+        {
+            if (args.VirtualKey == VirtualKey.T)
+            {
+                _isFastForward = false;
+                args.Handled = true;
+            }
+        }
+
+        private void CoreWindow_KeyDown(CoreWindow sender, KeyEventArgs args)
+        {
+            if (args.VirtualKey == VirtualKey.T)
+            {
+                _isFastForward = true;
+                args.Handled = true;
+            }
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -111,7 +141,7 @@ namespace Snes9x
             base.OnNavigatedTo(e);
             OnActivity();
 
-            Canvas.Paused = false;
+            Canvas.Paused = true;
             IRomFile romFile = e.Parameter as IRomFile;
             if (romFile != null)
             {
@@ -145,7 +175,12 @@ namespace Snes9x
 
         private void Canvas_Update(ICanvasAnimatedControl sender, CanvasAnimatedUpdateEventArgs args)
         {
-            Emulator.Instance.Update();
+            int i = 0;
+            do
+            {
+                Emulator.Instance.Update();
+                i++;
+            } while (_isFastForward && i < _fastForwardFrames);
         }
 
         private void Canvas_Draw(ICanvasAnimatedControl sender, CanvasAnimatedDrawEventArgs args)
