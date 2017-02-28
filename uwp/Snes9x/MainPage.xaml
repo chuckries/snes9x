@@ -10,41 +10,7 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <SplitView x:Name="RootSplitView"
                    x:FieldModifier="public"
-                   DisplayMode="Overlay"
-                   IsPaneOpen="True">
-
-            <SplitView.Pane>
-                <StackPanel>
-                    <ListViewItem Tapped="ListViewItem_Tapped">
-                        <StackPanel Orientation="Horizontal">
-                            <SymbolIcon Symbol="OpenFile"/>
-                            <TextBlock Text="Load ROM" Margin="8,0,0,0"/>
-                        </StackPanel>
-                    </ListViewItem>
-                    <ListView ItemsSource="{x:Bind RecentFiles}"
-                              IsItemClickEnabled="True"
-                              SelectionMode="None"
-                              ItemClick="ListView_ItemClick"
-                              Grid.Row="1"
-                              RightTapped="ListView_RightTapped">
-                        <ListView.Resources>
-                            <MenuFlyout x:Name="RecentFilesFlyoutMenu">
-                                <MenuFlyout.Items>
-                                    <MenuFlyoutItem Text="Remove"/>
-                                </MenuFlyout.Items>
-                            </MenuFlyout>
-                        </ListView.Resources>
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel>
-                                    <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
-                                    <TextBlock Text="{Binding Path}" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </StackPanel>
-            </SplitView.Pane>
+                   DisplayMode="Overlay">
 
             <SplitView.Content>
                 <!--<local:EmulatorControl x:Name="emulator"/>-->

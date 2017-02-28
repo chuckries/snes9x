@@ -22,8 +22,6 @@ namespace Snes9x
 {
     public sealed partial class MainPage : Page
     {
-        internal ObservableCollection<RomFile> RecentFiles { get; private set; }
-
         public static MainPage Current;
 
         public MainPage()
@@ -31,7 +29,6 @@ namespace Snes9x
             Current = this;
 
             this.InitializeComponent();
-            RecentFiles = new ObservableCollection<RomFile>();
 
             Loaded += MainPage_Loaded;
 
@@ -49,67 +46,6 @@ namespace Snes9x
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
             RootFrame.Navigate(typeof(RomExplorerPage));
-        }
-
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
-            var recentFiles = await RomProvider.Instance.GetRecentRomsAsync();
-            foreach (var file in recentFiles)
-            {
-                RecentFiles.Add(file);
-            }
-        }
-
-        private async Task<bool> LoadRom(RomFile rom)
-        {
-            //Frame.Navigate(typeof(EmulatorPage), rom);
-            //return await emulator.LoadRomAsync(rom);
-            bool success =  await Emulator.Instance.LoadRomAsync(rom);
-            if (success)
-            {
-                RootSplitView.IsPaneOpen = false;
-            }
-            return success;
-        }
-
-        private async void ListView_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            RomFile rom = e.ClickedItem as RomFile;
-            if (rom != null)
-            {
-                await LoadRom(rom);
-            }
-        }
-
-        private void SaveStateButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private async void ListViewItem_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            var picker = new FileOpenPicker();
-            picker.FileTypeFilter.Add(".sfc");
-            picker.FileTypeFilter.Add(".smc");
-            picker.FileTypeFilter.Add(".zip");
-            picker.SuggestedStartLocation = PickerLocationId.Downloads;
-            picker.ViewMode = PickerViewMode.List;
-
-            StorageFile file = await picker.PickSingleFileAsync();
-            if (file != null)
-            {
-                if (await LoadRom(new StorageFileRom(file)))
-                {
-                    RomProvider.Instance.AddRecentRom(file);
-                }
-            }
-        }
-
-        private void ListView_RightTapped(object sender, RightTappedRoutedEventArgs e)
-        {
-            ListView listView = (ListView)sender;
-            RecentFilesFlyoutMenu.ShowAt(listView, e.GetPosition(listView));
         }
     }
 }
