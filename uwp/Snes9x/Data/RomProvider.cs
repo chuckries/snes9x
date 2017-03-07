@@ -1,4 +1,5 @@
-﻿using Snes9x.Common;
+﻿using Microsoft.OneDrive.Sdk;
+using Snes9x.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,6 +61,14 @@ namespace Snes9x.Data
                     roms.Insert(0, new StorageFileRom(file));
                 }
             }
+        }
+
+        public async Task GetOneDriveRomsAsync()
+        {
+            var msaAuthenticationProvider = new OnlineIdAuthenticationProvider(new[] { "onedrive.readonly", "onedrive.appfolder" });
+            await msaAuthenticationProvider.AuthenticateUserAsync();
+            var client = new OneDriveClient(msaAuthenticationProvider);
+            var items = await client.Drive.Special.AppRoot.Children.Request().GetAsync();
         }
 
         public async Task<IEnumerable<IGrouping<string, RomFile>>> GetGroupedRomsAsync()

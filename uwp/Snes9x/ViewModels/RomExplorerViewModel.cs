@@ -17,6 +17,7 @@ namespace Snes9x.ViewModels
         {
             Roms.Clear();
             await RomProvider.Instance.GetRecentRomsAsync(Roms);
+            await RomProvider.Instance.GetOneDriveRomsAsync();
         }
     }
 }
