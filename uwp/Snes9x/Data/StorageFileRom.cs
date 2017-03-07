@@ -9,7 +9,7 @@ using Windows.Storage.Streams;
 using System.IO.Compression;
 using System.IO;
 
-namespace Snes9x.Common
+namespace Snes9x.Data
 {
     class StorageFileRom : RomFile
     {

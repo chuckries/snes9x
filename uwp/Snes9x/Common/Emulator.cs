@@ -7,6 +7,7 @@ using Snes9xCore;
 using Windows.Storage;
 using System.IO;
 using Windows.Foundation;
+using Snes9x.Data;
 
 namespace Snes9x.Common
 {
@@ -28,7 +29,7 @@ namespace Snes9x.Common
         public void Init()
         {
             _coreEmulator.Init();
-            _joypads.Add(new KeyboardJoypad(1));
+            _joypads.Add(new KeyboardJoypad(1, KeyboardJoypadConfig.Gamepad));
         }
 
         public async Task<bool> LoadRomAsync(RomFile file)

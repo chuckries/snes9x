@@ -39,6 +39,22 @@ namespace Snes9x.Common
             Left = VirtualKey.Left,
             Right = VirtualKey.Right
         };
+
+        public static readonly KeyboardJoypadConfig Gamepad = new KeyboardJoypadConfig
+        {
+            A = VirtualKey.GamepadB,
+            B = VirtualKey.GamepadA,
+            X = VirtualKey.GamepadY,
+            Y = VirtualKey.GamepadX,
+            L = VirtualKey.GamepadLeftShoulder,
+            R = VirtualKey.GamepadRightShoulder,
+            Start = VirtualKey.GamepadMenu,
+            Select = VirtualKey.GamepadView,
+            Up = VirtualKey.GamepadDPadUp,
+            Down = VirtualKey.GamepadDPadDown,
+            Left = VirtualKey.GamepadDPadLeft,
+            Right = VirtualKey.GamepadDPadRight
+        };
     }
 
     class KeyboardJoypad : IJoypad

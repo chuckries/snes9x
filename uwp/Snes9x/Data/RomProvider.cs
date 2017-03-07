@@ -47,6 +47,21 @@ namespace Snes9x.Data
             return recentRoms;
         }
 
+        public async Task GetRecentRomsAsync(IList<RomFile> roms)
+        {
+            var mruList = StorageApplicationPermissions.MostRecentlyUsedList;
+
+            foreach (var entry in mruList.Entries)
+            {
+                if (entry.Metadata == "romfile")
+                {
+                    // insert at the beginning of the list
+                    StorageFile file = await mruList.GetFileAsync(entry.Token);
+                    roms.Insert(0, new StorageFileRom(file));
+                }
+            }
+        }
+
         public async Task<IEnumerable<IGrouping<string, RomFile>>> GetGroupedRomsAsync()
         {
             var recentRoms = await GetRecentRomsAsync();

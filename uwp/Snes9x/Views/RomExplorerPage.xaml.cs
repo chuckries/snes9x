@@ -1,5 +1,6 @@
 ﻿using Snes9x.Common;
 using Snes9x.Data;
+using Snes9x.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -28,15 +29,18 @@ namespace Snes9x
     /// </summary>
     public sealed partial class RomExplorerPage : Page
     {
+        public RomExplorerViewModel ViewModel { get; private set; }
+
         public RomExplorerPage()
         {
             this.InitializeComponent();
-            Loaded += RomExplorerPage_Loaded;
+            ViewModel = (RomExplorerViewModel)DataContext;
         }
 
-        private async void RomExplorerPage_Loaded(object sender, RoutedEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            RecentRomsCollectionViewSource.Source = await RomProvider.Instance.GetGroupedRomsAsync();
+            base.OnNavigatedTo(e);
+            await ViewModel.PopulateRoms();
         }
 
         private void GridView_ItemClick(object sender, ItemClickEventArgs e)

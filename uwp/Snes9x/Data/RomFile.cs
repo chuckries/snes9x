@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Snes9x.Common
+namespace Snes9x.Data
 {
     public abstract class RomFile
     {

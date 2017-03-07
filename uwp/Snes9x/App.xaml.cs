@@ -31,6 +31,7 @@ namespace Snes9x
         public App()
         {
             this.InitializeComponent();
+            App.Current.RequiresPointerMode = ApplicationRequiresPointerMode.WhenRequested;
             this.Suspending += OnSuspending;
         }
 

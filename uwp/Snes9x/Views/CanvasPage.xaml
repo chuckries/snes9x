@@ -116,20 +116,19 @@
                                      TargetElapsedTime="0:0:0.01668091"
                                      Paused="{x:Bind EmulatorIsPaused, Mode=OneWay}"/>
         <Grid x:Name="ControlPanel">
-            <Grid.Background>
-                <LinearGradientBrush StartPoint="0.5,0.5" EndPoint="0.5,1">
-                    <GradientStop Color="#0000" Offset="0"/>
-                    <GradientStop Color="#C000" Offset="1"/>
-                </LinearGradientBrush>
-            </Grid.Background>
-            <StackPanel Orientation="Horizontal"
+            <StackPanel Background="#C000"
+                        Orientation="Horizontal"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Bottom"
-                        Margin="0,0,0,40">
-                <Button x:Name="MenuButton">
-                    <FontIcon FontFamily="Segoe MDL2 Assets"
+                        Margin="0,0,0,40"
+                        CornerRadius="12">
+
+                <Border CornerRadius="12">
+                    <Button x:Name="MenuButton">
+                        <FontIcon FontFamily="Segoe MDL2 Assets"
                               Glyph="&#xE700;" />
-                </Button>
+                    </Button>
+                </Border>
                 <ToggleButton x:Name="PlayPauseButton"
                               Style="{StaticResource PlayPauseButtonStyle}"
                               IsChecked="{x:Bind EmulatorIsPaused, Mode=TwoWay, Converter={StaticResource ValueToNullableConverter}}"/>
