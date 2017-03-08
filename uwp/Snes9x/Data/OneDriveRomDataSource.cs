@@ -1,9 +1,11 @@
 ﻿using Microsoft.OneDrive.Sdk;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Storage;
 
 namespace Snes9x.Data
 {
@@ -27,9 +29,9 @@ namespace Snes9x.Data
         {
             OneDriveClient client = await GetClientAsync();
 
-            var items = await client.Drive.Special.AppRoot.Children.Request().GetAsync();
+            IItemChildrenCollectionPage items = await client.Drive.Special.AppRoot.Children.Request().GetAsync();
             List<RomFile> romFiles = new List<RomFile>(items.Count);
-            foreach (var item in items)
+            foreach (Item item in items)
             {
                 romFiles.Add(new RomFile { Name = item.Name });
             }
@@ -37,13 +39,34 @@ namespace Snes9x.Data
             while (items.NextPageRequest != null)
             {
                 items = await items.NextPageRequest.GetAsync();
-                foreach (var item in items)
+                foreach (Item item in items)
                 {
                     romFiles.Add(new RomFile { Name = item.Name });
                 }
             }
 
             return romFiles;
+        }
+
+        public static async Task<Stream> GetSreamForItemAsync(Item item)
+        {
+            OneDriveClient client = await GetClientAsync();
+
+            Stream stream = await client.Drive.Items[item.Id].Content.Request().GetAsync();
+            return stream;
+        }
+
+        public static async Task<StorageFile> DownloadRomAsync(Item item, StorageFolder folder)
+        {
+            using (Stream stream = await GetSreamForItemAsync(item))
+            {
+                StorageFile file = await folder.CreateFileAsync(item.Name, CreationCollisionOption.FailIfExists);
+                using (Stream fileStream = await file.OpenStreamForWriteAsync())
+                {
+                    await stream.CopyToAsync(fileStream);
+                    return file;
+                }
+            }
         }
     }
 }
