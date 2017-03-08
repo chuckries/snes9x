@@ -13,11 +13,18 @@ namespace Snes9x.ViewModels
     {
         public ObservableCollection<RomFile> Roms { get; } = new ObservableCollection<RomFile>();
 
+        public ObservableCollection<RomFile> OneDriveRoms { get; } = new ObservableCollection<RomFile>();
+
         public async Task PopulateRoms()
         {
             Roms.Clear();
             await RomProvider.Instance.GetRecentRomsAsync(Roms);
-            await RomProvider.Instance.GetOneDriveRomsAsync();
+            var oneDriveRoms = await OneDriveRomDataSource.GetAsync();
+            OneDriveRoms.Clear();
+            foreach(var rom in oneDriveRoms)
+            {
+                OneDriveRoms.Add(rom);
+            }
         }
     }
 }

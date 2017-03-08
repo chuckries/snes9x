@@ -38,33 +38,49 @@
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <StackPanel>
-            <GridView x:Name="TheGridView"
-                      Padding="20"
-                      ItemTemplate="{StaticResource RomFileDataTemplate}"
-                      ItemsSource="{x:Bind ViewModel.Roms}"
-                      IsItemClickEnabled="True"
-                      SelectionMode="None"
-                      ItemClick="GridView_ItemClick">
-                <GridView.GroupStyle>
-                    <GroupStyle>
-                        <GroupStyle.HeaderTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Key}"/>
-                            </DataTemplate>
-                        </GroupStyle.HeaderTemplate>
-                    </GroupStyle>
-                </GridView.GroupStyle>
-                <GridView.Header>
-                    <TextBlock Text="All ROMs"/>
-                </GridView.Header>
-            </GridView>
-            <Button Click="Button_Click">
-                <StackPanel Orientation="Horizontal">
-                    <SymbolIcon Symbol="OpenFile"/>
-                    <TextBlock Text="Load ROM" Margin="8,0,0,0"/>
-                </StackPanel>
-            </Button>
-        </StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <GridView x:Name="TheGridView"
+                  Padding="20"
+                  ItemTemplate="{StaticResource RomFileDataTemplate}"
+                  ItemsSource="{x:Bind ViewModel.Roms}"
+                  IsItemClickEnabled="True"
+                  SelectionMode="None"
+                  ItemClick="GridView_ItemClick">
+            <GridView.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Key}"/>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                </GroupStyle>
+            </GridView.GroupStyle>
+            <GridView.Header>
+                <TextBlock Text="All ROMs"/>
+            </GridView.Header>
+        </GridView>
+        <ListView x:Name="OneDriveRomListView"
+                  Header="OneDrive ROMs"
+                  ItemsSource="{x:Bind ViewModel.OneDriveRoms}"
+                  Grid.Row="1">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="data:RomFile">
+                    <Grid>
+                        <TextBlock Text="{x:Bind Name}"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Button Click="Button_Click" 
+                Grid.Row="2">
+            <StackPanel Orientation="Horizontal">
+                <SymbolIcon Symbol="OpenFile"/>
+                <TextBlock Text="Load ROM" Margin="8,0,0,0"/>
+            </StackPanel>
+        </Button>
     </Grid>
 </Page>

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Snes9x.Data
 {
-    public abstract class RomFile
+    public class RomFile
     {
-        public string Name { get; protected set; }
+        public string Name { get; set; }
         public string FileName { get; protected set; }
         public string Path { get; protected set; }
         public string ScreenshotPath
@@ -19,6 +19,9 @@ namespace Snes9x.Data
             }
         }
 
-        public abstract Task<byte[]> GetBytesAsync();
+        public virtual Task<byte[]> GetBytesAsync()
+        {
+            return null;
+        }
     }
 }

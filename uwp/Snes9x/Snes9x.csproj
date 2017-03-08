@@ -101,6 +101,7 @@
     <Compile Include="Common\Emulator.cs" />
     <Compile Include="Common\GameLoopSynchronizationContext.cs" />
     <Compile Include="Common\IJoypad.cs" />
+    <Compile Include="Data\OneDriveRomDataSource.cs" />
     <Compile Include="Data\RomFile.cs" />
     <Compile Include="Common\KeyboardJoypad.cs" />
     <Compile Include="Common\ValueToNullableConverter.cs" />

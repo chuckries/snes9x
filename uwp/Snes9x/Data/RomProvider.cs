@@ -2,6 +2,7 @@
 using Snes9x.Common;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -57,18 +58,17 @@ namespace Snes9x.Data
                 if (entry.Metadata == "romfile")
                 {
                     // insert at the beginning of the list
-                    StorageFile file = await mruList.GetFileAsync(entry.Token);
-                    roms.Insert(0, new StorageFileRom(file));
+                    try
+                    {
+                        StorageFile file = await mruList.GetFileAsync(entry.Token);
+                        roms.Insert(0, new StorageFileRom(file));
+                    }
+                    catch (FileNotFoundException)
+                    {
+                        mruList.Remove(entry.Token);
+                    }
                 }
             }
-        }
-
-        public async Task GetOneDriveRomsAsync()
-        {
-            var msaAuthenticationProvider = new OnlineIdAuthenticationProvider(new[] { "onedrive.readonly", "onedrive.appfolder" });
-            await msaAuthenticationProvider.AuthenticateUserAsync();
-            var client = new OneDriveClient(msaAuthenticationProvider);
-            var items = await client.Drive.Special.AppRoot.Children.Request().GetAsync();
         }
 
         public async Task<IEnumerable<IGrouping<string, RomFile>>> GetGroupedRomsAsync()
