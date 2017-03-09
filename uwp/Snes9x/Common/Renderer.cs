@@ -85,7 +85,7 @@ namespace Snes9x.Common
             return Matrix3x2.CreateScale(scale) * Matrix3x2.CreateTranslation(offset);
         }
 
-        public async Task SaveScreenshotAsync(string fileName)
+        public async Task SaveScreenshotAsync(IRandomAccessStream stream)
         {
             using (CanvasRenderTarget renderTarget = new CanvasRenderTarget(
                 _emulatorTexture,
@@ -107,7 +107,7 @@ namespace Snes9x.Common
                         );
                 }
 
-                await renderTarget.SaveAsync(fileName, CanvasBitmapFileFormat.Bmp, 1.0f);
+                await renderTarget.SaveAsync(stream, CanvasBitmapFileFormat.Bmp, 1.0f);
             }
         }
     }

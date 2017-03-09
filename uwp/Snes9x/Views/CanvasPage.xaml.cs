@@ -5,6 +5,9 @@ using Snes9x.Data;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using Windows.Storage;
+using Windows.Storage.Streams;
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
@@ -106,12 +109,9 @@ namespace Snes9x
                 Window.Current.CoreWindow.KeyUp += CoreWindow_KeyUp;
             };
 
-            ScreenshotButton.Click += (s, e) =>
+            ScreenshotButton.Click += async (s, e) =>
             {
-                var task = Canvas.RunOnGameLoopThreadAsync(() =>
-                {
-                    var screenshotTask = _renderer.SaveScreenshotAsync(Emulator.Instance.GetScreenshotPath());
-                });
+                await SaveScreenshotAsync();
             };
         }
 
@@ -138,10 +138,10 @@ namespace Snes9x
             OnActivity();
 
             EmulatorIsPaused = Emulator.Instance.Rom == null;
-            RomFile romFile = e.Parameter as RomFile;
+            Rom romFile = e.Parameter as Rom;
             if (romFile != null && Emulator.Instance.Rom?.Name.CompareTo(romFile.Name) != 0)
             {
-                bool success = await Emulator.Instance.LoadRomAsync(romFile);
+                await Emulator.Instance.LoadRomAsync(romFile);
             }
 
             base.OnNavigatedTo(e);
@@ -157,11 +157,11 @@ namespace Snes9x
             var task = Canvas.RunOnGameLoopThreadAsync(() =>
             {
                 Emulator.Instance.SaveSRAM();
-                var screenshotTask = _renderer.SaveScreenshotAsync(Emulator.Instance.GetScreenshotPath());
+                var screenshotTask = SaveScreenshotAsync();
             });
         }
 
-        private void Emulator_RomLoaded(object sender, RomFile e)
+        private void Emulator_RomLoaded(object sender, Rom e)
         {
             EmulatorIsPaused = false;
             
@@ -227,6 +227,22 @@ namespace Snes9x
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private async Task SaveScreenshotAsync()
+        {
+            StorageFolder screenshotFolder = await Directories.GetScreenshotsFolderAync();
+            StorageFile screenshotFile = await screenshotFolder.CreateFileAsync($"{Emulator.Instance.Rom.Name}.bmp", CreationCollisionOption.ReplaceExisting);
+            using (IRandomAccessStream stream = await screenshotFile.OpenAsync(FileAccessMode.ReadWrite))
+            {
+                TaskCompletionSource<object> tcs = new TaskCompletionSource<object>();
+                await Canvas.RunOnGameLoopThreadAsync(async () =>
+                {
+                    await _renderer.SaveScreenshotAsync(stream);
+                    tcs.SetResult(null);
+                });
+                await tcs.Task;
+            }
         }
     }
 }

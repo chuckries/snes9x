@@ -31,25 +31,25 @@ namespace Snes9x.Data
 
         }
 
-        public async Task<List<RomFile>> GetRecentRomsAsync()
+        public async Task<List<Rom>> GetRecentRomsAsync()
         {
             var mruList = StorageApplicationPermissions.MostRecentlyUsedList;
 
-            List<RomFile> recentRoms = new List<RomFile>(mruList.Entries.Count);
+            List<Rom> recentRoms = new List<Rom>(mruList.Entries.Count);
 
             foreach (var entry in mruList.Entries)
             {
                 if (entry.Metadata == "romfile")
                 {
                     // insert at the beginning of the list
-                    recentRoms.Insert(0, new StorageFileRom(await mruList.GetFileAsync(entry.Token)));
+                    recentRoms.Insert(0, new Rom { File = await mruList.GetFileAsync(entry.Token) });
                 }
             }
 
             return recentRoms;
         }
 
-        public async Task GetRecentRomsAsync(IList<RomFile> roms)
+        public async Task GetRecentRomsAsync(IList<Rom> roms)
         {
             var mruList = StorageApplicationPermissions.MostRecentlyUsedList;
 
@@ -61,7 +61,7 @@ namespace Snes9x.Data
                     try
                     {
                         StorageFile file = await mruList.GetFileAsync(entry.Token);
-                        roms.Insert(0, new StorageFileRom(file));
+                        roms.Insert(0, new Rom { File = file });
                     }
                     catch (FileNotFoundException)
                     {
@@ -71,10 +71,10 @@ namespace Snes9x.Data
             }
         }
 
-        public async Task<IEnumerable<IGrouping<string, RomFile>>> GetGroupedRomsAsync()
+        public async Task<IEnumerable<IGrouping<string, Rom>>> GetGroupedRomsAsync()
         {
             var recentRoms = await GetRecentRomsAsync();
-            return new[] { new ListGrouping<string, RomFile>("Recent ROMs", recentRoms) };
+            return new[] { new ListGrouping<string, Rom>("Recent ROMs", recentRoms) };
         }
 
         public void AddRecentRom(StorageFile file)

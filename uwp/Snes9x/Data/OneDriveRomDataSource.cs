@@ -25,15 +25,15 @@ namespace Snes9x.Data
             return s_Client;
         }
 
-        public static async Task<IEnumerable<RomFile>> GetAsync()
+        public static async Task<IEnumerable<Rom>> GetAsync()
         {
             OneDriveClient client = await GetClientAsync();
 
             IItemChildrenCollectionPage items = await client.Drive.Special.AppRoot.Children.Request().GetAsync();
-            List<RomFile> romFiles = new List<RomFile>(items.Count);
+            List<Rom> romFiles = new List<Rom>(items.Count);
             foreach (Item item in items)
             {
-                romFiles.Add(new RomFile { Name = item.Name });
+                romFiles.Add(new Rom { OneDriveItem = item });
             }
 
             while (items.NextPageRequest != null)
@@ -41,7 +41,7 @@ namespace Snes9x.Data
                 items = await items.NextPageRequest.GetAsync();
                 foreach (Item item in items)
                 {
-                    romFiles.Add(new RomFile { Name = item.Name });
+                    romFiles.Add(new Rom { OneDriveItem = item });
                 }
             }
 
@@ -60,7 +60,7 @@ namespace Snes9x.Data
         {
             using (Stream stream = await GetSreamForItemAsync(item))
             {
-                StorageFile file = await folder.CreateFileAsync(item.Name, CreationCollisionOption.FailIfExists);
+                StorageFile file = await folder.CreateFileAsync(item.Name, CreationCollisionOption.ReplaceExisting);
                 using (Stream fileStream = await file.OpenStreamForWriteAsync())
                 {
                     await stream.CopyToAsync(fileStream);

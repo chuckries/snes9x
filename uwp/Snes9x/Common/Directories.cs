@@ -13,7 +13,8 @@ namespace Snes9x.Common
         private enum FolderType
         {
             Saves,
-            Screenshots
+            Screenshots,
+            Roms
         }
 
         public static string SavesPath
@@ -38,6 +39,17 @@ namespace Snes9x.Common
             }
         }
 
+        public static string RomsPath
+        {
+            get
+            {
+                return Path.Combine(
+                    ApplicationData.Current.RoamingFolder.Path,
+                    FolderType.Roms.ToString()
+                    );
+            }
+        }
+
         public static async Task<StorageFolder> GetSavesFolderAsync()
         {
             return await GetAppDirectory(
@@ -51,6 +63,14 @@ namespace Snes9x.Common
             return await GetAppDirectory(
                 ApplicationData.Current.RoamingFolder,
                 FolderType.Screenshots.ToString()
+                );
+        }
+
+        public static async Task<StorageFolder> GetRomsFolderAsync()
+        {
+            return await GetAppDirectory(
+                ApplicationData.Current.LocalFolder,
+                FolderType.Roms.ToString()
                 );
         }
 

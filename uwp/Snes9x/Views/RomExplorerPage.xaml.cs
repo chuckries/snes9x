@@ -60,9 +60,14 @@ namespace Snes9x
             StorageFile file = await picker.PickSingleFileAsync();
             if (file != null)
             {
-                Frame.Navigate(typeof(EmulatorPage), new StorageFileRom(file), new DrillInNavigationTransitionInfo());
+                Frame.Navigate(typeof(EmulatorPage), new Rom { File = file }, new DrillInNavigationTransitionInfo());
                 RomProvider.Instance.AddRecentRom(file);
             }
+        }
+
+        private void OneDriveRomListView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            Frame.Navigate(typeof(EmulatorPage), e.ClickedItem, new DrillInNavigationTransitionInfo());
         }
     }
 }

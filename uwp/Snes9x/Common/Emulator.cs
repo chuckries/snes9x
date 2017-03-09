@@ -8,6 +8,7 @@ using Windows.Storage;
 using System.IO;
 using Windows.Foundation;
 using Snes9x.Data;
+using Windows.Storage.Streams;
 
 namespace Snes9x.Common
 {
@@ -18,7 +19,7 @@ namespace Snes9x.Common
 
         private List<IJoypad> _joypads = new List<IJoypad>();
 
-        public RomFile Rom { get; private set; }
+        public Rom Rom { get; private set; }
         public Surface Surface { get; private set; }
 
         private Emulator()
@@ -32,22 +33,42 @@ namespace Snes9x.Common
             _joypads.Add(new KeyboardJoypad(1, KeyboardJoypadConfig.Gamepad));
         }
 
-        public async Task<bool> LoadRomAsync(RomFile file)
+        public async Task LoadRomAsync(Rom rom)
         {
             if (Rom != null)
             {
                 SaveSRAM();
             }
 
-            byte[] bytes = await file.GetBytesAsync();
+            if (rom.File == null)
+            {
+                if (rom.OneDriveItem == null)
+                {
+                    throw new Exception();
+                }
+
+                StorageFolder romsFolder = await Directories.GetRomsFolderAsync();
+                rom.File = await OneDriveRomDataSource.DownloadRomAsync(rom.OneDriveItem, romsFolder);
+                if (rom.File == null)
+                {
+                    throw new Exception();
+                }
+            }
+
+            byte[] bytes = null;
+            IBuffer buffer = await FileIO.ReadBufferAsync(rom.File);
+            using (DataReader reader = DataReader.FromBuffer(buffer))
+            {
+                bytes = new byte[buffer.Length];
+                reader.ReadBytes(bytes);
+            }
+
             if (_coreEmulator.LoadRomMem(bytes))
             {
-                Rom = file;
+                Rom = rom;
                 LoadSRAM();
                 OnRomLoaded(Rom);
-                return true;
             }
-            return false;
         }
 
         public void Update()
@@ -86,9 +107,9 @@ namespace Snes9x.Common
             return Path.Combine(Directories.ScreenshotsPath, Rom.Name + ".bmp");
         }
 
-        public event EventHandler<RomFile> RomLoaded;
+        public event EventHandler<Rom> RomLoaded;
 
-        protected void OnRomLoaded(RomFile romFile)
+        protected void OnRomLoaded(Rom romFile)
         {
             RomLoaded?.Invoke(this, romFile);
         }

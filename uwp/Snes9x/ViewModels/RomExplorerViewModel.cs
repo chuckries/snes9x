@@ -11,9 +11,9 @@ namespace Snes9x.ViewModels
 {
     public class RomExplorerViewModel : BindableBase
     {
-        public ObservableCollection<RomFile> Roms { get; } = new ObservableCollection<RomFile>();
+        public ObservableCollection<Rom> Roms { get; } = new ObservableCollection<Rom>();
 
-        public ObservableCollection<RomFile> OneDriveRoms { get; } = new ObservableCollection<RomFile>();
+        public ObservableCollection<Rom> OneDriveRoms { get; } = new ObservableCollection<Rom>();
 
         public async Task PopulateRoms()
         {
@@ -26,7 +26,5 @@ namespace Snes9x.ViewModels
                 OneDriveRoms.Add(rom);
             }
         }
-
-
     }
 }

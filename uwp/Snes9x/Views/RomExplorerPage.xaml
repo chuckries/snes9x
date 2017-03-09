@@ -17,7 +17,7 @@
         <!--<CollectionViewSource x:Name="RecentRomsCollectionViewSource"
                               IsSourceGrouped="True"/>-->
 
-        <DataTemplate x:Key="RomFileDataTemplate" x:DataType="data:RomFile">
+        <DataTemplate x:Key="RomDataTemplate" x:DataType="data:Rom">
             <Grid Width="200" Height="175"
                   Background="{ThemeResource SystemAccentColorLight1}">
                 <Image Source="{x:Bind ScreenshotPath}"
@@ -45,7 +45,7 @@
         </Grid.RowDefinitions>
         <GridView x:Name="TheGridView"
                   Padding="20"
-                  ItemTemplate="{StaticResource RomFileDataTemplate}"
+                  ItemTemplate="{StaticResource RomDataTemplate}"
                   ItemsSource="{x:Bind ViewModel.Roms}"
                   IsItemClickEnabled="True"
                   SelectionMode="None"
@@ -66,9 +66,12 @@
         <ListView x:Name="OneDriveRomListView"
                   Header="OneDrive ROMs"
                   ItemsSource="{x:Bind ViewModel.OneDriveRoms}"
-                  Grid.Row="1">
+                  Grid.Row="1"
+                  IsItemClickEnabled="True"
+                  SelectionMode="None"
+                  ItemClick="OneDriveRomListView_ItemClick">
             <ListView.ItemTemplate>
-                <DataTemplate x:DataType="data:RomFile">
+                <DataTemplate x:DataType="data:Rom">
                     <Grid>
                         <TextBlock Text="{x:Bind Name}"/>
                     </Grid>
