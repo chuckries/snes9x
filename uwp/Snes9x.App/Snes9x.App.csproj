@@ -8,7 +8,7 @@
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Snes9x</RootNamespace>
-    <AssemblyName>Snes9x</AssemblyName>
+    <AssemblyName>Snes9x.App</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
@@ -156,9 +156,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Snes9xCore\Snes9xCore.vcxproj">
+    <ProjectReference Include="..\Snes9x.Core\Snes9x.Core.vcxproj">
       <Project>{d5dc6547-4053-452e-830d-6105bc935a51}</Project>
-      <Name>Snes9xCore</Name>
+      <Name>Snes9x.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

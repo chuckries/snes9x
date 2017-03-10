@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Snes9xCore
+namespace Snes9x { namespace Core
 {
 
     public ref class CoreSettings sealed
@@ -17,4 +17,4 @@ namespace Snes9xCore
         }
     };
 
-}
+} }

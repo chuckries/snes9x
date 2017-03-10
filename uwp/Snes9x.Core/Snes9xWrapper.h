@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Snes9xCore
+namespace Snes9x { namespace Core
 {
     class S9xWrapper
     {
@@ -23,4 +23,4 @@ namespace Snes9xCore
 
         static void ReportButton(unsigned int id, bool pressed);
     };
-}
+} }

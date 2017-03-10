@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Snes9xCore
+namespace Snes9x { namespace Core
 {
     interface class IRom;
     ref class CoreSettings;
@@ -68,4 +68,4 @@ namespace Snes9xCore
         Surface^ _snesScreen;
         Surface^ _renderedScreen;
     };
-}
+} }

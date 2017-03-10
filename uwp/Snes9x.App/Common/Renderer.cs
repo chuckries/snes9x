@@ -1,7 +1,7 @@
 ﻿using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Effects;
 using Microsoft.Graphics.Canvas.UI;
-using Snes9xCore;
+using Snes9x.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -14,7 +14,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using Snes9xCore;
+using Snes9x.Core;
 using Snes9x.Common;
 
 namespace Snes9x

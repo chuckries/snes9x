@@ -1,6 +1,6 @@
 ﻿using Snes9x.Common;
 using Snes9x.Data;
-using Snes9xCore;
+using Snes9x.Core;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;

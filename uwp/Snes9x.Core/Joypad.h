@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Snes9xCore
+namespace Snes9x { namespace Core
 {
 
     public ref class CoreJoypad sealed
@@ -25,4 +25,4 @@ namespace Snes9xCore
         property unsigned int JoypadNumber;
     };
 
-}
+} }

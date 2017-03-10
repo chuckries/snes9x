@@ -3,7 +3,7 @@
 
 #include "LibSnes9x.h"
 
-namespace Snes9xCore
+namespace Snes9x { namespace Core
 {
     CoreSettings::CoreSettings()
     {
@@ -36,4 +36,4 @@ namespace Snes9xCore
     {
         Settings.DisplayFrameRate = value;
     }
-}
+} }

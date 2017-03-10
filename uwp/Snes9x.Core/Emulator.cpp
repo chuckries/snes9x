@@ -13,7 +13,7 @@ using namespace Windows::Storage;
 #define MAX_SNES_WIDTH              (SNES_WIDTH * 2)
 #define MAX_SNES_HEIGHT             (SNES_HEIGHT_EXTENDED * 2)
 
-namespace Snes9xCore
+namespace Snes9x { namespace Core
 {
     CoreEmulator^ CoreEmulator::g_Emulator = ref new CoreEmulator();
 
@@ -120,4 +120,4 @@ namespace Snes9xCore
             dst = (uint32_t*)(((uint8_t*)dst) + destination->Pitch);
         }
     }
-}
+} }

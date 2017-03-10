@@ -2,7 +2,7 @@
 #include "Snes9xWrapper.h"
 #include "LibSnes9x.h"
 
-namespace Snes9xCore
+namespace Snes9x { namespace Core
 {
 
     bool S9xWrapper::InitMemory()
@@ -71,4 +71,4 @@ namespace Snes9xCore
         S9xReportButton(id, pressed);
     }
 
-}
+} }

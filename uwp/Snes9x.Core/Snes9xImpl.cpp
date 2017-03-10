@@ -204,7 +204,7 @@ bool8 S9xInitUpdate(void) { return true; }
 
 bool8 S9xDeinitUpdate(int width, int height)
 {
-    Snes9xCore::CoreEmulator::Instance->SetResolution(width, height);
+    Snes9x::Core::CoreEmulator::Instance->SetResolution(width, height);
     return true;
 }
 

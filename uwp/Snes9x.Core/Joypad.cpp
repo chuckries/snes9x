@@ -3,7 +3,7 @@
 #include "Snes9xWrapper.h"
 #include "JoypadIds.h"
 
-namespace Snes9xCore
+namespace Snes9x { namespace Core
 {
     CoreJoypad::CoreJoypad(unsigned int joypadNumber)
     {
@@ -23,4 +23,4 @@ namespace Snes9xCore
     IMPL_REPORT(Down, 9)
     IMPL_REPORT(Left, 10)
     IMPL_REPORT(Right, 11)
-}
+} }

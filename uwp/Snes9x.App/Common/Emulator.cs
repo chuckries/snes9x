@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Snes9xCore;
+using Snes9x.Core;
 using Windows.Storage;
 using System.IO;
 using Windows.Foundation;
