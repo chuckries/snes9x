@@ -2,7 +2,6 @@
 
 namespace Snes9x { namespace Core
 {
-    interface class IRom;
     ref class CoreSettings;
 
     public ref class Surface sealed
@@ -22,16 +21,16 @@ namespace Snes9x { namespace Core
         property Array<byte>^ Bytes;
     };
 
-    public ref class CoreEmulator sealed
+    public ref class Engine sealed
     {
     private:
-        CoreEmulator();
+        Engine();
 
         // Public Properties
     public:
-        static property CoreEmulator^ Instance
+        static property Engine^ Instance
         {
-            CoreEmulator^ get() { return g_Emulator; }
+            Engine^ get() { return g_Emulator; }
         }
 
         // The Current settings
@@ -60,9 +59,8 @@ namespace Snes9x { namespace Core
         static void ConvertDepth16to32(Surface^ source, Surface^ destination);
 
     private:
-        static CoreEmulator^ g_Emulator;
+        static Engine^ g_Emulator;
 
-        IRom^ _rom;
         CoreSettings^ _settings;
 
         Surface^ _snesScreen;

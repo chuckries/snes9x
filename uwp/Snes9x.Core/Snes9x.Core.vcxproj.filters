@@ -8,16 +8,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="Emulator.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="CXAudio2.cpp" />
     <ClCompile Include="Snes9xImpl.cpp" />
     <ClCompile Include="Snes9xWrapper.cpp" />
     <ClCompile Include="Joypad.cpp" />
+    <ClCompile Include="Engine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="Emulator.h" />
     <ClInclude Include="LibSnes9x.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="CXAudio2.h" />
@@ -25,6 +24,7 @@
     <ClInclude Include="Snes9xWrapper.h" />
     <ClInclude Include="Joypad.h" />
     <ClInclude Include="JoypadIds.h" />
+    <ClInclude Include="Engine.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

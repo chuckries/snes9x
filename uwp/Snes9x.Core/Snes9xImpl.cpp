@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Emulator.h"
+#include "Engine.h"
 #include "LibSnes9x.h"
 #include "CXAudio2.h"
 #include "JoypadIds.h"
@@ -204,7 +204,7 @@ bool8 S9xInitUpdate(void) { return true; }
 
 bool8 S9xDeinitUpdate(int width, int height)
 {
-    Snes9x::Core::CoreEmulator::Instance->SetResolution(width, height);
+    Snes9x::Core::Engine::Instance->SetResolution(width, height);
     return true;
 }
 

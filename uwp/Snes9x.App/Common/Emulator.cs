@@ -14,7 +14,7 @@ namespace Snes9x.Common
 {
     class Emulator
     {
-        private static readonly CoreEmulator _coreEmulator = CoreEmulator.Instance;
+        private static readonly Engine _engine = Engine.Instance;
         public static readonly Emulator Instance = new Emulator();
 
         private List<IJoypad> _joypads = new List<IJoypad>();
@@ -29,7 +29,7 @@ namespace Snes9x.Common
 
         public void Init()
         {
-            _coreEmulator.Init();
+            _engine.Init();
             _joypads.Add(new KeyboardJoypad(1, KeyboardJoypadConfig.Gamepad));
         }
 
@@ -63,7 +63,7 @@ namespace Snes9x.Common
                 reader.ReadBytes(bytes);
             }
 
-            if (_coreEmulator.LoadRomMem(bytes))
+            if (_engine.LoadRomMem(bytes))
             {
                 Rom = rom;
                 LoadSRAM();
@@ -74,27 +74,27 @@ namespace Snes9x.Common
         public void Update()
         {
             _joypads.ForEach(j => j.ReportButtons());
-            Surface = _coreEmulator.Update();
+            Surface = _engine.Update();
         }
 
         public bool SaveState()
         {
-            return _coreEmulator.SaveState(GetSavePath(".sav"));
+            return _engine.SaveState(GetSavePath(".sav"));
         }
 
         public bool LoadState()
         {
-            return _coreEmulator.LoadState(GetSavePath(".sav"));
+            return _engine.LoadState(GetSavePath(".sav"));
         }
 
         public bool SaveSRAM()
         {
-            return _coreEmulator.SaveSRAM(GetSavePath(".srm"));
+            return _engine.SaveSRAM(GetSavePath(".srm"));
         }
 
         private bool LoadSRAM()
         {
-            return _coreEmulator.LoadSRAM(GetSavePath(".srm"));
+            return _engine.LoadSRAM(GetSavePath(".srm"));
         }
 
         private string GetSavePath(string extension)

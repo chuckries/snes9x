@@ -219,7 +219,7 @@
     <ClInclude Include="Settings.h" />
     <ClInclude Include="LibSnes9x.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="Emulator.h" />
+    <ClInclude Include="Engine.h" />
     <ClInclude Include="Snes9xWrapper.h" />
     <ClInclude Include="StringUtil.h" />
   </ItemGroup>
@@ -235,7 +235,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Emulator.cpp" />
+    <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Snes9xImpl.cpp" />
     <ClCompile Include="Snes9xWrapper.cpp" />
   </ItemGroup>

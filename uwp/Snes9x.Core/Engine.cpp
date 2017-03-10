@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Emulator.h"
+#include "Engine.h"
 #include "Snes9xWrapper.h"
 #include "Settings.h"
 #include "StringUtil.h"
@@ -15,9 +15,9 @@ using namespace Windows::Storage;
 
 namespace Snes9x { namespace Core
 {
-    CoreEmulator^ CoreEmulator::g_Emulator = ref new CoreEmulator();
+    Engine^ Engine::g_Emulator = ref new Engine();
 
-    CoreEmulator::CoreEmulator()
+    Engine::Engine()
         : _settings(ref new CoreSettings())
     {
         _snesScreen = ref new Surface(
@@ -29,7 +29,7 @@ namespace Snes9x { namespace Core
         _renderedScreen = ref new Surface(0, 0, 0, nullptr);
     }
 
-    bool CoreEmulator::Init()
+    bool Engine::Init()
     {
         bool bOk = true;
 
@@ -45,12 +45,12 @@ namespace Snes9x { namespace Core
         return bOk;
     }
 
-    bool CoreEmulator::LoadRomMem(const Array<byte>^ romBytes)
+    bool Engine::LoadRomMem(const Array<byte>^ romBytes)
     {
         return S9xWrapper::LoadRomMem(romBytes->begin(), romBytes->Length);
     }
 
-    Surface^ CoreEmulator::Update()
+    Surface^ Engine::Update()
     {
         S9xWrapper::MainLoop();
 
@@ -67,33 +67,33 @@ namespace Snes9x { namespace Core
         return _renderedScreen;
     }
 
-    bool CoreEmulator::SaveState(String^ path)
+    bool Engine::SaveState(String^ path)
     {
         return S9xWrapper::SaveState(WideToUtf8(path->Data()));
     }
 
-    bool CoreEmulator::LoadState(String^ path)
+    bool Engine::LoadState(String^ path)
     {
         return S9xWrapper::LoadState(WideToUtf8(path->Data()));
     }
 
-    bool CoreEmulator::SaveSRAM(String^ path)
+    bool Engine::SaveSRAM(String^ path)
     {
         return S9xWrapper::SaveSRAM(WideToUtf8(path->Data()));
     }
 
-    bool CoreEmulator::LoadSRAM(String^ path)
+    bool Engine::LoadSRAM(String^ path)
     {
         return S9xWrapper::LoadSRAM(WideToUtf8(path->Data()));
     }
 
-    void CoreEmulator::SetResolution(int width, int height)
+    void Engine::SetResolution(int width, int height)
     {
         _snesScreen->Width = width;
         _snesScreen->Height = height;
     }
 
-    void CoreEmulator::ConvertDepth16to32(Surface^ source, Surface^ destination)
+    void Engine::ConvertDepth16to32(Surface^ source, Surface^ destination)
     {
         uint16_t* src = (uint16_t*)source->Bytes->begin();
         uint32_t* dst = (uint32_t*)destination->Bytes->begin();
