@@ -45,9 +45,12 @@ namespace Snes9x { namespace Core
         return bOk;
     }
 
-    bool Engine::LoadRomMem(const Array<byte>^ romBytes)
+    bool Engine::LoadRomMem(IBuffer^ buffer)
     {
-        return S9xWrapper::LoadRomMem(romBytes->begin(), romBytes->Length);
+        DataReader^ reader = DataReader::FromBuffer(buffer);
+        Array<byte>^ bytes = ref new Array<byte>(buffer->Length);
+        reader->ReadBytes(bytes);
+        return S9xWrapper::LoadRomMem(bytes->begin(), bytes->Length);
     }
 
     Surface^ Engine::Update()

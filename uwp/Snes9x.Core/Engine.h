@@ -42,7 +42,7 @@ namespace Snes9x { namespace Core
         // Pulbic Methods
     public:
         bool Init();
-        bool LoadRomMem(const Array<byte>^ romBytes);
+        bool LoadRomMem(IBuffer^ buffer);
 
         Surface^ Update();
 

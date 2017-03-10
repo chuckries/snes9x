@@ -9,6 +9,9 @@ using System.IO;
 using Windows.Foundation;
 using Snes9x.Data;
 using Windows.Storage.Streams;
+using System.IO.Compression;
+using WinRTBuffer = Windows.Storage.Streams.Buffer;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace Snes9x.Common
 {
@@ -55,15 +58,39 @@ namespace Snes9x.Common
                 }
             }
 
-            byte[] bytes = null;
-            IBuffer buffer = await FileIO.ReadBufferAsync(rom.File);
-            using (DataReader reader = DataReader.FromBuffer(buffer))
+            IBuffer buffer = null;
+            if (Path.GetExtension(rom.File.Name) == ".zip")
             {
-                bytes = new byte[buffer.Length];
-                reader.ReadBytes(bytes);
+                using (Stream stream = await rom.File.OpenStreamForReadAsync())
+                {
+                    ZipArchive archive = new ZipArchive(stream);
+                    ZipArchiveEntry entry = null;
+                    if (archive.Entries.Count == 1)
+                    {
+                        entry = archive.Entries[0];
+                    }
+                    //ZipArchiveEntry gameEntry = archive.Entries.Where((entry) =>
+                    //{
+                    //    return Path.GetFileNameWithoutExtension(entry.Name) == Path.GetFileNameWithoutExtension(rom.File.Name);
+                    //}).FirstOrDefault();
+                    if (entry == null)
+                    {
+                        throw new Exception("No matching file found in ZIP");
+                    }
+
+                    using (MemoryStream memoryStream = new MemoryStream())
+                    {
+                        await entry.Open().CopyToAsync(memoryStream);
+                        buffer = memoryStream.GetWindowsRuntimeBuffer();
+                    }
+                }
+            }
+            else
+            {
+                buffer = await FileIO.ReadBufferAsync(rom.File);
             }
 
-            if (_engine.LoadRomMem(bytes))
+            if (_engine.LoadRomMem(buffer))
             {
                 Rom = rom;
                 LoadSRAM();
