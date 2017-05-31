@@ -42,11 +42,23 @@ namespace Snes9x { namespace Core
 
         S9xWrapper::InitControllers();
 
+        // redirect stdout, stderr
+        String^ stdoutPath = ApplicationData::Current->LocalCacheFolder->Path + L"//stdout.txt";
+        FILE* stdoutFile = nullptr;
+        _wfreopen_s(&stdoutFile, stdoutPath->Data(), L"w", stdout);
+
         return bOk;
+    }
+
+    bool Engine::LoadRom(String^ path)
+    {
+        Lock lock(_engineMutex);
+        return S9xWrapper::LoadRom(CW2A(path->Data()));
     }
 
     bool Engine::LoadRomMem(IBuffer^ buffer)
     {
+        Lock lock(_engineMutex);
         DataReader^ reader = DataReader::FromBuffer(buffer);
         Array<byte>^ bytes = ref new Array<byte>(buffer->Length);
         reader->ReadBytes(bytes);
@@ -55,6 +67,7 @@ namespace Snes9x { namespace Core
 
     Surface^ Engine::Update()
     {
+        Lock lock(_engineMutex);
         S9xWrapper::MainLoop();
 
         if (_renderedScreen->Width != _snesScreen->Width || _renderedScreen->Height != _snesScreen->Height)
@@ -72,21 +85,25 @@ namespace Snes9x { namespace Core
 
     bool Engine::SaveState(String^ path)
     {
+        Lock lock(_engineMutex);
         return S9xWrapper::SaveState(WideToUtf8(path->Data()));
     }
 
     bool Engine::LoadState(String^ path)
     {
+        Lock lock(_engineMutex);
         return S9xWrapper::LoadState(WideToUtf8(path->Data()));
     }
 
     bool Engine::SaveSRAM(String^ path)
     {
+        Lock lock(_engineMutex);
         return S9xWrapper::SaveSRAM(WideToUtf8(path->Data()));
     }
 
     bool Engine::LoadSRAM(String^ path)
     {
+        Lock lock(_engineMutex);
         return S9xWrapper::LoadSRAM(WideToUtf8(path->Data()));
     }
 

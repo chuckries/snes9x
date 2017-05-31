@@ -36,6 +36,11 @@ namespace Snes9x { namespace Core
         S9xSetupDefaultKeymap();
     }
 
+    bool S9xWrapper::LoadRom(const char* path)
+    {
+        return (bool)Memory.LoadROM(path);
+    }
+
     bool S9xWrapper::LoadRomMem(const byte* source, unsigned int sourceSize)
     {
         return (bool)Memory.LoadROMMem(source, sourceSize);

@@ -20,7 +20,6 @@
     <ClInclude Include="LibSnes9x.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="CXAudio2.h" />
-    <ClInclude Include="StringUtil.h" />
     <ClInclude Include="Snes9xWrapper.h" />
     <ClInclude Include="Joypad.h" />
     <ClInclude Include="JoypadIds.h" />

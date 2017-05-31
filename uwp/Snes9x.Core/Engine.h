@@ -18,6 +18,7 @@ namespace Snes9x { namespace Core
         property int Width;
         property int Height;
         property int Pitch;
+        property Windows::Foundation::Size Size;
         property Array<byte>^ Bytes;
     };
 
@@ -42,6 +43,7 @@ namespace Snes9x { namespace Core
         // Pulbic Methods
     public:
         bool Init();
+        bool LoadRom(String^ path);
         bool LoadRomMem(IBuffer^ buffer);
 
         Surface^ Update();
@@ -65,5 +67,8 @@ namespace Snes9x { namespace Core
 
         Surface^ _snesScreen;
         Surface^ _renderedScreen;
+
+        std::mutex _engineMutex;
+        typedef std::lock_guard<std::mutex> Lock;
     };
 } }

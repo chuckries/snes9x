@@ -16,6 +16,7 @@ namespace Snes9x.Common
 {
     class Renderer
     {
+        object _surfaceLock = new object();
         Surface _surface = null;
         CanvasBitmap _emulatorTexture;
 
@@ -26,6 +27,14 @@ namespace Snes9x.Common
 
         public Renderer()
         {
+        }
+
+        public void SetSurface(Surface surface)
+        {
+            lock (_surfaceLock)
+            {
+                _surface = surface;
+            }
         }
 
         public void CreateResources(ICanvasResourceCreatorWithDpi resourceCreator, CanvasCreateResourcesReason reason)
@@ -42,7 +51,7 @@ namespace Snes9x.Common
 
             _cropEffect = new CropEffect()
             {
-                Source = _dpiEffect
+                Source = _dpiEffect,
             };
 
             _scaleEffect = new Transform2DEffect()
@@ -54,15 +63,21 @@ namespace Snes9x.Common
 
         public void Draw(CanvasDrawingSession ds, Size targetSize)
         {
-            _surface = Emulator.Instance.Surface;
-            if (_surface != null)
+            lock (_surfaceLock)
             {
-                _emulatorTexture.SetPixelBytes(_surface.Bytes, 0, 0, _surface.Width, _surface.Height);
-                Size size = new Size(ds.ConvertPixelsToDips(_surface.Width), ds.ConvertPixelsToDips(_surface.Height));
-                _cropEffect.SourceRectangle = new Rect(new Point(0, 0), size);
-                _scaleEffect.TransformMatrix = GetDisplayTransform(size.ToVector2(), targetSize.ToVector2());
+                if (_surface != null)
+                {
+                    _emulatorTexture.SetPixelBytes(_surface.Bytes, 0, 0, _surface.Width, _surface.Height);
+                    Size size = new Size(
+                        Math.Ceiling(ds.ConvertPixelsToDips(_surface.Width)), 
+                        Math.Ceiling(ds.ConvertPixelsToDips(_surface.Height))
+                        );
+                    _cropEffect.SourceRectangle = new Rect(new Point(0, 0), size);
+                    _scaleEffect.TransformMatrix = GetDisplayTransform(size.ToVector2(), targetSize.ToVector2());
 
-                ds.DrawImage(_scaleEffect);
+                    ds.DrawImage(_scaleEffect);
+                    //ds.DrawImage(_cropEffect);
+                }
             }
         }
 

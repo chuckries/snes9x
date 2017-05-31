@@ -114,6 +114,7 @@
                                      Update="Canvas_Update"
                                      Draw="Canvas_Draw"
                                      TargetElapsedTime="0:0:0.01668091"
+                                     ClearColor="White"
                                      Paused="{x:Bind EmulatorIsPaused, Mode=OneWay}"/>
         <Grid x:Name="ControlPanel">
             <StackPanel Background="#C000"

@@ -221,7 +221,6 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Snes9xWrapper.h" />
-    <ClInclude Include="StringUtil.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CXAudio2.cpp" />

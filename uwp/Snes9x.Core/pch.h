@@ -3,6 +3,9 @@
 #include <collection.h>
 #include <ppltasks.h>
 
+#include <atlbase.h>
+#include <atlconv.h>
+
 using namespace concurrency;
 
 using namespace Platform;

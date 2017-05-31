@@ -11,6 +11,7 @@ namespace Snes9x { namespace Core
         static bool InitSound(int buffer_ms, int lag_ms);
         static void InitControllers();
 
+        static bool LoadRom(const char* path);
         static bool LoadRomMem(const byte* source, unsigned int sourceSize);
 
         static void MainLoop();
