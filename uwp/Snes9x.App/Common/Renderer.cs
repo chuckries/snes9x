@@ -52,6 +52,7 @@ namespace Snes9x.Common
             _cropEffect = new CropEffect()
             {
                 Source = _dpiEffect,
+                BorderMode = EffectBorderMode.Hard
             };
 
             _scaleEffect = new Transform2DEffect()
@@ -76,7 +77,6 @@ namespace Snes9x.Common
                     _scaleEffect.TransformMatrix = GetDisplayTransform(size.ToVector2(), targetSize.ToVector2());
 
                     ds.DrawImage(_scaleEffect);
-                    //ds.DrawImage(_cropEffect);
                 }
             }
         }
