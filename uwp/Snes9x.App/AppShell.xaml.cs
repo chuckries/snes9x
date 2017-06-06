@@ -72,7 +72,5 @@ namespace Snes9x
         }
 
         private Renderer _renderer = new Renderer();
-
-        private bool _isOpen = false;
     }
 }

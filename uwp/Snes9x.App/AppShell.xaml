@@ -20,7 +20,7 @@
     <Page.BottomAppBar>
         <local:MenuBar 
             ClosedDisplayMode="Minimal"
-            IsOpen="{x:Bind _isOpen, Mode=OneWay}">
+            IsOpen="True">
             <AppBarButton Icon="OpenFile" Label="Load Game" Click="LoadGameButton_Click"/>
         </local:MenuBar>
     </Page.BottomAppBar>
