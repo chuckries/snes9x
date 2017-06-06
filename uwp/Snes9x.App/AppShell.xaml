@@ -15,7 +15,10 @@
                                      Update="CanvasAnimatedControl_Update"
                                      Draw="CanvasAnimatedControl_Draw"
                                      Paused="{x:Bind ViewModel.IsPaused, Mode=OneWay}"
-                                     ClearColor="{StaticResource SystemBaseMediumLowColor}"/>
+                                     ClearColor="{StaticResource SystemBaseMediumLowColor}"
+                                     IsTabStop="True"
+                                     KeyDown="canvas_KeyDown"
+                                     KeyUp="canvas_KeyUp"/>
     </Grid>
     <Page.BottomAppBar>
         <local:MenuBar 

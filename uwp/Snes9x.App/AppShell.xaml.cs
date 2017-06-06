@@ -68,6 +68,7 @@ namespace Snes9x
         private async void LoadGameButton_Click(object sender, RoutedEventArgs e)
         {
             await ViewModel.LoadGame();
+            canvas.Focus(FocusState.Programmatic);
         }
 
         private void CanvasAnimatedControl_CreateResources(CanvasAnimatedControl sender, CanvasCreateResourcesEventArgs args)
@@ -77,8 +78,8 @@ namespace Snes9x
 
         private void CanvasAnimatedControl_Update(ICanvasAnimatedControl sender, CanvasAnimatedUpdateEventArgs args)
         {
-            Surface surface = Engine.Instance.Update();
-            _renderer.SetSurface(surface);
+            ViewModel.Update();
+            _renderer.SetSurface(ViewModel.Surface);
         }
 
         private void CanvasAnimatedControl_Draw(ICanvasAnimatedControl sender, CanvasAnimatedDrawEventArgs args)
@@ -87,5 +88,21 @@ namespace Snes9x
         }
 
         private Renderer _renderer = new Renderer();
+
+        private void canvas_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (!e.KeyStatus.WasKeyDown)
+            {
+                e.Handled = ViewModel.HandleKeyPress(e.OriginalKey, true);
+            }
+        }
+
+        private void canvas_KeyUp(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.KeyStatus.IsKeyReleased)
+            {
+                e.Handled = ViewModel.HandleKeyPress(e.OriginalKey, false);
+            }
+        }
     }
 }
