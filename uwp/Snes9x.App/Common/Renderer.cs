@@ -40,7 +40,7 @@ namespace Snes9x.Common
         public void CreateResources(ICanvasResourceCreatorWithDpi resourceCreator, CanvasCreateResourcesReason reason)
         {
             int width = 512;
-            int height = 438;
+            int height = 448;
             _emulatorTexture = CanvasBitmap.CreateFromBytes(resourceCreator, new byte[width * height * 4], width, height, Windows.Graphics.DirectX.DirectXPixelFormat.B8G8R8A8UIntNormalized, 96, CanvasAlphaMode.Ignore);
 
             _dpiEffect = new DpiCompensationEffect()
