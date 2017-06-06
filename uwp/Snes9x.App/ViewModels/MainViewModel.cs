@@ -19,6 +19,7 @@ namespace Snes9x.ViewModels
         Empty = 1,
         LoadGame = 2,
         Menu = 4,
+        Activate = 8,
     }
     public class MainViewModel : BindableBase
     {

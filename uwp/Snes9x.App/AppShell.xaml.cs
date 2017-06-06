@@ -36,18 +36,33 @@ namespace Snes9x
             this.InitializeComponent();
             Current = this;
 
-            Loaded += async (s, e) =>
-            {
-                await ViewModel.InitializeAsync();
-            };
-
+            Loaded += AppShell_Loaded;
             Unloaded += AppShell_Unloaded;
+        }
+
+        private async void AppShell_Loaded(object sender, RoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.Activated += CoreWindow_Activated;
+
+            await ViewModel.InitializeAsync();
         }
 
         private void AppShell_Unloaded(object sender, RoutedEventArgs e)
         {
             canvas.RemoveFromVisualTree();
             canvas = null;
+        }
+
+        private void CoreWindow_Activated(Windows.UI.Core.CoreWindow sender, Windows.UI.Core.WindowActivatedEventArgs args)
+        {
+            if (args.WindowActivationState == Windows.UI.Core.CoreWindowActivationState.Deactivated)
+            {
+                ViewModel.SetPause(PauseFlags.Activate);
+            }
+            else
+            {
+                ViewModel.ClearPause(PauseFlags.Activate);
+            }
         }
 
         private async void LoadGameButton_Click(object sender, RoutedEventArgs e)
