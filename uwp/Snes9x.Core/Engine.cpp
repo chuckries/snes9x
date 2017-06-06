@@ -2,7 +2,6 @@
 #include "Engine.h"
 #include "Snes9xWrapper.h"
 #include "Settings.h"
-#include "StringUtil.h"
 
 using namespace Platform;
 using namespace Windows::Storage;
@@ -86,25 +85,25 @@ namespace Snes9x { namespace Core
     bool Engine::SaveState(String^ path)
     {
         Lock lock(_engineMutex);
-        return S9xWrapper::SaveState(WideToUtf8(path->Data()));
+        return S9xWrapper::SaveState(CW2A(path->Data()));
     }
 
     bool Engine::LoadState(String^ path)
     {
         Lock lock(_engineMutex);
-        return S9xWrapper::LoadState(WideToUtf8(path->Data()));
+        return S9xWrapper::LoadState(CW2A(path->Data()));
     }
 
     bool Engine::SaveSRAM(String^ path)
     {
         Lock lock(_engineMutex);
-        return S9xWrapper::SaveSRAM(WideToUtf8(path->Data()));
+        return S9xWrapper::SaveSRAM(CW2A(path->Data()));
     }
 
     bool Engine::LoadSRAM(String^ path)
     {
         Lock lock(_engineMutex);
-        return S9xWrapper::LoadSRAM(WideToUtf8(path->Data()));
+        return S9xWrapper::LoadSRAM(CW2A(path->Data()));
     }
 
     void Engine::SetResolution(int width, int height)
