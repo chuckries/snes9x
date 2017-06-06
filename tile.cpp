@@ -1386,28 +1386,28 @@ extern struct SLineMatrixData	LineMatrixData[240];
 //     Also, color window clipping clips Sub(x + 1, y) if Main(x, y) is clipped, not Main(x + 1, y).
 //     We don't know how Sub(0, y) is handled.
 
-#define DRAW_PIXEL_H2x1(N, M) \
-    if (Z1 > GFX.DB[Offset + 2 * N] && (M)) \
-    { \
-        GFX.S[Offset + 2 * N] = MATH(GFX.ScreenColors[Pix], GFX.SubScreen[Offset + 2 * N], GFX.SubZBuffer[Offset + 2 * N]); \
-        GFX.S[Offset + 2 * N + 1] = MATH((GFX.ClipColors ? 0 : GFX.SubScreen[Offset + 2 * N + 2]), GFX.RealScreenColors[Pix], GFX.SubZBuffer[Offset + 2 * N]); \
-        GFX.DB[Offset + 2 * N] = GFX.DB[Offset + 2 * N + 1] = Z2; \
-    }
+//#define DRAW_PIXEL_H2x1(N, M) \
+//    if (Z1 > GFX.DB[Offset + 2 * N] && (M)) \
+//    { \
+//        GFX.S[Offset + 2 * N] = MATH(GFX.ScreenColors[Pix], GFX.SubScreen[Offset + 2 * N], GFX.SubZBuffer[Offset + 2 * N]); \
+//        GFX.S[Offset + 2 * N + 1] = MATH((GFX.ClipColors ? 0 : GFX.SubScreen[Offset + 2 * N + 2]), GFX.RealScreenColors[Pix], GFX.SubZBuffer[Offset + 2 * N]); \
+//        GFX.DB[Offset + 2 * N] = GFX.DB[Offset + 2 * N + 1] = Z2; \
+//    }
 
 /* The logic above shifts everything one pixel to the left, thus producing a blank line on the right. The code below places the pixel on correct positions but
    would incur two additional branches for the edges on every pixel.
 */
 
-//#define DRAW_PIXEL_H2x1(N, M) \
-//    if (Z1 > GFX.DB[Offset + 2 * N] && (M)) \
-//    { \
-//        GFX.S[Offset + 2 * N + 1] = MATH(GFX.ScreenColors[Pix], GFX.SubScreen[Offset + 2 * N], GFX.SubZBuffer[Offset + 2 * N]); \
-//        if ((Offset + 2 * N ) % GFX.RealPPL != (SNES_WIDTH - 1) << 1) \
-//            GFX.S[Offset + 2 * N + 2] = MATH((GFX.ClipColors ? 0 : GFX.SubScreen[Offset + 2 * N + 2]), GFX.RealScreenColors[Pix], GFX.SubZBuffer[Offset + 2 * N]); \
-//        if ((Offset + 2 * N) % GFX.RealPPL == 0) \
-//            GFX.S[Offset + 2 * N] = MATH((GFX.ClipColors ? 0 : GFX.SubScreen[Offset + 2 * N]), GFX.RealScreenColors[Pix], GFX.SubZBuffer[Offset + 2 * N]); \
-//        GFX.DB[Offset + 2 * N] = GFX.DB[Offset + 2 * N + 1] = Z2; \
-//    }
+#define DRAW_PIXEL_H2x1(N, M) \
+    if (Z1 > GFX.DB[Offset + 2 * N] && (M)) \
+    { \
+        GFX.S[Offset + 2 * N + 1] = MATH(GFX.ScreenColors[Pix], GFX.SubScreen[Offset + 2 * N], GFX.SubZBuffer[Offset + 2 * N]); \
+        if ((Offset + 2 * N ) % GFX.RealPPL != (SNES_WIDTH - 1) << 1) \
+            GFX.S[Offset + 2 * N + 2] = MATH((GFX.ClipColors ? 0 : GFX.SubScreen[Offset + 2 * N + 2]), GFX.RealScreenColors[Pix], GFX.SubZBuffer[Offset + 2 * N]); \
+        if ((Offset + 2 * N) % GFX.RealPPL == 0) \
+            GFX.S[Offset + 2 * N] = MATH((GFX.ClipColors ? 0 : GFX.SubScreen[Offset + 2 * N]), GFX.RealScreenColors[Pix], GFX.SubZBuffer[Offset + 2 * N]); \
+        GFX.DB[Offset + 2 * N] = GFX.DB[Offset + 2 * N + 1] = Z2; \
+    }
 
 
 
