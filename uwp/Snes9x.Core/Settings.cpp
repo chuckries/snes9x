@@ -25,6 +25,7 @@ namespace Snes9x { namespace Core
         Settings.HDMATimingHack = 100;
         Settings.BlockInvalidVRAMAccessMaster = true;
         Settings.DisplayFrameRate = false;
+        Settings.AutoSaveDelay = 30;
     }
 
     bool CoreSettings::DisplayFrameRate::get()

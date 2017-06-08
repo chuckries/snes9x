@@ -89,66 +89,73 @@ namespace Snes9x.ViewModels
         {
             if (_isInitialized) return;
 
-            Engine.Instance.Init();
-
             await CreateAppDirectories();
+            Engine.Instance.Init(_savesFolder);
+
             _isInitialized = true;
         }
 
         public async Task LoadGame()
         {
-            SetPause(PauseFlags.LoadGame);
             StorageFile pickedFile = await PickRomAsync();
-            try
+            if (pickedFile != null)
             {
-                if (pickedFile != null)
+                StorageFile copiedFiled = await pickedFile.CopyAsync(_romFolder, pickedFile.Name, NameCollisionOption.ReplaceExisting);
+                // if the file is a zip, unzip it to temporary storage
+                if (copiedFiled.FileType == ".zip")
                 {
-                    StorageFile copiedFiled = await pickedFile.CopyAsync(_romFolder, pickedFile.Name, NameCollisionOption.ReplaceExisting);
-                    // if the file is a zip, unzip it to temporary storage
-                    if (copiedFiled.FileType == ".zip")
+                    using (Stream fs = await copiedFiled.OpenStreamForReadAsync())
+                    using (ZipArchive archive = new ZipArchive(fs))
                     {
-                        using (Stream fs = await copiedFiled.OpenStreamForReadAsync())
-                        using (ZipArchive archive = new ZipArchive(fs))
+                        var romEntry = archive.Entries.FirstOrDefault();
+                        if (romEntry != null)
                         {
-                            var romEntry = archive.Entries.FirstOrDefault();
-                            if (romEntry != null)
+                            using (var entryStream = romEntry.Open())
                             {
-                                using (var entryStream = romEntry.Open())
+                                var tempFile = await ApplicationData.Current.TemporaryFolder.CreateFileAsync(romEntry.Name, CreationCollisionOption.ReplaceExisting);
+                                using (Stream tempFileStream = await tempFile.OpenStreamForWriteAsync())
                                 {
-                                    var tempFile = await ApplicationData.Current.TemporaryFolder.CreateFileAsync(romEntry.Name, CreationCollisionOption.ReplaceExisting);
-                                    using (Stream tempFileStream = await tempFile.OpenStreamForWriteAsync())
-                                    {
-                                        await entryStream.CopyToAsync(tempFileStream);
-                                        copiedFiled = tempFile;
-                                    }
+                                    await entryStream.CopyToAsync(tempFileStream);
+                                    copiedFiled = tempFile;
                                 }
                             }
                         }
                     }
-                    await LoadRomAsync(copiedFiled);
                 }
-            }
-            finally
-            {
-                ClearPause(PauseFlags.LoadGame);
+                await LoadRomAsync(copiedFiled);
             }
         }
 
         public async Task LoadRomAsync(StorageFile file)
         {
-            await Task.Run(() => Engine.Instance.LoadRom(file.Path));
+            SetPause(PauseFlags.LoadGame);
+            await Engine.Instance.LoadRomAsync(file);
             ClearPause(PauseFlags.Empty);
+            //await Task.Run(() =>
+            //{
+            //    if (_currentRomName != null)
+            //    {
+            //        Engine.Instance.SaveSRAM(Path.Combine(_savesFolder.Path, _currentRomName, ".srm"));
+            //    }
+
+            //    if (Engine.Instance.LoadRom(file.Path))
+            //    {
+            //        _currentRomName = file.DisplayName;
+            //        string sramPath = Path.Combine(_savesFolder.Path, file.DisplayName, ".srm");
+            //        if (File.Exists(sramPath))
+            //        {
+            //            Engine.Instance.LoadSRAM(sramPath);
+            //        }
+            //        ClearPause(PauseFlags.Empty);
+            //    }
+            //});
+            ClearPause(PauseFlags.LoadGame);
         }
 
         public void Update()
         {
             ReportButtons();
             Surface = Engine.Instance.Update();
-        }
-
-        private void foo()
-        {
-            int i = 0;
         }
 
         public void SetPause(PauseFlags reason)
@@ -235,7 +242,6 @@ namespace Snes9x.ViewModels
             _joypad.ReportDown(_joyState.Down);
             _joypad.ReportLeft(_joyState.Left);
             _joypad.ReportRight(_joyState.Right);
-
         }
 
         private async Task CreateAppDirectories()
@@ -265,5 +271,7 @@ namespace Snes9x.ViewModels
         private JoyState _joyState = new JoyState();
         private KeyMap _keyMap = KeyMap.Default;
         private CoreJoypad _joypad;
+
+        private string _currentRomName = null;
     }
 }

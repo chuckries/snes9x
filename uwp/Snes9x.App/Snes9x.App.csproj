@@ -110,19 +110,9 @@
     <Compile Include="Common\ValueToNullableConverter.cs" />
     <Compile Include="Common\Renderer.cs" />
     <Compile Include="Data\RomProvider.cs" />
-    <Compile Include="MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\MenuBar.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\RomExplorerViewModel.cs" />
-    <Compile Include="Views\CanvasPage.xaml.cs">
-      <DependentUpon>CanvasPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\RomExplorerPage.xaml.cs">
-      <DependentUpon>RomExplorerPage.xaml</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -151,24 +141,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\CanvasPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\RomExplorerPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Snes9x.Core\Snes9x.Core.vcxproj">
       <Project>{d5dc6547-4053-452e-830d-6105bc935a51}</Project>
       <Name>Snes9x.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

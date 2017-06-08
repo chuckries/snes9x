@@ -42,7 +42,8 @@ namespace Snes9x { namespace Core
 
         // Pulbic Methods
     public:
-        bool Init();
+        bool Init(Windows::Storage::StorageFolder^ savesFolder);
+        IAsyncAction^ LoadRomAsync(Windows::Storage::StorageFile^ romFile);
         bool LoadRom(String^ path);
         bool LoadRomMem(IBuffer^ buffer);
 
@@ -53,6 +54,8 @@ namespace Snes9x { namespace Core
 
         bool SaveSRAM(String^ path);
         bool LoadSRAM(String^ path);
+
+        String^ GetSavePath();
 
     internal:
         void SetResolution(int width, int height);
@@ -70,5 +73,8 @@ namespace Snes9x { namespace Core
 
         std::mutex _engineMutex;
         typedef std::lock_guard<std::mutex> Lock;
+
+        Windows::Storage::StorageFolder^ _savesFolder;
+        Windows::Storage::StorageFile^ _currentRom;
     };
 } }

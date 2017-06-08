@@ -30,11 +30,11 @@ namespace Snes9x.Common
 
         }
 
-        public void Init()
-        {
-            _engine.Init();
-            _joypads.Add(new KeyboardJoypad(1, KeyboardJoypadConfig.Gamepad));
-        }
+        //public void Init()
+        //{
+        //    _engine.Init();
+        //    _joypads.Add(new KeyboardJoypad(1, KeyboardJoypadConfig.Gamepad));
+        //}
 
         public async Task LoadRomAsync(Rom rom)
         {

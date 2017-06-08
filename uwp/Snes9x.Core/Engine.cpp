@@ -2,6 +2,7 @@
 #include "Engine.h"
 #include "Snes9xWrapper.h"
 #include "Settings.h"
+#include <experimental\filesystem>
 
 using namespace Platform;
 using namespace Windows::Storage;
@@ -18,6 +19,7 @@ namespace Snes9x { namespace Core
 
     Engine::Engine()
         : _settings(ref new CoreSettings())
+        , _currentRom(nullptr)
     {
         _snesScreen = ref new Surface(
             MAX_SNES_WIDTH,
@@ -28,9 +30,11 @@ namespace Snes9x { namespace Core
         _renderedScreen = ref new Surface(0, 0, 0, nullptr);
     }
 
-    bool Engine::Init()
+    bool Engine::Init(StorageFolder^ savesFolder)
     {
         bool bOk = true;
+
+        _savesFolder = savesFolder;
 
         S9xWrapper::InitMemory();
         bOk = bOk && S9xWrapper::InitApu();
@@ -53,6 +57,24 @@ namespace Snes9x { namespace Core
     {
         Lock lock(_engineMutex);
         return S9xWrapper::LoadRom(CW2A(path->Data()));
+    }
+
+    IAsyncAction^ Engine::LoadRomAsync(StorageFile^ romFile)
+    {
+        return create_async([=]()
+        {
+            Lock lock(_engineMutex);
+            if (_currentRom != nullptr)
+            {
+                S9xWrapper::SaveSRAM(CW2A(GetSavePath()->Data()));
+            }
+
+            if (S9xWrapper::LoadRom(CW2A(romFile->Path->Data())))
+            {
+                _currentRom = romFile;
+                S9xWrapper::LoadSRAM(CW2A(GetSavePath()->Data()));
+            }
+        });
     }
 
     bool Engine::LoadRomMem(IBuffer^ buffer)
@@ -138,5 +160,13 @@ namespace Snes9x { namespace Core
             src = (uint16_t*)(((uint8_t*)src) + source->Pitch);
             dst = (uint32_t*)(((uint8_t*)dst) + destination->Pitch);
         }
+    }
+
+    String^ Engine::GetSavePath()
+    {
+        if (_currentRom == nullptr) return nullptr;
+        std::experimental::filesystem::path path(_savesFolder->Path->Data());
+        path = path.append(_currentRom->DisplayName->Data()).replace_extension(".srm");
+        return ref new String(path.c_str());
     }
 } }
