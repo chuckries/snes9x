@@ -70,8 +70,8 @@ namespace Snes9x.Common
                 {
                     _emulatorTexture.SetPixelBytes(_surface.Bytes, 0, 0, _surface.Width, _surface.Height);
                     Size size = new Size(
-                        Math.Ceiling(ds.ConvertPixelsToDips(_surface.Width)), 
-                        Math.Ceiling(ds.ConvertPixelsToDips(_surface.Height))
+                        ds.ConvertPixelsToDips(_surface.Width),
+                        ds.ConvertPixelsToDips(_surface.Height)
                         );
                     _cropEffect.SourceRectangle = new Rect(new Point(0, 0), size);
                     _scaleEffect.TransformMatrix = GetDisplayTransform(size.ToVector2(), targetSize.ToVector2());
@@ -81,49 +81,32 @@ namespace Snes9x.Common
             }
         }
 
-        private Matrix3x2 GetDisplayTransform(Vector2 sourceSize, Vector2 destSize)
+        private Matrix3x2 GetDisplayTransform(Vector2 sourceSize, Vector2 destSize, double? aspectRatio = null)
         {
-            Vector2 scale = destSize / sourceSize;
+            Vector2 aspectScale = Vector2.One;
+            Vector2 aspectSize = sourceSize;
+            if (aspectRatio.HasValue)
+            {
+                double currentRatio = (double)sourceSize.X / (double)sourceSize.Y;
+                aspectScale = new Vector2((float)(aspectRatio / currentRatio), 1);
+                aspectSize *= aspectScale;
+            }
+
+            Vector2 stretchScale = destSize / aspectSize;
             Vector2 offset = Vector2.Zero;
 
-            if (scale.X > scale.Y)
+            if (stretchScale.X > stretchScale.Y)
             {
-                scale.X = scale.Y;
-                offset.X = (destSize.X - sourceSize.X * scale.X) / 2;
+                stretchScale.X = stretchScale.Y;
+                offset.X = (destSize.X - aspectSize.X * stretchScale.X) / 2;
             }
             else
             {
-                scale.Y = scale.X;
-                offset.Y = (destSize.Y - sourceSize.Y * scale.Y) / 2;
+                stretchScale.Y = stretchScale.X;
+                offset.Y = (destSize.Y - aspectSize.Y * stretchScale.Y) / 2;
             }
 
-            return Matrix3x2.CreateScale(scale) * Matrix3x2.CreateTranslation(offset);
-        }
-
-        public async Task SaveScreenshotAsync(IRandomAccessStream stream)
-        {
-            using (CanvasRenderTarget renderTarget = new CanvasRenderTarget(
-                _emulatorTexture,
-                800,
-                700,
-                _emulatorTexture.Dpi,
-                _emulatorTexture.Format,
-                _emulatorTexture.AlphaMode
-                ))
-            {
-                using (var ds = renderTarget.CreateDrawingSession())
-                {
-                    ds.DrawImage(
-                        _emulatorTexture,
-                        new Rect(new Point(0, 0), renderTarget.Size),
-                        new Rect(new Point(0, 0), new Size((float)_surface.Width, (float)_surface.Height)),
-                        1,
-                        CanvasImageInterpolation.NearestNeighbor
-                        );
-                }
-
-                await renderTarget.SaveAsync(stream, CanvasBitmapFileFormat.Bmp, 1.0f);
-            }
+            return Matrix3x2.CreateScale(aspectScale * stretchScale) * Matrix3x2.CreateTranslation(offset);
         }
     }
 }
