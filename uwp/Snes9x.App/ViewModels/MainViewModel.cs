@@ -73,16 +73,36 @@ namespace Snes9x.ViewModels
 
     public class MainViewModel : BindableBase
     {
+        //public MenuViewModel MenuViewModel { get; }
+        public Renderer Renderer { get; } = new Renderer();
         public bool IsPaused
         {
             get => !_pause.Equals(PauseFlags.None);
         }
 
+        public bool Turbo { get; private set; }
+
         public Surface Surface { get; protected set; }
+
+        public double ZoomFactor
+        {
+            get => Renderer.ZoomFactor;
+            set
+            {
+                if (value != Renderer.ZoomFactor)
+                {
+                    Renderer.ZoomFactor = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public MainViewModel()
         {
+            //MenuViewModel = new MenuViewModel(this);
             _joypad = new CoreJoypad(1);
+            //MenuViewModel.IsStretched = true;
+            //MenuViewModel.IsAspectPreserved = true;
         }
 
         public async Task InitializeAsync()
@@ -131,31 +151,18 @@ namespace Snes9x.ViewModels
             SetPause(PauseFlags.LoadGame);
             await Engine.Instance.LoadRomAsync(file);
             ClearPause(PauseFlags.Empty);
-            //await Task.Run(() =>
-            //{
-            //    if (_currentRomName != null)
-            //    {
-            //        Engine.Instance.SaveSRAM(Path.Combine(_savesFolder.Path, _currentRomName, ".srm"));
-            //    }
-
-            //    if (Engine.Instance.LoadRom(file.Path))
-            //    {
-            //        _currentRomName = file.DisplayName;
-            //        string sramPath = Path.Combine(_savesFolder.Path, file.DisplayName, ".srm");
-            //        if (File.Exists(sramPath))
-            //        {
-            //            Engine.Instance.LoadSRAM(sramPath);
-            //        }
-            //        ClearPause(PauseFlags.Empty);
-            //    }
-            //});
             ClearPause(PauseFlags.LoadGame);
         }
 
         public void Update()
         {
             ReportButtons();
-            Surface = Engine.Instance.Update();
+
+            int times = Turbo ? 10 : 1;
+            for (int i = 0; i < times; i++)
+            {
+                Surface = Engine.Instance.Update();
+            }
         }
 
         public void SetPause(PauseFlags reason)
@@ -219,6 +226,10 @@ namespace Snes9x.ViewModels
             else if (key == _keyMap.Right)
             {
                 _joyState.Right = state;
+            }
+            else if (key == VirtualKey.T)
+            {
+                Turbo = state;
             }
             else
             {

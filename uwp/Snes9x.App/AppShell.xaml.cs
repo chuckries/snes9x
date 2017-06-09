@@ -73,21 +73,19 @@ namespace Snes9x
 
         private void CanvasAnimatedControl_CreateResources(CanvasAnimatedControl sender, CanvasCreateResourcesEventArgs args)
         {
-            _renderer.CreateResources(sender, args.Reason);
+            ViewModel.Renderer.CreateResources(sender, args.Reason);
         }
 
         private void CanvasAnimatedControl_Update(ICanvasAnimatedControl sender, CanvasAnimatedUpdateEventArgs args)
         {
             ViewModel.Update();
-            _renderer.SetSurface(ViewModel.Surface);
+            ViewModel.Renderer.SetSurface(ViewModel.Surface);
         }
 
         private void CanvasAnimatedControl_Draw(ICanvasAnimatedControl sender, CanvasAnimatedDrawEventArgs args)
         {
-            _renderer.Draw(args.DrawingSession, sender.Size);
+            ViewModel.Renderer.Draw(args.DrawingSession, sender.Size);
         }
-
-        private Renderer _renderer = new Renderer();
 
         private void canvas_KeyDown(object sender, KeyRoutedEventArgs e)
         {
@@ -102,6 +100,30 @@ namespace Snes9x
             if (e.KeyStatus.IsKeyReleased)
             {
                 e.Handled = ViewModel.HandleKeyPress(e.OriginalKey, false);
+            }
+        }
+
+        private void MenuBar_Opened(object sender, object e)
+        {
+            
+        }
+
+        private void canvas_PointerPressed(object sender, PointerRoutedEventArgs e)
+        {
+            canvas.Focus(FocusState.Pointer);
+            e.Handled = true;
+        }
+
+        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            RadioButton button = sender as RadioButton;
+            if (button != null)
+            {
+                Aspect aspect;
+                if (Enum.TryParse(button.Tag.ToString(), out aspect))
+                {
+                    ViewModel.Renderer.Aspect = aspect;
+                }
             }
         }
     }

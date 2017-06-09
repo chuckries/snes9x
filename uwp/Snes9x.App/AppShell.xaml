@@ -7,7 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    RequestedTheme="Dark">
+    RequestedTheme="Light">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <win2d:CanvasAnimatedControl x:Name="canvas"
@@ -18,13 +18,50 @@
                                      ClearColor="{StaticResource SystemBaseMediumLowColor}"
                                      IsTabStop="True"
                                      KeyDown="canvas_KeyDown"
-                                     KeyUp="canvas_KeyUp"/>
+                                     KeyUp="canvas_KeyUp"
+                                     PointerPressed="canvas_PointerPressed"/>
     </Grid>
     <Page.BottomAppBar>
-        <local:MenuBar 
-            ClosedDisplayMode="Minimal"
-            IsOpen="True">
+        <CommandBar 
+            ClosedDisplayMode="Compact"
+            IsOpen="True"
+            Opened="MenuBar_Opened">
             <AppBarButton Icon="OpenFile" Label="Load Game" Click="LoadGameButton_Click"/>
-        </local:MenuBar>
+            <AppBarButton Label="Aspect">
+                <AppBarButton.Icon>
+                    <FontIcon Glyph="&#xE799;"/>
+                </AppBarButton.Icon>
+                <AppBarButton.Flyout>
+                    <Flyout>
+                        <StackPanel>
+                            <RadioButton x:Name="NativeRadioButton" Tag="Native" Content="Native" GroupName="AspectGroup" Checked="RadioButton_Checked"/>
+                            <Slider Header="Zoom" Minimum="1" Maximum="10" StepFrequency="0.1" Value="{x:Bind ViewModel.ZoomFactor, Mode=TwoWay}"
+                                    IsEnabled="{Binding ElementName=NativeRadioButton, Path=IsChecked}"/>
+                            <RadioButton Tag="Snes8x7" Content="8:7" GroupName="AspectGroup" IsChecked="True" Checked="RadioButton_Checked"/>
+                            <RadioButton Tag="Tv4x3" Content="4:3" GroupName="AspectGroup" Checked="RadioButton_Checked"/>
+                            <RadioButton Tag="Stretch" Content="Stretch" GroupName="AspectGroup" Checked="RadioButton_Checked"/>
+                        </StackPanel>
+                    </Flyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+            <!--<AppBarButton Icon="Video" Label="Video">
+                <AppBarButton.Flyout>
+                    <MenuFlyout Placement="Top">
+                        <ToggleMenuFlyoutItem Text="Stretch Image" Icon="Fullscreen" 
+                                              IsChecked="{x:Bind ViewModel.MenuViewModel.IsStretched, Mode=TwoWay}"/>
+                        <ToggleMenuFlyoutItem Text="Preserve Aspect" 
+                                              IsChecked="{x:Bind ViewModel.MenuViewModel.IsAspectPreserved, Mode=TwoWay}" 
+                                              IsEnabled="{x:Bind ViewModel.MenuViewModel.IsAspectRatioEnabled, Mode=OneWay}">
+                            <ToggleMenuFlyoutItem.Icon>
+                                <FontIcon Glyph="&#xE799;"/>
+                            </ToggleMenuFlyoutItem.Icon>
+                        </ToggleMenuFlyoutItem>
+                        <ToggleMenuFlyoutItem Text="4:3 Aspect"
+                                              IsChecked="{x:Bind ViewModel.MenuViewModel.IsAspect4x3, Mode=TwoWay}"
+                                              IsEnabled="{x:Bind ViewModel.MenuViewModel.AreAspectItemsEnabled, Mode=OneWay}"/>
+                    </MenuFlyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>-->
+        </CommandBar>
     </Page.BottomAppBar>
 </Page>

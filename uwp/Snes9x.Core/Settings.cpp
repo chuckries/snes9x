@@ -26,6 +26,7 @@ namespace Snes9x { namespace Core
         Settings.BlockInvalidVRAMAccessMaster = true;
         Settings.DisplayFrameRate = false;
         Settings.AutoSaveDelay = 30;
+        Settings.UpAndDown = false;
     }
 
     bool CoreSettings::DisplayFrameRate::get()

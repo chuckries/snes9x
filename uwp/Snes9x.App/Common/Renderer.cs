@@ -14,8 +14,19 @@ using Windows.Storage.Streams;
 
 namespace Snes9x.Common
 {
-    class Renderer
+    public enum Aspect
     {
+        Native,
+        Snes8x7,
+        Tv4x3,
+        Stretch
+    }
+
+    public class Renderer
+    {
+        public const double Ratio8x7 = 8d / 7d;
+        public const double Ratio4x3 = 4d / 3d;
+
         object _surfaceLock = new object();
         Surface _surface = null;
         CanvasBitmap _emulatorTexture;
@@ -24,6 +35,10 @@ namespace Snes9x.Common
         CropEffect _cropEffect; // crops _snesTexture to the appropriate size
         DpiCompensationEffect _dpiEffect; // no op dpi effect, emulator texture is always in pixels, stop the automatically inserted dpi effect because it does linear interopolation
         Transform2DEffect _scaleEffect; // scales the output to the final size
+
+        public double ZoomFactor { get; set; } = 3;
+
+        public Aspect Aspect { get; set; } = Aspect.Snes8x7;
 
         public Renderer()
         {
@@ -81,32 +96,49 @@ namespace Snes9x.Common
             }
         }
 
-        private Matrix3x2 GetDisplayTransform(Vector2 sourceSize, Vector2 destSize, double? aspectRatio = null)
+        private Matrix3x2 GetDisplayTransform(Vector2 sourceSize, Vector2 destSize)
         {
-            Vector2 aspectScale = Vector2.One;
-            Vector2 aspectSize = sourceSize;
-            if (aspectRatio.HasValue)
-            {
-                double currentRatio = (double)sourceSize.X / (double)sourceSize.Y;
-                aspectScale = new Vector2((float)(aspectRatio / currentRatio), 1);
-                aspectSize *= aspectScale;
-            }
-
-            Vector2 stretchScale = destSize / aspectSize;
             Vector2 offset = Vector2.Zero;
+            Vector2 scale = Vector2.One;
 
-            if (stretchScale.X > stretchScale.Y)
+            if (Aspect == Aspect.Native)
             {
-                stretchScale.X = stretchScale.Y;
-                offset.X = (destSize.X - aspectSize.X * stretchScale.X) / 2;
+                scale *= (float)ZoomFactor;
+                offset = Vector2.Max(Vector2.Zero, (destSize - (sourceSize * scale)) / 2);
             }
             else
             {
-                stretchScale.Y = stretchScale.X;
-                offset.Y = (destSize.Y - aspectSize.Y * stretchScale.Y) / 2;
+                if (Aspect == Aspect.Stretch)
+                {
+                   scale = destSize / sourceSize;
+                }
+                else
+                {
+                    double ratio = Aspect == Aspect.Snes8x7 ? Ratio8x7 : Ratio4x3;
+
+                    Vector2 aspectScale = Vector2.One;
+                    Vector2 aspectSize = sourceSize;
+                    double currentRatio = (double)sourceSize.X / (double)sourceSize.Y;
+                    aspectScale = new Vector2((float)(ratio / currentRatio), 1);
+                    aspectSize *= aspectScale;
+
+                    Vector2 stretchScale = destSize / aspectSize;
+
+                    if (stretchScale.X > stretchScale.Y)
+                    {
+                        stretchScale.X = stretchScale.Y;
+                        offset.X = (destSize.X - aspectSize.X * stretchScale.X) / 2;
+                    }
+                    else
+                    {
+                        stretchScale.Y = stretchScale.X;
+                        offset.Y = (destSize.Y - aspectSize.Y * stretchScale.Y) / 2;
+                    }
+                    scale = aspectScale * stretchScale;
+                }
             }
 
-            return Matrix3x2.CreateScale(aspectScale * stretchScale) * Matrix3x2.CreateTranslation(offset);
+            return Matrix3x2.CreateScale(scale) * Matrix3x2.CreateTranslation(offset);
         }
     }
 }

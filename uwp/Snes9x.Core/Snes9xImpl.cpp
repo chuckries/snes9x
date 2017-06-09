@@ -205,6 +205,12 @@ bool8 S9xInitUpdate(void) { return true; }
 
 bool8 S9xDeinitUpdate(int width, int height)
 {
+    // HACK!! Never allow extended height because I don't have it all figured out yet
+    if (height == SNES_HEIGHT_EXTENDED)
+    {
+        height = SNES_HEIGHT;
+    }
+
     Snes9x::Core::Engine::Instance->SetResolution(width, height);
     return true;
 }
