@@ -7,7 +7,7 @@ namespace Snes9x { namespace Core
     public ref class Surface sealed
     {
     public:
-        Surface(int width, int height, int pitch, const Array<byte>^ bytes)
+        Surface(int width, int height, int pitch, IBuffer^ bytes)
         {
             Width = width;
             Height = height;
@@ -19,7 +19,8 @@ namespace Snes9x { namespace Core
         property int Height;
         property int Pitch;
         property Windows::Foundation::Size Size;
-        property Array<byte>^ Bytes;
+        //property Array<byte>^ Bytes;
+        property IBuffer^ Bytes;
     };
 
     public ref class Engine sealed
@@ -62,6 +63,7 @@ namespace Snes9x { namespace Core
 
     private:
         static void ConvertDepth16to32(Surface^ source, Surface^ destination);
+        static byte* GetBufferByteAccess(IBuffer^ buffer);
 
     private:
         static Engine^ g_Emulator;

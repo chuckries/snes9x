@@ -3,9 +3,11 @@
 #include "Snes9xWrapper.h"
 #include "Settings.h"
 #include <experimental\filesystem>
+#include <robuffer.h>
 
 using namespace Platform;
 using namespace Windows::Storage;
+using namespace Microsoft::WRL;
 
 #define SNES_WIDTH                  256
 #define SNES_HEIGHT                 224
@@ -21,11 +23,14 @@ namespace Snes9x { namespace Core
         : _settings(ref new CoreSettings())
         , _currentRom(nullptr)
     {
+        int size = MAX_SNES_WIDTH * MAX_SNES_HEIGHT * 2;
+        Buffer^ buffer = ref new Buffer(size);
+        buffer->Length = size;
         _snesScreen = ref new Surface(
             MAX_SNES_WIDTH,
             MAX_SNES_HEIGHT,
             MAX_SNES_WIDTH * 2,
-            ref new Array<byte>(MAX_SNES_WIDTH * MAX_SNES_HEIGHT * 2)
+            buffer
         );
         _renderedScreen = ref new Surface(0, 0, 0, nullptr);
     }
@@ -39,7 +44,8 @@ namespace Snes9x { namespace Core
         S9xWrapper::InitMemory();
         bOk = bOk && S9xWrapper::InitApu();
 
-        bOk = bOk && S9xWrapper::InitGraphics((uint16_t*)_snesScreen->Bytes->begin(), _snesScreen->Pitch);
+
+        bOk = bOk && S9xWrapper::InitGraphics((uint16_t*)GetBufferByteAccess(_snesScreen->Bytes), _snesScreen->Pitch);
 
         bOk = bOk && S9xWrapper::InitSound(128, 0);
 
@@ -93,10 +99,15 @@ namespace Snes9x { namespace Core
 
         if (_renderedScreen->Width != _snesScreen->Width || _renderedScreen->Height != _snesScreen->Height)
         {
+
             _renderedScreen->Width = _snesScreen->Width;
             _renderedScreen->Height = _snesScreen->Height;
             _renderedScreen->Pitch = _snesScreen->Width * 4;
-            _renderedScreen->Bytes = ref new Array<byte>(_renderedScreen->Height * _renderedScreen->Pitch);
+
+            int size = _renderedScreen->Height * _renderedScreen->Pitch;
+            Buffer^ buffer = ref new Buffer(size);
+            buffer->Length = size;
+            _renderedScreen->Bytes = buffer;
         }
 
         ConvertDepth16to32(_snesScreen, _renderedScreen);
@@ -136,8 +147,8 @@ namespace Snes9x { namespace Core
 
     void Engine::ConvertDepth16to32(Surface^ source, Surface^ destination)
     {
-        uint16_t* src = (uint16_t*)source->Bytes->begin();
-        uint32_t* dst = (uint32_t*)destination->Bytes->begin();
+        uint16_t* src = (uint16_t*)GetBufferByteAccess(source->Bytes);
+        uint32_t* dst = (uint32_t*)GetBufferByteAccess(destination->Bytes);
 
         for (int line = 0; line < source->Height; line++)
         {
@@ -168,5 +179,15 @@ namespace Snes9x { namespace Core
         std::experimental::filesystem::path path(_savesFolder->Path->Data());
         path = path.append(_currentRom->DisplayName->Data()).replace_extension(".srm");
         return ref new String(path.c_str());
+    }
+
+    byte* Engine::GetBufferByteAccess(IBuffer^ buffer)
+    {
+        ComPtr<IUnknown> pUnk = reinterpret_cast<IUnknown*>(buffer);
+        ComPtr<IBufferByteAccess> pByteAccess;
+        pUnk.As(&pByteAccess);
+        byte* pBytes = nullptr;
+        pByteAccess->Buffer(&pBytes);
+        return pBytes;
     }
 } }

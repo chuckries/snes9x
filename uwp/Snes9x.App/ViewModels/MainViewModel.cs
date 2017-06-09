@@ -7,6 +7,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Gaming.Input;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.System;
@@ -52,6 +53,38 @@ namespace Snes9x.ViewModels
             Down = VirtualKey.Down,
             Left = VirtualKey.Left,
             Right = VirtualKey.Right
+        };
+    }
+
+    public class PadMap
+    {
+        public GamepadButtons A { get; set; }
+        public GamepadButtons B { get; set; }
+        public GamepadButtons X { get; set; }
+        public GamepadButtons Y { get; set; }
+        public GamepadButtons L { get; set; }
+        public GamepadButtons R { get; set; }
+        public GamepadButtons Start { get; set; }
+        public GamepadButtons Select { get; set; }
+        public GamepadButtons Up { get; set; }
+        public GamepadButtons Down { get; set; }
+        public GamepadButtons Left { get; set; }
+        public GamepadButtons Right { get; set; }
+
+        public static readonly PadMap Default = new PadMap
+        {
+            A = GamepadButtons.B,
+            B = GamepadButtons.A,
+            X = GamepadButtons.Y,
+            Y = GamepadButtons.X,
+            L = GamepadButtons.LeftShoulder,
+            R = GamepadButtons.RightShoulder,
+            Start = GamepadButtons.Menu,
+            Select = GamepadButtons.View,
+            Up = GamepadButtons.DPadUp,
+            Down = GamepadButtons.DPadDown,
+            Left = GamepadButtons.DPadLeft,
+            Right = GamepadButtons.DPadRight
         };
     }
 
@@ -156,6 +189,7 @@ namespace Snes9x.ViewModels
 
         public void Update()
         {
+            PollJoypad();
             ReportButtons();
 
             int times = Turbo ? 10 : 1;
@@ -239,6 +273,69 @@ namespace Snes9x.ViewModels
             return true;
         }
 
+        private void PollJoypad()
+        {
+            if (Gamepad.Gamepads.Count > 0)
+            {
+                GamepadReading reading = Gamepad.Gamepads[0].GetCurrentReading();
+
+                GamepadButtons previousButtons = _previousReading.Buttons;
+                GamepadButtons buttons = reading.Buttons;
+                GamepadButtons newButtons = buttons ^ previousButtons;
+
+                if (newButtons.HasFlag(_padMap.A))
+                {
+                    _joyState.A = buttons.HasFlag(_padMap.A);
+                }
+                if (newButtons.HasFlag(_padMap.B))
+                {
+                    _joyState.B = buttons.HasFlag(_padMap.B);
+                }
+                if (newButtons.HasFlag(_padMap.X))
+                {
+                    _joyState.X = buttons.HasFlag(_padMap.X);
+                }
+                if (newButtons.HasFlag(_padMap.Y))
+                {
+                    _joyState.Y = buttons.HasFlag(_padMap.Y);
+                }
+                if (newButtons.HasFlag(_padMap.L))
+                {
+                    _joyState.L = buttons.HasFlag(_padMap.L);
+                }
+                if (newButtons.HasFlag(_padMap.R))
+                {
+                    _joyState.R = buttons.HasFlag(_padMap.R);
+                }
+                if (newButtons.HasFlag(_padMap.Start))
+                {
+                    _joyState.Start = buttons.HasFlag(_padMap.Start);
+                }
+                if (newButtons.HasFlag(_padMap.Select))
+                {
+                    _joyState.Select = buttons.HasFlag(_padMap.Select);
+                }
+                if (newButtons.HasFlag(_padMap.Up))
+                {
+                    _joyState.Up = buttons.HasFlag(_padMap.Up);
+                }
+                if (newButtons.HasFlag(_padMap.Down))
+                {
+                    _joyState.Down = buttons.HasFlag(_padMap.Down);
+                }
+                if (newButtons.HasFlag(_padMap.Left))
+                {
+                    _joyState.Left = buttons.HasFlag(_padMap.Left);
+                }
+                if (newButtons.HasFlag(_padMap.Right))
+                {
+                    _joyState.Right = buttons.HasFlag(_padMap.Right);
+                }
+
+                _previousReading = reading;
+            }
+        }
+
         private void ReportButtons()
         {
             _joypad.ReportA(_joyState.A);
@@ -281,7 +378,10 @@ namespace Snes9x.ViewModels
 
         private JoyState _joyState = new JoyState();
         private KeyMap _keyMap = KeyMap.Default;
+        private PadMap _padMap = PadMap.Default;
         private CoreJoypad _joypad;
+
+        GamepadReading _previousReading;
 
         private string _currentRomName = null;
     }
