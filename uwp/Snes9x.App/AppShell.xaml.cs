@@ -10,6 +10,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -89,7 +90,39 @@ namespace Snes9x
 
         private void canvas_KeyDown(object sender, KeyRoutedEventArgs e)
         {
-            if (!e.KeyStatus.WasKeyDown)
+            // swallow all gamepad input
+            // TODO: create gesture to leave cavnas focus
+            switch (e.OriginalKey)
+            {
+                case VirtualKey.GamepadA:
+                case VirtualKey.GamepadB:
+                case VirtualKey.GamepadDPadDown:
+                case VirtualKey.GamepadDPadLeft:
+                case VirtualKey.GamepadDPadRight:
+                case VirtualKey.GamepadDPadUp:
+                case VirtualKey.GamepadLeftShoulder:
+                case VirtualKey.GamepadLeftThumbstickButton:
+                case VirtualKey.GamepadLeftThumbstickDown:
+                case VirtualKey.GamepadLeftThumbstickLeft:
+                case VirtualKey.GamepadLeftThumbstickRight:
+                case VirtualKey.GamepadLeftThumbstickUp:
+                case VirtualKey.GamepadLeftTrigger:
+                case VirtualKey.GamepadMenu:
+                case VirtualKey.GamepadRightShoulder:
+                case VirtualKey.GamepadRightThumbstickButton:
+                case VirtualKey.GamepadRightThumbstickDown:
+                case VirtualKey.GamepadRightThumbstickLeft:
+                case VirtualKey.GamepadRightThumbstickRight:
+                case VirtualKey.GamepadRightThumbstickUp:
+                case VirtualKey.GamepadRightTrigger:
+                case VirtualKey.GamepadView:
+                case VirtualKey.GamepadX:
+                case VirtualKey.GamepadY:
+                    e.Handled = true;
+                    return;
+            }
+
+                if (!e.KeyStatus.WasKeyDown)
             {
                 e.Handled = ViewModel.HandleKeyPress(e.OriginalKey, true);
             }
@@ -97,6 +130,38 @@ namespace Snes9x
 
         private void canvas_KeyUp(object sender, KeyRoutedEventArgs e)
         {
+            // swallow all gamepad input
+            // TODO: create gesture to leave cavnas focus
+            switch (e.OriginalKey)
+            {
+                case VirtualKey.GamepadA:
+                case VirtualKey.GamepadB:
+                case VirtualKey.GamepadDPadDown:
+                case VirtualKey.GamepadDPadLeft:
+                case VirtualKey.GamepadDPadRight:
+                case VirtualKey.GamepadDPadUp:
+                case VirtualKey.GamepadLeftShoulder:
+                case VirtualKey.GamepadLeftThumbstickButton:
+                case VirtualKey.GamepadLeftThumbstickDown:
+                case VirtualKey.GamepadLeftThumbstickLeft:
+                case VirtualKey.GamepadLeftThumbstickRight:
+                case VirtualKey.GamepadLeftThumbstickUp:
+                case VirtualKey.GamepadLeftTrigger:
+                case VirtualKey.GamepadMenu:
+                case VirtualKey.GamepadRightShoulder:
+                case VirtualKey.GamepadRightThumbstickButton:
+                case VirtualKey.GamepadRightThumbstickDown:
+                case VirtualKey.GamepadRightThumbstickLeft:
+                case VirtualKey.GamepadRightThumbstickRight:
+                case VirtualKey.GamepadRightThumbstickUp:
+                case VirtualKey.GamepadRightTrigger:
+                case VirtualKey.GamepadView:
+                case VirtualKey.GamepadX:
+                case VirtualKey.GamepadY:
+                    e.Handled = true;
+                    return;
+            }
+
             if (e.KeyStatus.IsKeyReleased)
             {
                 e.Handled = ViewModel.HandleKeyPress(e.OriginalKey, false);
