@@ -13,7 +13,7 @@ void S9xMessage(int, int, const char *) { }
 // memmap.h
 void S9xAutoSaveSRAM(void)
 {
-    Memory.SaveSRAM(CW2A(Snes9x::Core::Engine::Instance->GetSavePath()->Data()));
+    Snes9x::Core::Engine::Instance->OnSramChanged();
 }
 
 // apu.h

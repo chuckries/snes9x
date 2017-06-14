@@ -102,7 +102,6 @@
     <Compile Include="Common\BindableBase.cs" />
     <Compile Include="Common\DelegateCommand.cs" />
     <Compile Include="Common\Directories.cs" />
-    <Compile Include="Common\Emulator.cs" />
     <Compile Include="Common\GameLoopSynchronizationContext.cs" />
     <Compile Include="Common\IJoypad.cs" />
     <Compile Include="Data\OneDriveRomDataSource.cs" />

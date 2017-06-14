@@ -56,19 +56,19 @@ namespace Snes9x
 
         private void CoreWindow_Activated(Windows.UI.Core.CoreWindow sender, Windows.UI.Core.WindowActivatedEventArgs args)
         {
-            if (args.WindowActivationState == Windows.UI.Core.CoreWindowActivationState.Deactivated)
-            {
-                ViewModel.SetPause(PauseFlags.Activate);
-            }
-            else
-            {
-                ViewModel.ClearPause(PauseFlags.Activate);
-            }
+            //if (args.WindowActivationState == Windows.UI.Core.CoreWindowActivationState.Deactivated)
+            //{
+            //    ViewModel.SetPause(PauseFlags.Activate);
+            //}
+            //else
+            //{
+            //    ViewModel.ClearPause(PauseFlags.Activate);
+            //}
         }
 
         private async void LoadGameButton_Click(object sender, RoutedEventArgs e)
         {
-            await ViewModel.LoadGame();
+            await ViewModel.LoadGameaAsync();
             canvas.Focus(FocusState.Programmatic);
         }
 

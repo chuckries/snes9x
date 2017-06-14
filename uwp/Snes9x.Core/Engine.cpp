@@ -32,7 +32,12 @@ namespace Snes9x { namespace Core
             MAX_SNES_WIDTH * 2,
             buffer
         );
-        _renderedScreen = ref new Surface(0, 0, 0, nullptr);
+        _renderedScreen = ref new Surface(
+            MAX_SNES_WIDTH,
+            MAX_SNES_HEIGHT,
+            MAX_SNES_HEIGHT * 4,
+            ref new Buffer(MAX_SNES_WIDTH * MAX_SNES_HEIGHT * 4)
+        );
     }
 
     bool Engine::Init(StorageFolder^ savesFolder)
@@ -53,16 +58,13 @@ namespace Snes9x { namespace Core
 
         // redirect stdout, stderr
         String^ stdoutPath = ApplicationData::Current->LocalCacheFolder->Path + L"//stdout.txt";
+        String^ stderrPath = ApplicationData::Current->LocalCacheFolder->Path + L"//stderr.txt";
         FILE* stdoutFile = nullptr;
+        FILE* stderrFile = nullptr;
         _wfreopen_s(&stdoutFile, stdoutPath->Data(), L"w", stdout);
+        _wfreopen_s(&stderrFile, stderrPath->Data(), L"w", stderr);
 
         return bOk;
-    }
-
-    bool Engine::LoadRom(String^ path)
-    {
-        Lock lock(_engineMutex);
-        return S9xWrapper::LoadRom(CW2A(path->Data()));
     }
 
     IAsyncAction^ Engine::LoadRomAsync(StorageFile^ romFile)
@@ -70,47 +72,27 @@ namespace Snes9x { namespace Core
         return create_async([=]()
         {
             Lock lock(_engineMutex);
-            if (_currentRom != nullptr)
-            {
-                S9xWrapper::SaveSRAM(CW2A(GetSavePath()->Data()));
-            }
+            //if (_currentRom != nullptr)
+            //{
+            //    S9xWrapper::SaveSRAM(CW2A(GetSavePath()->Data()));
+            //}
 
             if (S9xWrapper::LoadRom(CW2A(romFile->Path->Data())))
             {
                 _currentRom = romFile;
-                S9xWrapper::LoadSRAM(CW2A(GetSavePath()->Data()));
+                //S9xWrapper::LoadSRAM(CW2A(GetSavePath()->Data()));
+            }
+            else
+            {
+                throw ref new FailureException("Failed to load ROM");
             }
         });
-    }
-
-    bool Engine::LoadRomMem(IBuffer^ buffer)
-    {
-        Lock lock(_engineMutex);
-        DataReader^ reader = DataReader::FromBuffer(buffer);
-        Array<byte>^ bytes = ref new Array<byte>(buffer->Length);
-        reader->ReadBytes(bytes);
-        return S9xWrapper::LoadRomMem(bytes->begin(), bytes->Length);
     }
 
     Surface^ Engine::Update()
     {
         Lock lock(_engineMutex);
         S9xWrapper::MainLoop();
-
-        if (_renderedScreen->Width != _snesScreen->Width || _renderedScreen->Height != _snesScreen->Height)
-        {
-
-            _renderedScreen->Width = _snesScreen->Width;
-            _renderedScreen->Height = _snesScreen->Height;
-            _renderedScreen->Pitch = _snesScreen->Width * 4;
-
-            int size = _renderedScreen->Height * _renderedScreen->Pitch;
-            Buffer^ buffer = ref new Buffer(size);
-            buffer->Length = size;
-            _renderedScreen->Bytes = buffer;
-        }
-
-        ConvertDepth16to32(_snesScreen, _renderedScreen);
 
         return _renderedScreen;
     }
@@ -127,22 +109,39 @@ namespace Snes9x { namespace Core
         return S9xWrapper::LoadState(CW2A(path->Data()));
     }
 
-    bool Engine::SaveSRAM(String^ path)
+    IAsyncAction^ Engine::SaveSramAsync()
     {
-        Lock lock(_engineMutex);
-        return S9xWrapper::SaveSRAM(CW2A(path->Data()));
+        return create_async([this]()
+        {
+            Lock lock(_engineMutex);
+            S9xWrapper::SaveSRAM(CW2A(GetSavePath()->Data()));
+        });
     }
 
-    bool Engine::LoadSRAM(String^ path)
+    IAsyncAction^ Engine::LoadSramAsync()
     {
-        Lock lock(_engineMutex);
-        return S9xWrapper::LoadSRAM(CW2A(path->Data()));
+        return create_async([this]()
+        {
+            Lock lock(_engineMutex);
+            S9xWrapper::LoadSRAM(CW2A(GetSavePath()->Data()));
+        });
     }
 
     void Engine::SetResolution(int width, int height)
     {
         _snesScreen->Width = width;
         _snesScreen->Height = height;
+
+        _renderedScreen->Width = width;
+        _renderedScreen->Height = height;
+        _renderedScreen->Pitch = width * 4;
+        _renderedScreen->Bytes->Length = width * height * 4;
+        ConvertDepth16to32(_snesScreen, _renderedScreen);
+    }
+
+    void Engine::OnSramChanged()
+    {
+        SramChanged(this);
     }
 
     void Engine::ConvertDepth16to32(Surface^ source, Surface^ destination)

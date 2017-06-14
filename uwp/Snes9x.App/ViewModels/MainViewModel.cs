@@ -11,6 +11,8 @@ using Windows.Gaming.Input;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.System;
+using Windows.UI.ViewManagement;
+using Windows.UI.Xaml;
 
 namespace Snes9x.ViewModels
 {
@@ -18,10 +20,9 @@ namespace Snes9x.ViewModels
     public enum PauseFlags
     {
         None = 0,
-        Empty = 1,
-        LoadGame = 2,
-        Menu = 4,
-        Activate = 8,
+        LoadGame = 1,
+        Menu = 2,
+        Activate = 4,
     }
 
     public class KeyMap
@@ -110,7 +111,7 @@ namespace Snes9x.ViewModels
         public Renderer Renderer { get; } = new Renderer();
         public bool IsPaused
         {
-            get => !_pause.Equals(PauseFlags.None);
+            get => !(Engine.Instance.Active && _pause.Equals(PauseFlags.None));
         }
 
         public bool Turbo { get; private set; }
@@ -144,11 +145,23 @@ namespace Snes9x.ViewModels
 
             await CreateAppDirectories();
             Engine.Instance.Init(_savesFolder);
+            Engine.Instance.SramChanged += Instance_SramChanged;
 
             _isInitialized = true;
         }
 
-        public async Task LoadGame()
+        private void Instance_SramChanged(Engine engine)
+        {
+            var withoutAwait = Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(
+                Windows.UI.Core.CoreDispatcherPriority.Normal,
+                async () =>
+                {
+                    await engine.SaveSramAsync();
+                }
+            );
+        }
+
+        public async Task LoadGameaAsync()
         {
             StorageFile pickedFile = await PickRomAsync();
             if (pickedFile != null)
@@ -182,9 +195,22 @@ namespace Snes9x.ViewModels
         public async Task LoadRomAsync(StorageFile file)
         {
             SetPause(PauseFlags.LoadGame);
-            await Engine.Instance.LoadRomAsync(file);
-            ClearPause(PauseFlags.Empty);
-            ClearPause(PauseFlags.LoadGame);
+
+            try
+            {
+                if (Engine.Instance.Active)
+                {
+                    await Engine.Instance.SaveSramAsync();
+                }
+
+                await Engine.Instance.LoadRomAsync(file);
+                OnPropertyChanged(nameof(IsPaused)); // possible change to Engine.Active
+                await Engine.Instance.LoadSramAsync();
+            }
+            finally
+            {
+                ClearPause(PauseFlags.LoadGame);
+            }
         }
 
         public void Update()
@@ -374,7 +400,7 @@ namespace Snes9x.ViewModels
         private StorageFolder _romFolder;
         private StorageFolder _savesFolder;
 
-        private PauseFlags _pause = PauseFlags.Empty;
+        private PauseFlags _pause = PauseFlags.None;
 
         private JoyState _joyState = new JoyState();
         private KeyMap _keyMap = KeyMap.Default;

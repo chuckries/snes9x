@@ -23,10 +23,17 @@ namespace Snes9x { namespace Core
         property IBuffer^ Bytes;
     };
 
+    ref class Engine;
+    public delegate void SramChangedEventHandler(Engine^ engine);
+
     public ref class Engine sealed
     {
     private:
         Engine();
+
+        // Public Events
+    public:
+        event SramChangedEventHandler^ SramChanged;
 
         // Public Properties
     public:
@@ -41,25 +48,36 @@ namespace Snes9x { namespace Core
             CoreSettings^ get() { return _settings; }
         }
 
-        // Pulbic Methods
+        property Windows::Storage::StorageFile^ CurrentRom
+        {
+            Windows::Storage::StorageFile^ get() { return _currentRom; }
+        }
+
+        // Represents if a rom is loaded and update/save etc can be called
+        property bool Active
+        {
+            bool get() { return _currentRom != nullptr; }
+        }
+
+        // Public Methods
     public:
         bool Init(Windows::Storage::StorageFolder^ savesFolder);
         IAsyncAction^ LoadRomAsync(Windows::Storage::StorageFile^ romFile);
-        bool LoadRom(String^ path);
-        bool LoadRomMem(IBuffer^ buffer);
 
         Surface^ Update();
 
         bool SaveState(String^ path);
         bool LoadState(String^ path);
 
-        bool SaveSRAM(String^ path);
-        bool LoadSRAM(String^ path);
+        IAsyncAction^ SaveSramAsync();
+        IAsyncAction^ LoadSramAsync();
+        //bool LoadSRAM(String^ path);
 
         String^ GetSavePath();
 
     internal:
         void SetResolution(int width, int height);
+        void OnSramChanged();
 
     private:
         static void ConvertDepth16to32(Surface^ source, Surface^ destination);
