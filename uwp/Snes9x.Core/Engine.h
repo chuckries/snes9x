@@ -2,8 +2,6 @@
 
 namespace Snes9x { namespace Core
 {
-    ref class CoreSettings;
-
     public ref class Surface sealed
     {
     public:
@@ -18,8 +16,6 @@ namespace Snes9x { namespace Core
         property int Width;
         property int Height;
         property int Pitch;
-        property Windows::Foundation::Size Size;
-        //property Array<byte>^ Bytes;
         property IBuffer^ Bytes;
     };
 
@@ -42,12 +38,6 @@ namespace Snes9x { namespace Core
             Engine^ get() { return g_Emulator; }
         }
 
-        // The Current settings
-        property CoreSettings^ Settings
-        {
-            CoreSettings^ get() { return _settings; }
-        }
-
         property Windows::Storage::StorageFile^ CurrentRom
         {
             Windows::Storage::StorageFile^ get() { return _currentRom; }
@@ -61,19 +51,19 @@ namespace Snes9x { namespace Core
 
         // Public Methods
     public:
-        bool Init(Windows::Storage::StorageFolder^ savesFolder);
+        void Init(Windows::Storage::StorageFolder^ savesFolder);
         IAsyncAction^ LoadRomAsync(Windows::Storage::StorageFile^ romFile);
 
         Surface^ Update();
 
-        bool SaveState(String^ path);
-        bool LoadState(String^ path);
+        bool SaveState(Platform::String^ path);
+        bool LoadState(Platform::String^ path);
 
-        IAsyncAction^ SaveSramAsync();
+        IAsyncOperation<IBuffer^>^ SaveSramAsync();
         IAsyncAction^ LoadSramAsync();
         //bool LoadSRAM(String^ path);
 
-        String^ GetSavePath();
+        Platform::String^ GetSavePath();
 
     internal:
         void SetResolution(int width, int height);
@@ -85,8 +75,6 @@ namespace Snes9x { namespace Core
 
     private:
         static Engine^ g_Emulator;
-
-        CoreSettings^ _settings;
 
         Surface^ _snesScreen;
         Surface^ _renderedScreen;

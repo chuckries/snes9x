@@ -216,11 +216,13 @@
     <ClInclude Include="CXAudio2.h" />
     <ClInclude Include="Joypad.h" />
     <ClInclude Include="JoypadIds.h" />
+    <ClInclude Include="Renderer.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="LibSnes9x.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Snes9xWrapper.h" />
+    <ClInclude Include="Utilities.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CXAudio2.cpp" />

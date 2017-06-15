@@ -24,6 +24,8 @@
     <ClInclude Include="Joypad.h" />
     <ClInclude Include="JoypadIds.h" />
     <ClInclude Include="Engine.h" />
+    <ClInclude Include="Renderer.h" />
+    <ClInclude Include="Utilities.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

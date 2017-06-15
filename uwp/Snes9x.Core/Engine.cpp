@@ -1,27 +1,22 @@
 #include "pch.h"
 #include "Engine.h"
 #include "Snes9xWrapper.h"
+#include "LibSnes9x.h"
 #include "Settings.h"
 #include <experimental\filesystem>
 #include <robuffer.h>
 
 using namespace Platform;
+using namespace Windows::Security::Cryptography;
 using namespace Windows::Storage;
 using namespace Microsoft::WRL;
-
-#define SNES_WIDTH                  256
-#define SNES_HEIGHT                 224
-#define SNES_HEIGHT_EXTENDED        239
-#define MAX_SNES_WIDTH              (SNES_WIDTH * 2)
-#define MAX_SNES_HEIGHT             (SNES_HEIGHT_EXTENDED * 2)
 
 namespace Snes9x { namespace Core
 {
     Engine^ Engine::g_Emulator = ref new Engine();
 
     Engine::Engine()
-        : _settings(ref new CoreSettings())
-        , _currentRom(nullptr)
+        : _currentRom(nullptr)
     {
         int size = MAX_SNES_WIDTH * MAX_SNES_HEIGHT * 2;
         Buffer^ buffer = ref new Buffer(size);
@@ -40,31 +35,52 @@ namespace Snes9x { namespace Core
         );
     }
 
-    bool Engine::Init(StorageFolder^ savesFolder)
+    void Engine::Init(StorageFolder^ savesFolder)
     {
-        bool bOk = true;
+        memset(&Settings, 0, sizeof(Settings));
+        Settings.MouseMaster = false;
+        Settings.SuperScopeMaster = false;
+        Settings.JustifierMaster = false;
+        Settings.MultiPlayer5Master = false;
+        Settings.FrameTimePAL = 20000;
+        Settings.FrameTimeNTSC = 16667;
+        Settings.SixteenBitSound = true;
+        Settings.Stereo = true;
+        Settings.SoundPlaybackRate = 32000;
+        Settings.SoundInputRate = 32000;
+        Settings.SupportHiRes = true;
+        Settings.Transparency = true;
+        Settings.AutoDisplayMessages = true;
+        Settings.InitialInfoStringTimeout = 120;
+        Settings.HDMATimingHack = 100;
+        Settings.BlockInvalidVRAMAccessMaster = true;
+        Settings.DisplayFrameRate = false;
+        Settings.AutoSaveDelay = 30;
+        Settings.UpAndDown = false;
 
         _savesFolder = savesFolder;
 
-        S9xWrapper::InitMemory();
-        bOk = bOk && S9xWrapper::InitApu();
+        ThrowIfFalse(Memory.Init());
+        ThrowIfFalse(S9xInitAPU());
 
+        GFX.Screen = (uint16_t*)GetBufferByteAccess(_snesScreen->Bytes);
+        GFX.Pitch = _snesScreen->Pitch;
+        ThrowIfFalse(S9xGraphicsInit());
 
-        bOk = bOk && S9xWrapper::InitGraphics((uint16_t*)GetBufferByteAccess(_snesScreen->Bytes), _snesScreen->Pitch);
+        ThrowIfFalse(S9xInitSound(128, 0));
 
-        bOk = bOk && S9xWrapper::InitSound(128, 0);
-
-        S9xWrapper::InitControllers();
+        S9xSetController(0, CTL_JOYPAD, 0, 0, 0, 0);
+        S9xSetController(1, CTL_JOYPAD, 1, 0, 0, 0);
+        S9xUnmapAllControls();
+        S9xSetupDefaultKeymap();
 
         // redirect stdout, stderr
-        String^ stdoutPath = ApplicationData::Current->LocalCacheFolder->Path + L"//stdout.txt";
-        String^ stderrPath = ApplicationData::Current->LocalCacheFolder->Path + L"//stderr.txt";
+        Platform::String^ stdoutPath = ApplicationData::Current->LocalCacheFolder->Path + L"//stdout.txt";
+        Platform::String^ stderrPath = ApplicationData::Current->LocalCacheFolder->Path + L"//stderr.txt";
         FILE* stdoutFile = nullptr;
         FILE* stderrFile = nullptr;
         _wfreopen_s(&stdoutFile, stdoutPath->Data(), L"w", stdout);
         _wfreopen_s(&stderrFile, stderrPath->Data(), L"w", stderr);
-
-        return bOk;
     }
 
     IAsyncAction^ Engine::LoadRomAsync(StorageFile^ romFile)
@@ -72,15 +88,10 @@ namespace Snes9x { namespace Core
         return create_async([=]()
         {
             Lock lock(_engineMutex);
-            //if (_currentRom != nullptr)
-            //{
-            //    S9xWrapper::SaveSRAM(CW2A(GetSavePath()->Data()));
-            //}
 
             if (S9xWrapper::LoadRom(CW2A(romFile->Path->Data())))
             {
                 _currentRom = romFile;
-                //S9xWrapper::LoadSRAM(CW2A(GetSavePath()->Data()));
             }
             else
             {
@@ -97,24 +108,47 @@ namespace Snes9x { namespace Core
         return _renderedScreen;
     }
 
-    bool Engine::SaveState(String^ path)
+    bool Engine::SaveState(Platform::String^ path)
     {
         Lock lock(_engineMutex);
         return S9xWrapper::SaveState(CW2A(path->Data()));
     }
 
-    bool Engine::LoadState(String^ path)
+    bool Engine::LoadState(Platform::String^ path)
     {
         Lock lock(_engineMutex);
         return S9xWrapper::LoadState(CW2A(path->Data()));
     }
 
-    IAsyncAction^ Engine::SaveSramAsync()
+    IAsyncOperation<IBuffer^>^ Engine::SaveSramAsync()
     {
         return create_async([this]()
         {
             Lock lock(_engineMutex);
-            S9xWrapper::SaveSRAM(CW2A(GetSavePath()->Data()));
+
+            if (!HasSram())
+            {
+                return task_from_result<IBuffer^>(nullptr);
+            }
+
+            int size = GetSramByteCount();
+
+            if (!size)
+            {
+                return task_from_result<IBuffer^>(nullptr);
+            }
+
+            IBuffer^ sramBuffer = CryptographicBuffer::CreateFromByteArray(ArrayReference<byte>(Memory.SRAM, size));
+
+            return create_task(_savesFolder->CreateFileAsync(Platform::String::Concat(_currentRom->DisplayName, ".srm"), CreationCollisionOption::OpenIfExists))
+            .then([this, sramBuffer](StorageFile^ file)
+            {
+                return FileIO::WriteBufferAsync(file, sramBuffer);
+            }, task_continuation_context::use_arbitrary())
+            .then([this, sramBuffer]()
+            {
+                return sramBuffer;
+            }, task_continuation_context::use_arbitrary());
         });
     }
 
@@ -122,8 +156,41 @@ namespace Snes9x { namespace Core
     {
         return create_async([this]()
         {
-            Lock lock(_engineMutex);
-            S9xWrapper::LoadSRAM(CW2A(GetSavePath()->Data()));
+             return create_task(_savesFolder->GetFileAsync(Platform::String::Concat(_currentRom->DisplayName, ".srm")))
+             .then([this](StorageFile^ file)
+             {
+                 return FileIO::ReadBufferAsync(file);
+             }, task_continuation_context::use_arbitrary())
+             .then([this](IBuffer^ sramBuffer)
+             {
+                 Lock lock(_engineMutex);
+
+                 int size = GetSramByteCount();
+
+                 Memory.ClearSRAM();
+                 byte* sramBytes = GetBufferByteAccess(sramBuffer);
+
+                 memcpy(Memory.SRAM, sramBytes, sramBuffer->Length);
+
+                 if (sramBuffer->Length - size == 512)
+                 {
+                     memmove(Memory.SRAM, Memory.SRAM + 512, size);
+                 }
+             }, task_continuation_context::use_arbitrary())
+             .then([this](task<void> t)
+             {
+                 try
+                 {
+                     t.get();
+                 }
+                 catch (COMException^ e)
+                 {
+                     if (e->HResult == HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND))
+                     {
+                         // do nothing
+                     }
+                 }
+             });
         });
     }
 
@@ -172,12 +239,12 @@ namespace Snes9x { namespace Core
         }
     }
 
-    String^ Engine::GetSavePath()
+    Platform::String^ Engine::GetSavePath()
     {
         if (_currentRom == nullptr) return nullptr;
         std::experimental::filesystem::path path(_savesFolder->Path->Data());
         path = path.append(_currentRom->DisplayName->Data()).replace_extension(".srm");
-        return ref new String(path.c_str());
+        return ref new Platform::String(path.c_str());
     }
 
     byte* Engine::GetBufferByteAccess(IBuffer^ buffer)
